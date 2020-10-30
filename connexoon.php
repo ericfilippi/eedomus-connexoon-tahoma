@@ -1,9 +1,8 @@
 <?php
 // script créé par Patrice Gauchon pour eedomus
-// Version 1.2.2 / 27 juin 2020
+// Version 2.0.0 / 27 juin 2020
 
 $api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
-$cache_time = 240; // 4 minutes
 
 $devicesControllableNames = array(
 	'io:RollerShutterVeluxIOComponent' => 'volet IO',
