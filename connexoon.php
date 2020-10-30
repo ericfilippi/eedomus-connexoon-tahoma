@@ -1,5 +1,5 @@
 <?php
-// script crÈÈ par Patrice Gauchon pour eedomus
+// script cr√©√© par Patrice Gauchon pour eedomus
 // Version 1.2.2 / 27 juin 2020
 
 $api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
@@ -15,14 +15,16 @@ $devicesControllableNames = array(
 	'io:ExteriorVenetianBlindIOComponent' => 'BSO IO',
 );
 
-$action = getArg('action', false);
-$cache = loadVariable('cache');
+$action = getArg('action', false);				// commande √† envoyer √† la box
+$eeDevices = loadVariable('eeDevices');			// Liste des couples deviceUrl (somfy) / periphId (eedomus)
+$registerId = loadVariable('registerId');		// id d'abonnement aux √©v√©nements somfy
+$capteurSomfy = loadVariable('capteurSomfy');	// sauvegarde du statut du capteur somfy
 
 //------------------------------
 // Fonctions
 //------------------------------
 
-// Envoi une requÍte ‡ l'API
+// Envoi une requ√™te √† l'API
 function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 {
 	global $api_url;
@@ -42,55 +44,54 @@ function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 	return sdk_json_decode($result);
 }
 
-// Login
+// Login et abonnement aux √©v√©nements somfy
 function sdk_login()
 {
-	global $api_url;
-
 	$data = array(
 		'userId' => loadVariable('username'),
 		'userPassword' => loadVariable('password'),
 	);
 
-	return sdk_make_request('login', 'POST', $data);
+	$answerLogin = sdk_make_request('login', 'POST', $data);
+
+	if (($answerLogin['success'] == 'true') && ($answerLogin['roles'][0]['name'] == 'ENDUSER'))
+	{
+	    $answerRegister = sdk_make_request('events/register', 'POST');
+
+	    if (array_key_exists('id',$answerRegister))
+	    {
+	        $registerId = $answerRegister['id'];
+	        saveVariable('registerId', $registerId);
+	    }
+	    else
+	    {
+	        $resultLogin = 'ERROR_LOGIN';
+	    }
+	}
+	else
+	{
+	    $resultLogin = 'ERROR_LOGIN';
+	}
+
+	return $resultLogin;
 }
 
-// RÈcupËre les piËces et les pÈriphÈriques
-function sdk_get_setup($ignore_cache=false)
+// R√©cup√®re les pi√®ces et les p√©riph√©riques
+function sdk_get_setup()
 {
-	global $cache, $cache_time, $devicesControllableNames;
-
-	if (getArg('ignoreCache', false) == 'true')
-	{
-		$ignore_cache = true;
-	}
-
-	// retourne la sauvegarde en cache si derniËre requÍte < $cache_time
-	if (!$ignore_cache and isset($cache['time']) and time() - $cache['time'] < $cache_time and !empty($cache['devices']))
-	{
-		return array(
-			'devices' => $cache['devices'],
-			'time' => $cache['time'],
-		);
-	}
-
-	// Login
-	sdk_login();
-
-	// On rafraichit les Ètats
 	sdk_make_request('setup/devices/states/refresh', 'POST');
 
-	// On rÈcupËre les pÈriphÈriques
+	// On r√©cup√®re les p√©riph√©riques
 	$setup = sdk_make_request('setup', 'GET');
+
 	$devices = array();
-	$other_devices = array();
 	foreach ($setup['devices'] as $device)
 	{
 		if (preg_match('%^(io|rts)://.*?/\d*?$%', $device['deviceURL']))
 		{
 			$device_url = $device['deviceURL'];
 
-      $devices[$device_url]['url'] = $device_url;
+			$devices[$device_url]['url'] = $device_url;
 			$devices[$device_url]['label'] = $device['label'];
 			$devices[$device_url]['controllableName'] = $device['controllableName'];
 
@@ -104,19 +105,70 @@ function sdk_get_setup($ignore_cache=false)
 		}
 	}
 
-	// Sauvegarde des donnÈes en cache
-	$time = time();
-	$cache['devices'] = $devices;
-	$cache['time'] = $time;
-	saveVariable('cache', $cache);
-
 	return array(
 		'devices' => $devices,
-		'time' => $time,
+		'time' => time(),
+		'alive' => $setup['gateways'][0]['alive'],
 	);
 }
 
-// On applique une commande aux pÈriphÈriques d'une piËce
+// Mise √† jour d'un p√©riph√©rique eedomus
+function sdk_maj_periph($eeDevices,$deviceUrl,$state,$eeValue)
+{
+	$tmpValue = round($eeValue/5)*5;
+	if ($eeValue != 0 and $tmpValue == 0) $tmpValue = 5;
+	if ($eeValue != 100 and $tmpValue == 100) $tmpValue = 95;
+	$eeValue = $tmpValue;
+	if ($state == 'all')
+	{
+		foreach ($eeDevices[$deviceUrl] as $statePeriphId)
+		{
+			setValue($statePeriphId, $eeValue,0,1,date('Y-m-d H:i:s'),0);
+		}
+	}
+	else
+	{
+		setValue($eeDevices[$deviceUrl][$state], $eeValue,0,1,date('Y-m-d H:i:s'),0);
+	}
+}
+
+// Initialisation de l'√©tat des p√©riph√©riques
+function sdk_process_setup($setup,$eeDevices)
+{
+	$eeResultat = 3;
+
+	$horsPortee = false;
+	foreach ($setup['devices'] as $device)
+	{
+		$deviceUrl = $device['url'];
+
+		if (array_key_exists($deviceUrl,$eeDevices))
+		{
+			if ($device['states']['Status'] <> 'available')
+			{
+				$horsPortee = true;
+			}
+			if (array_key_exists('SlateOrientation',$eeDevices[$deviceUrl]))
+			{
+				$valeurPassee = ($horsPortee) ? 200 : $device['states']['SlateOrientation'];
+				sdk_maj_periph($eeDevices,$deviceUrl,'SlateOrientation',$valeurPassee);
+			}
+			if (array_key_exists('Closure',$eeDevices[$deviceUrl]))
+			{
+				$valeurPassee = ($horsPortee) ? 200 : $device['states']['Closure'];
+				sdk_maj_periph($eeDevices,$deviceUrl,'Closure',$valeurPassee);
+			}
+		}
+	}
+	if ($horsPortee == true)
+	{
+		$eeResultat = 2;
+	}
+
+	return $eeResultat;
+}
+
+// On applique une commande aux p√©riph√©riques d'une pi√®ce
 function sdk_apply_command($device_urls, $commands, $path='exec/apply')
 {
 	$actions = array();
@@ -134,7 +186,7 @@ function sdk_apply_command($device_urls, $commands, $path='exec/apply')
 		        $commands_str[] = '{"name":"'.$command_name.'","parameters":['.$value.']}';
 		    }
 		}
-	
+
 		$actions[] = '{"deviceURL":"'.trim($device_url).'","commands":['.implode($commands_str,',').']}';
 	}
 
@@ -157,7 +209,7 @@ function sdk_display_login_form($message='', $error='')
 	die;
 }
 
-// Ecran des piËces
+// Ecran des pi√®ces
 function sdk_display_devices($devices)
 {
 	global $devicesControllableNames;
@@ -181,7 +233,7 @@ function sdk_display_devices($devices)
 
 	if (!empty($known_devices))
 	{
-		echo '<p><b>'.'Liste des pÈriphÈriques'.' :</b></p>';
+		echo '<p><b>'.'Liste des p√©riph√©riques'.' :</b></p>';
 		foreach ($known_devices as $device)
 		{
 			echo '<p><b>'.$device['label'].'</b> (type: '.$device['type'].')<br><input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p>';
@@ -190,7 +242,7 @@ function sdk_display_devices($devices)
 
 	if (!empty($unknown_devices))
 	{
-		echo '<p><b>'.'Liste des pÈriphÈriques non reconnus (mais probablement compatibles)'.' :</b></p>';
+		echo '<p><b>'.'Liste des p√©riph√©riques non reconnus (mais probablement compatibles)'.' :</b></p>';
 		foreach ($unknown_devices as $device)
 		{
 			echo '<p><b>'.$device['label'].'</b> => (type: '.$device['controllableName'].')<br><input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p>';
@@ -225,11 +277,11 @@ if (empty($action))
 		sdk_display_login_form('', 'Impossible de se connecter au serveur Somfy');
 	}
 
-	$setup = sdk_get_setup(true);
+	$setup = sdk_get_setup();
 
 	if (!count($setup['devices']))
 	{
-		sdk_display_login_form('', 'Aucun pÈriphÈrique dÈtectÈ.');
+		sdk_display_login_form('', 'Aucun p√©riph√©rique d√©tect√©.');
 	}
 
 	sdk_display_devices($setup['devices']);
@@ -239,52 +291,45 @@ if (empty($action))
 // Actions
 //------------------------------
 
-// Set Closure
-if ($action == 'setClosure')
+if (in_array($action, array('setClosure','setOrientation','setClosureAndOrientation','close','open','up','down','stop')))
 {
-	sdk_login();
-	$value = getArg('value');
 	$device_urls = explode(',', getArg('devices'));
 
-	$commands['setClosure'] = $value;
+	// enregistre le couple device_urls/periph_id courant
+	if ((count($device_urls) == 1) && (!array_key_exists($device_urls[0],$eeDevices)))
+	{
+		$eeAction = ($action == 'setOrientation') ? 'SlateOrientation' : 'Closure' ;
+		$eeDevices[$device_urls[0]][$eeAction] = getArg('eedomus_controller_module_id');
+		saveVariable('eeDevices', $eeDevices);
+	}
 
-	// On invalide le cache
-	$cache['time'] = 0;
-	saveVariable('cache', $cache);
+	// Set Closure et setOrientation
+	if ((in_array($action, array('setClosure','setOrientation','setClosureAndOrientation'))))
+	{
+		$value = getArg('value') ;
+		$commands[$action] = $value;
+		$path='exec/apply';
+	}
+	// Portail
+	if (in_array($action, array('close','open','up','down','stop')))
+	{
+		$commands[$action] = null;
+		$path='exec/apply/highPriority';
+	}
 
-	sdk_apply_command($device_urls, $commands);
-}
-
-// Set SlateOrientation
-if ($action == 'setSlateOrientation')
-{   
-   sdk_login();
-   $value = getArg('value');
-   $device_urls = explode(',', getArg('devices'));
-   
-   $commands['setOrientation'] = $value;
-   
-   // On invalide le cache
-   $cache['time'] = 0;
-   saveVariable('cache', $cache);
-
-   sdk_apply_command($device_urls, $commands);
-   
-}
-
-// Portail
-if (in_array($action, array('close','open','up','down','stop')))
-{
-	sdk_login();
-	$device_urls = explode(',', getArg('devices'));
-
-	$commands[$action] = null;
-
-	// On invalide le cache
-	$cache['time'] = 0;
-	saveVariable('cache', $cache);
-
-	$result = sdk_apply_command($device_urls, $commands, 'exec/apply/highPriority');
+	// Ex√©cution de la commande
+	$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+	if (array_key_exists('error',$resultCommand))
+	{
+		if (sdk_login() != 'ERROR_LOGIN')
+		{
+			$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+		}
+	}
+	if (array_key_exists('execId',$resultCommand))
+	{
+		$execIds[$resultCommand['execId']] = $device_urls;
+	}
 }
 
 //------------------------------
@@ -293,6 +338,7 @@ if (in_array($action, array('close','open','up','down','stop')))
 
 if ($action == 'getState')
 {
+	sdk_login();
 	$setup = sdk_get_setup();
 
 	sdk_header('text/xml');
@@ -327,6 +373,142 @@ if ($action == 'getState')
 
 	$xml .= '<Timestamp>'.$setup['time'].'</Timestamp>';
 	$xml .= '</connexoon>';
+	echo $xml;
+}
+
+//------------------------------
+// Polling (XML)
+//------------------------------
+
+if ($action == 'getAllStates')
+{
+	// enregistre le couple device_urls/periph_id courant
+    if (!array_key_exists('capteurSomfy',$eeDevices))
+	{
+		$eeDevices['capteurSomfy'] = getArg('eedomus_controller_module_id');
+		saveVariable('eeDevices', $eeDevices);
+	}
+
+	// Lecture des √©v√©nements
+	$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+	if (array_key_exists('error',$resultFetch))
+	{
+		if (sdk_login() == 'ERROR_LOGIN')
+		{	// Erreur d'identification au cloud
+			$eeResultat = 0;
+		}
+		else
+		{
+			$setup = sdk_get_setup();
+			if ($setup['alive'] <> 'true')
+			{	// La box n'est pas connect√©e √† son cloud
+				$eeResultat = 1;
+			}
+			else
+			{
+				$eeResultat = sdk_process_setup($setup,$eeDevices);
+			}
+			$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+		}
+	}
+	else
+	{	// le fetch s'es bien pass√©, on reprend la valeur sauvegard√©e du capteur somfy
+		$eeResultat = ($capteurSomfy['valeur'] <> '') ? $capteurSomfy['valeur'] : 1 ;
+	}
+
+	if ($eeResultat > 0)
+	{
+		// On est connect√© au cloud et on peut traiter les √©v√©nements
+		foreach ($resultFetch as $evenement)
+		{
+			switch ($evenement['name'])
+			{
+				case 'GatewayAliveEvent' :
+					$setup = sdk_get_setup();
+					$eeResultat = sdk_process_setup($setup,$eeDevices);
+					break;
+				case 'GatewayDownEvent' :
+					$eeResultat = 1;
+					foreach ($eeDevices as $eeName => $eeDevice)
+					{
+						if ($eeName <> 'capteurSomfy')
+						{
+							foreach ($eeDevice as $statePeriphId)
+							{
+								setValue($statePeriphId, 200,0,1,date('Y-m-d H:i:s'),0);
+							}
+						}
+					}
+					break;
+				case 'DeviceStateChangedEvent' :	// mise √† jour des √©tat des p√©riph√©riques
+					$deviceUrl = $evenement['deviceURL'];
+					if (array_key_exists($deviceUrl,$eeDevices))
+					{
+						foreach ($evenement['deviceStates'] as $deviceState)
+						{
+							if ((array_key_exists('SlateOrientation',$eeDevices[$deviceUrl])) && ($deviceState['name'] == 'core:SlateOrientationState'))
+							{
+								$states['SlateOrientation'] = $deviceState['value'];
+								sdk_maj_periph($eeDevices,$deviceUrl,'SlateOrientation',$deviceState['value']);
+							}
+							elseif ((array_key_exists('Closure',$eeDevices[$deviceUrl])) && ($deviceState['name'] == 'core:ClosureState'))
+							{
+								$states['Closure'] = $deviceState['value'];
+								sdk_maj_periph($eeDevices,$deviceUrl,'Closure',$deviceState['value']);
+							}
+						}
+					}
+					break;
+				case 'ExecutionStateChangedEvent' :		// la commande envoy√©e revient en erreur
+					if ($evenement['newState'] == 'FAILED')
+					{
+						foreach ($evenement['failedCommands'] as $failedCommand)
+						{
+							$eeResultat = 2;
+							$deviceUrl = $failedCommand['deviceURL'];
+							if (array_key_exists($deviceUrl,$eeDevices))
+							{
+								sdk_maj_periph($eeDevices,$deviceUrl,'all',300);
+							}
+						}
+					}
+					break;
+				case 'DeviceUnavailableEvent' :
+					$eeResultat = 2;
+					$deviceUrl = $evenement['deviceURL'];
+					if (array_key_exists($deviceUrl,$eeDevices))
+					{
+						sdk_maj_periph($eeDevices,$deviceUrl,'all',200);
+					}
+					break;
+				case 'DeviceAvailableEvent' :
+					$setup = sdk_get_setup();
+					$eeResultat = sdk_process_setup($setup,$eeDevices);
+					break;
+
+			}
+		}
+	}
+	$capteurSomfy['valeur'] = $eeResultat;
+	saveVariable('capteurSomfy', $capteurSomfy);
+
+    // construction du r√©sultat
+	// 0 : cloud injoignable
+	// 1 : cloud OK, box injoignable
+	// 2 : un des devices est injoignable
+	// 3 : tout est OK
+    $xml = '<?xml version="1.0" encoding="ISO-8859-1"?>';
+	$xml .= '<connexoon>';
+    $xml .= '<resultat>'.$eeResultat.'</resultat>';
+    $xml .= '<Timestamp>'.$setup['time'].'</Timestamp>';
+	$xml .= '</connexoon>';
+	echo $xml;
+}
+
+if ($action == 'auto')
+{
+	// remise en statut auto des actionneurs http multiples
+    $xml = '<?xml version="1.0" encoding="ISO-8859-1"?><connexoon><resultat>0</resultat><Timestamp>'.time().'</Timestamp></connexoon>';
 	echo $xml;
 }
 
