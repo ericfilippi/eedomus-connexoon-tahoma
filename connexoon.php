@@ -295,9 +295,9 @@ if (in_array($action, array('setClosure','setOrientation','setClosureAndOrientat
 	$device_urls = explode(',', getArg('devices'));
 
 	// enregistre le couple device_urls/periph_id courant
-	if ((count($device_urls) == 1) && (!array_key_exists($device_urls[0],$eeDevices)))
+	$eeAction = ($action == 'setOrientation') ? 'SlateOrientation' : 'Closure' ;
+	if ((count($device_urls) == 1) && (!array_key_exists($device_urls[0][$eeAction],$eeDevices)))
 	{
-		$eeAction = ($action == 'setOrientation') ? 'SlateOrientation' : 'Closure' ;
 		$eeDevices[$device_urls[0]][$eeAction] = getArg('eedomus_controller_module_id');
 		saveVariable('eeDevices', $eeDevices);
 	}
@@ -411,8 +411,23 @@ if ($action == 'getAllStates')
 		}
 	}
 	else
-	{	// le fetch s'es bien passé, on reprend la valeur sauvegardée du capteur somfy
-		$eeResultat = ($capteurSomfy['valeur'] <> '') ? $capteurSomfy['valeur'] : 1 ;
+	{	// le fetch s'es bien passé, on reprend la valeur sauvegardée du capteur somfy ou on la recalcule
+		if ($capteurSomfy['valeur'] <> '')
+		{
+			$eeResultat = $capteurSomfy['valeur'];
+		}
+		else
+		{
+			$setup = sdk_get_setup();
+			if ($setup['alive'] <> 'true')
+			{	// La box n'est pas connectée à son cloud
+				$eeResultat = 1;
+			}
+			else
+			{
+				$eeResultat = sdk_process_setup($setup,$eeDevices);
+			}
+		}
 	}
 
 	if ($eeResultat > 0)
@@ -461,13 +476,30 @@ if ($action == 'getAllStates')
 				case 'ExecutionStateChangedEvent' :		// la commande envoyée revient en erreur
 					if ($evenement['newState'] == 'FAILED')
 					{
-						foreach ($evenement['failedCommands'] as $failedCommand)
+						// recherche de la cause
+						$path = 'history/executions/' . $evenement['execId'];
+						$resultHistory = sdk_make_request($path, $method='GET');
+						foreach ($resultHistory['execution']['commands'] as $execCommand)
 						{
-							$eeResultat = 2;
-							$deviceUrl = $failedCommand['deviceURL'];
-							if (array_key_exists($deviceUrl,$eeDevices))
+							if ($execCommand['state'] == 'FAILED')
 							{
-								sdk_maj_periph($eeDevices,$deviceUrl,'all',300);
+								if (in_array($execCommand['failureType'], array('NONEXEC_OTHER')))
+								{
+									$setup = sdk_get_setup();
+									$eeResultat = sdk_process_setup($setup,$eeDevices);
+								}
+								else
+								{
+									$deviceUrl = $execCommand['deviceURL'];
+									if ((array_key_exists('SlateOrientation',$eeDevices[$deviceUrl])) && ($execCommand['command'] == 'setOrientation'))
+									{
+										sdk_maj_periph($eeDevices,$deviceUrl,'SlateOrientation',300);
+									}
+									elseif ((array_key_exists('Closure',$eeDevices[$deviceUrl])) && ($execCommand['command'] == 'setClosure'))
+									{
+										sdk_maj_periph($eeDevices,$deviceUrl,'Closure',300);
+									}
+								}
 							}
 						}
 					}
@@ -491,7 +523,7 @@ if ($action == 'getAllStates')
 	$capteurSomfy['valeur'] = $eeResultat;
 	saveVariable('capteurSomfy', $capteurSomfy);
 
-    // construction du résultat
+  // construction du résultat
 	// 0 : cloud injoignable
 	// 1 : cloud OK, box injoignable
 	// 2 : un des devices est injoignable
@@ -509,6 +541,24 @@ if ($action == 'auto')
 	// remise en statut auto des actionneurs http multiples
     $xml = '<?xml version="1.0" encoding="ISO-8859-1"?><connexoon><resultat>0</resultat><Timestamp>'.time().'</Timestamp></connexoon>';
 	echo $xml;
+}
+
+if ($action == 'reset')
+{
+	// remise à zéro des donnée sauvegardées
+	$eeDevices = '';
+	saveVariable('eeDevices', $eeDevices);
+	$capteurSomfy['valeur'] = '';
+	saveVariable('capteurSomfy', $capteurSomfy);
+	echo 'Reset effectué';
+}
+
+if ($action == 'display')
+{
+	// remise à zéro des donnée sauvegardées
+	$resultCommand = sdk_json_decode( '{"execution":{"eventTime":1604217728873,"owner":"herricdumont@yahoo.fr","source":"mobile:tool","endTime":1604217729503,"effectiveStartTime":1604217728873,"duration":630,"id":"82d3ef67-ac10-3e01-1542-fa07de069b0a","label":"eedomus command","type":"Immediate execution - MANUAL_CONTROL","state":"FAILED","failureType":"NONEXEC_OTHER","commands":[{"deviceURL":"io://1225-4383-2128/12250793","command":"setOrientation","parameters":[20],"rank":0,"dynamic":false,"state":"FAILED","failureType":"NONEXEC_OTHER"}],"executionType":"Immediate execution","executionSubType":"MANUAL_CONTROL"}}');
+	echo 'failure type = ' . $resultCommand['execution']['commands'][0]['failureType'] . ' ### ';
+	echo 'failure type = ' . $resultCommand['execution']['commands'][0]['failureType'] . ' ### ';
 }
 
 ?>
