@@ -555,7 +555,7 @@ if ($action == 'reset')
 
 if ($action == 'display')
 {
-	// remise à zéro des donnée sauvegardées
+	// utilisé pour les tests
 	$resultCommand = sdk_json_decode( '{"execution":{"eventTime":1604217728873,"owner":"herricdumont@yahoo.fr","source":"mobile:tool","endTime":1604217729503,"effectiveStartTime":1604217728873,"duration":630,"id":"82d3ef67-ac10-3e01-1542-fa07de069b0a","label":"eedomus command","type":"Immediate execution - MANUAL_CONTROL","state":"FAILED","failureType":"NONEXEC_OTHER","commands":[{"deviceURL":"io://1225-4383-2128/12250793","command":"setOrientation","parameters":[20],"rank":0,"dynamic":false,"state":"FAILED","failureType":"NONEXEC_OTHER"}],"executionType":"Immediate execution","executionSubType":"MANUAL_CONTROL"}}');
 	echo 'failure type = ' . $resultCommand['execution']['commands'][0]['failureType'] . ' ### ';
 	echo 'failure type = ' . $resultCommand['execution']['commands'][0]['failureType'] . ' ### ';
