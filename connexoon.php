@@ -101,6 +101,9 @@ function sdk_get_setup()
 					$devices[$device_url]['states'][$match[2]] = $state['value'];
 				}
 			}
+			// récupération des commandes API et états
+			$devices[$device_url]['definition']['commands'] = $device['definition']['commands'];
+			$devices[$device_url]['definition']['states'] = $device['definition']['states'];
 		}
 	}
 
@@ -232,7 +235,7 @@ function sdk_display_devices($devices)
 
 	if (!empty($known_devices))
 	{
-		echo '<p><b>'.'Liste des périphériques'.' :</b></p>';
+		echo '<h1>'.'Liste des périphériques'.' :</h1>';
 		foreach ($known_devices as $device)
 		{
 			echo '<p><b>'.$device['label'].'</b> (type: '.$device['type'].')<br><input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p>';
@@ -241,10 +244,29 @@ function sdk_display_devices($devices)
 
 	if (!empty($unknown_devices))
 	{
-		echo '<p><b>'.'Liste des périphériques non reconnus (mais probablement compatibles)'.' :</b></p>';
+		echo '<h1>'.'Liste des périphériques non reconnus (mais probablement compatibles)'.' :</h1>';
 		foreach ($unknown_devices as $device)
 		{
-			echo '<p><b>'.$device['label'].'</b> => (type: '.$device['controllableName'].')<br><input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p>';
+			echo '<p><b>'.$device['label'].'</b> => (type: '.$device['controllableName'].')<br><input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"><br/><b>Liste des commandes disponibles :</b><br/>';
+			foreach ($device['definition']['commands'] as $command)
+			{
+				echo '<b>commande :</b> ' . $command['commandName'] . ' | <b>paramètres :</b> ' . $command['nparams'] . '<br/>';
+			}
+			echo '<b>liste des states disponibles :</b><br/>';
+			foreach ($device['definition']['states'] as $state)
+			{
+				echo '<b>Statut :</b> ' . $state['qualifiedName'] . '   |   <b>type :</b> ' . $state['type'];
+				if (isset($state['values']))
+				{
+					echo '<b> | valeurs :</b> ';
+					foreach ($state['values'] as $valeur)
+					{
+						echo  $valeur .  ',';
+					}
+				}
+				echo '<br/>';
+			}
+			echo '</p>';
 		}
 	}
 	echo '</body>';
@@ -556,9 +578,8 @@ if ($action == 'reset')
 if ($action == 'display')
 {
 	// utilisé pour les tests
-	$resultCommand = sdk_json_decode( '{"execution":{"eventTime":1604217728873,"owner":"herricdumont@yahoo.fr","source":"mobile:tool","endTime":1604217729503,"effectiveStartTime":1604217728873,"duration":630,"id":"82d3ef67-ac10-3e01-1542-fa07de069b0a","label":"eedomus command","type":"Immediate execution - MANUAL_CONTROL","state":"FAILED","failureType":"NONEXEC_OTHER","commands":[{"deviceURL":"io://1225-4383-2128/12250793","command":"setOrientation","parameters":[20],"rank":0,"dynamic":false,"state":"FAILED","failureType":"NONEXEC_OTHER"}],"executionType":"Immediate execution","executionSubType":"MANUAL_CONTROL"}}');
-	echo 'failure type = ' . $resultCommand['execution']['commands'][0]['failureType'] . ' ### ';
-	echo 'failure type = ' . $resultCommand['execution']['commands'][0]['failureType'] . ' ### ';
+	$setup = sdk_get_setup();
+	sdk_display_devices($setup['devices']);
 }
 
 ?>
