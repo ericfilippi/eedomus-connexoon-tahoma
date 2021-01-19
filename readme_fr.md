@@ -56,10 +56,20 @@ Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de vo
 
 La liste des périphériques connectés à votre box SOMFY est affichée.
 
-Les périphériques connus sont listés dans le chapitre **Liste des peripheriques**.
+### Les périphériques connus sont listés dans le chapitre *Liste des peripheriques*.
 
 ![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/liste.jpg "Liste des préiphériques")
 
 Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme indiqué dans les images ci-dessous.
 
 ![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/parametre-affichage.jpg "Liste des préiphériques")
+
+**Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser son fonctionnement.
+
+### Les périphériques non reconnus sont listés dans le chapitre *Liste des peripheriques non reconnus (mais probablement compatibles)*.
+
+Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
+
+Liste des commandes disponibles : comme son nom l'indique, ce sont toutes les commandes acceptée par votre périphérique SOMFY, avec les nombre de paramètres à fournir.
+
+Liste des états disponibles : indique les états que peut prendre votre périphérique SOMFY.

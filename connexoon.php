@@ -362,42 +362,60 @@ if (in_array($action, array('setClosure','setOrientation','setClosureAndOrientat
 
 if ($action == 'getState')
 {
-	sdk_login();
-	$setup = sdk_get_setup();
-
-	sdk_header('text/xml');
-	$xml = '<?xml version="1.0" encoding="ISO-8859-1"?>';
-	$xml .= '<connexoon>';
-
-	foreach ($setup['devices'] as $device)
+	$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+	if (array_key_exists('error',$resultFetch))
 	{
-		$xml .= '<device url="'.$device['url'].'" label="'.$device['label'].'">';
-
-		foreach ($device['states'] as $state => $value)
+		if (sdk_login() != 'ERROR_LOGIN')
 		{
-			if ($state == 'Closure')
-			{
-				$closure_value = round($value/5)*5;
-				if ($value != 0 and $closure_value == 0) $closure_value = 5;
-				if ($value != 100 and $closure_value == 100) $closure_value = 95;
-				$value = $closure_value;
-			}
-			if ($state == 'SlateOrientation')
-			{
-				$SlateOrientation = round($value/5)*5;
-				if ($value != 0 and $SlateOrientation == 0) $SlateOrientation = 5;
-				if ($value != 100 and $SlateOrientation == 100) $SlateOrientation = 95;
-				$value = $SlateOrientation;
-			}
-			$xml .= '<'.$state.'>'.$value.'</'.$state.'>';
+			$logge = true;
 		}
-
-		$xml .= '</device>';
+		else
+		{
+			$logge = false;
+		}
+	}
+	else
+	{
+		$logge = true;
 	}
 
-	$xml .= '<Timestamp>'.$setup['time'].'</Timestamp>';
-	$xml .= '</connexoon>';
-	echo $xml;
+	if (logge)
+	{
+		$setup = sdk_get_setup();
+		sdk_header('text/xml');
+		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?>';
+		$xml .= '<connexoon>';
+
+		foreach ($setup['devices'] as $device)
+		{
+			$xml .= '<device url="'.$device['url'].'" label="'.$device['label'].'">';
+
+			foreach ($device['states'] as $state => $value)
+			{
+				if ($state == 'Closure')
+				{
+					$closure_value = round($value/5)*5;
+					if ($value != 0 and $closure_value == 0) $closure_value = 5;
+					if ($value != 100 and $closure_value == 100) $closure_value = 95;
+					$value = $closure_value;
+				}
+				if ($state == 'SlateOrientation')
+				{
+					$SlateOrientation = round($value/5)*5;
+					if ($value != 0 and $SlateOrientation == 0) $SlateOrientation = 5;
+					if ($value != 100 and $SlateOrientation == 100) $SlateOrientation = 95;
+					$value = $SlateOrientation;
+				}
+				$xml .= '<'.$state.'>'.$value.'</'.$state.'>';
+			}
+
+			$xml .= '</device>';
+		}
+
+		$xml .= '<Timestamp>'.$setup['time'].'</Timestamp>';
+		$xml .= '</connexoon>';
+		echo $xml;
+	}
 }
 
 //------------------------------
