@@ -27,10 +27,10 @@ La version 2 du plugin introduit un nouveau capteur d'état qu'il est nécessaire 
 
 Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu'une seule fois) :
 
-![capteur](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/capteur.jpg "Paramétrage capteur")
+![image capteur](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/capteur.jpg "Paramétrage capteur")
 
-- Adresse du prériphérique : **Capteur SOMFY** (inutile mais le champ doit être rempli)
-- Type de périphérique : **Capteur d'état**
+Adresse du prériphérique : **Capteur SOMFY** (inutile mais le champ doit être rempli)
+Type de périphérique : **Capteur d'état**
 
 Ce capteur a pour fonction :
 - d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
@@ -52,6 +52,14 @@ Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minute
 
 Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de votre volet. Pour cela, cliquez sur le lien et renseignez vos identifiants Connexoon.
 
+![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/lien.jpg "Liste des préiphériques")
+
 La liste des périphériques connectés à votre box SOMFY est affichée.
 
-Les périphériques connus sont listés dans le chapitre **Liste des peripheriques**
+Les périphériques connus sont listés dans le chapitre **Liste des peripheriques**.
+
+![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/liste.jpg "Liste des préiphériques")
+
+Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme indiqué dans les images ci-dessous.
+
+![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/parametre-affichage.jpg "Liste des préiphériques")
