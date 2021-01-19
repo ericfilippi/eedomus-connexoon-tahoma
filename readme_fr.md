@@ -1,0 +1,54 @@
+# eedomus-connexoon-tahoma
+Bridge entre box eedomus et le cloud SOMFY pour les boxs Tahoma et Connexoon
+
+### Version 2.0.0
+- modification du login pour éviter les déconnexions
+- prise en compte des événements somfy pour gérer le retour d'état
+
+### Version 1.2.2 du 27/06/2020
+- ajout Brises soleil orientables : io:ExteriorVenetianBlindIOComponent' => 'BSO IO
+
+# Sommaire
+
+0. Introduction
+1. Première utilisation
+2. Création d'un prériphérique
+3. Migration depuis les versions 1.x.x
+
+# 0. Introduction
+
+Ce plugin permet de contrôler les volets et stores SOMFY. Il est nécessaire pour cela de posséder le bridge Connexoon ou la box Tahoma, et d'avoir associé ses volets ou stores au bridge via l'application mobile Connexoon ou Tahoma de SOMFY.
+
+**Attention** : l'installation du périphérique s'effectue uniquement en étant connecté sur le même réseau que votre box !
+
+La version 2 du plugin introduit un nouveau capteur d'état qu'il est nécessaire d'installer pour bénéficier des nouvelles fonctionnalités.
+
+# 1. Première utilisation
+
+Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu'une seule fois) :
+- Adresse du prériphérique : **Capteur SOMFY** (inutile mais le champ doit être rempli)
+- Type de périphérique : **Capteur d'état**
+
+Ce capteur a pour fonction :
+- d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
+- d'assurer le retour d'état des commandes envoyées par eedomus vers SOMFY
+- de mettre à jour les prériphériques eedomus suite à une action directe IO ou RTS
+
+### Valeurs
+
+| valeur | libellé               | Signification                             |
+|--------|-----------------------|-------------------------------------------|
+| 0      | SOMFY OFF             | Perte de connexion avec cloud SOMFY       |
+| 1      | SOMFY ON / Tahoma OFF | Connexion au cloud SOMFY OK mais la box SOMFY est down                           |
+| 2      | Vérifier devices en erreur | Un ou plusieurs devices SOMFY sont en erreur |
+| 3      | SOMFY ON / Tahoma ON | Tout est OK
+
+Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minutes à s'initialiser.
+
+# 2. Création d'un périphérique
+
+Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de votre volet. Pour cela, cliquez sur le lien et renseignez vos identifiants Connexoon.
+
+La liste des périphériques connectés à votre box SOMFY est affichée.
+
+Les périphériques connus sont listés dans le chapitre **Liste des peripheriques**
