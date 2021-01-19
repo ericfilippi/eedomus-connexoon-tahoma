@@ -26,6 +26,9 @@ La version 2 du plugin introduit un nouveau capteur d'état qu'il est nécessaire 
 # 1. Première utilisation
 
 Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu'une seule fois) :
+
+![capteur](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/capteur.jpg "Paramétrage capteur")
+
 - Adresse du prériphérique : **Capteur SOMFY** (inutile mais le champ doit être rempli)
 - Type de périphérique : **Capteur d'état**
 
