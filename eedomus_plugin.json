@@ -30,7 +30,7 @@
 			"parameter": "type",
 			"description": "Type de périphérique",
 			"xtype": "combo",
-			"field": "width:300, allowBlank:false, store:[['0','Capteur d état (à n installer qu une seule fois)'],['1', 'Volet IO'],['2', 'Volet RTS'],['3', 'Porte ou portail'],['4','Store vénitien IO'],['5','Multi Store vénitien IO']], triggerAction: 'all'"
+			"field": "width:300, allowBlank:false, store:[['0','Capteur d état (à n installer qu une seule fois)'],['1', 'Volet IO'],['2', 'Volet RTS'],['3', 'Porte ou portail'],['4','Store vénitien IO'],['5','Multi Store vénitien IO'],['6','Périphérique non reconnu']], triggerAction: 'all'"
 		}
 	],
 	"scripts":
@@ -279,6 +279,32 @@
 				{ "value": "3", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php&devices=[VAR1]", "http_type": "GET",	"http_params": "&action=setClosure&value=100"},
 				{ "value": "4", "description": "Brise soleil", "icon": "Volet0000.png", "http_url": "http://localhost/script/?exec=connexoon.php&devices=[VAR1]", "http_type": "GET",	"http_params": "&action=setClosureAndOrientation&value=100,0" },
 				{ "value": "5", "description": "Brise soleil 50%", "icon": "Volet0050.png", "http_url": "http://localhost/script/?exec=connexoon.php&devices=[VAR1]", "http_type": "GET",	"http_params": "&action=setClosureAndOrientation&value=100,50" }
+			]
+		}
+		,
+		{
+			"device_id": "p_closure",
+			"module_id": "41",
+			"type": "http",
+			"name_fr": "Inconnu",
+			"icon": "shutter_mid.png",
+			"utilisation_id": "48",
+			"create": "plugin.parameters.type==6",
+			"parameters":
+			{
+				"value_type": "list",
+				"VAR1": "plugin.parameters.OID",
+				"ignore_errors": 1,
+				"RAW_URL": "http://localhost/script/?exec=connexoon.php&action=getState",
+				"RAW_XPATH": "/connexoon/device[@url='[VAR1]']/OpenClosedUnknown",
+				"POLLING": "1"
+			},
+			"values":
+			[
+				{ "value": "closed", "description": "Fermé", "icon": "shutter_closed.png", "http_url": "http://localhost/script/?exec=connexoon.php&devices=[VAR1]", "http_type": "GET",	"http_params": "&action=close" },
+				{ "value": "open", "description": "Ouvert", "icon": "shutter_open.png", "http_url": "http://localhost/script/?exec=connexoon.php&devices=[VAR1]", "http_type": "GET",	"http_params": "&action=open" },
+				{ "value": "stop", "description": "Stop", "icon": "shutter_stop.png", "http_url": "http://localhost/script/?exec=connexoon.php&devices=[VAR1]", "http_type": "GET",	"http_params": "&action=stop" },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "shutter_mid.png", "http_url": "http://localhost/script/?exec=connexoon.php&devices=[VAR1]", "http_type": "GET",	"hidden":1 }
 			]
 		}
 	]

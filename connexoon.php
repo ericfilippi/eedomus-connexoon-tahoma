@@ -379,7 +379,7 @@ if ($action == 'getState')
 		$logge = true;
 	}
 
-	if (logge)
+	if ($logge)
 	{
 		$setup = sdk_get_setup();
 		sdk_header('text/xml');
