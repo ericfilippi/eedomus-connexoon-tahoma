@@ -76,3 +76,4 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedo
 
 ## créer un périph générique pour les périphs non connus
 ## tester les modifs sur la fonction getState
+## migration : setSlateOrientation -> setOrientation
