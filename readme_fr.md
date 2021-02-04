@@ -65,7 +65,9 @@ Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme i
 
 Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
 
-**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre périphérique SOMFY, avec les nombre de paramètres à fournir.
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste_non_reconnu.jpg)
+
+**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre périphérique SOMFY, avec le nombre de paramètres à fournir.
 
 **Liste des états disponibles** : indique les états que peut prendre votre périphérique SOMFY.
 
