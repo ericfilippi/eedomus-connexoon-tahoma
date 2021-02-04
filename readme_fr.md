@@ -45,7 +45,7 @@ Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minute
 
 # 2. Création d'un périphérique
 
-Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de votre volet. Pour cela, cliquez sur le lien et renseignez vos identifiants Connexoon.
+Lors de l'installation d'un périphérique, vous devrez renseigner son adresse. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
