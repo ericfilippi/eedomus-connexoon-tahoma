@@ -39,12 +39,7 @@ Ce capteur a pour fonction :
 
 ### Valeurs
 
-| valeur | libellé               | Signification                             |
-|--------|-----------------------|-------------------------------------------|
-| 0      | SOMFY OFF             | Perte de connexion avec cloud SOMFY       |
-| 1      | SOMFY ON / Tahoma OFF | Connexion au cloud SOMFY OK mais la box SOMFY est down                           |
-| 2      | Vérifier devices en erreur | Un ou plusieurs devices SOMFY sont en erreur |
-| 3      | SOMFY ON / Tahoma ON | Tout est OK
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/valeurs_capteur.jpg)
 
 Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minutes à s'initialiser.
 
