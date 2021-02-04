@@ -52,17 +52,17 @@ Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minute
 
 Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de votre volet. Pour cela, cliquez sur le lien et renseignez vos identifiants Connexoon.
 
-![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/lien.jpg "Liste des préiphériques")
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
 La liste des périphériques connectés à votre box SOMFY est affichée.
 
 ### Les périphériques connus sont listés dans le chapitre *Liste des peripheriques*.
 
-![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/liste.jpg "Liste des préiphériques")
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste.jpg)
 
 Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme indiqué ci-dessous.
 
-![image lien](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/parametre-affichage.jpg "Liste des préiphériques")
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/parametre-affichage.jpg)
 
 **Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser son fonctionnement.
 

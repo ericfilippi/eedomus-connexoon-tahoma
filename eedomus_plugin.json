@@ -1,6 +1,6 @@
 {
 	"plugin_id": "somfy",
-	"name_fr": "Périphérique Somfy",
+	"name_fr": "PÃ©riphÃ©rique Somfy",
 	"icon": "logo_connexoon.png",
 	"version": "2.0.0",
 	"creation_date": "2017-12-04",
@@ -8,9 +8,9 @@
 	"author": "Patrice Gauchon",
 	"description_fr": "Gestion des volets roulants et portails Somfy via le bridge Connexoon ou la box Tahoma.",
 	"description_en": "Management of Somfy roller shutters and gates via the Connexoon bridge or the Tahoma box.",
-	"description_es": "Gestión de persianas y cancelas Somfy a través del puente Connexoon o Tahoma.",
+	"description_es": "GestiÃ³n de persianas y cancelas Somfy a travÃ©s del puente Connexoon o Tahoma.",
 	"description_it": "Gestione di tapparelle e cancelli Somfy tramite il ponte Connexoon o Tahoma.",
-	"description_de": "Verwaltung von Somfy-Rollläden und -Toren über die Connexoon-Brücke oder die Tahoma-Box.",
+	"description_de": "Verwaltung von Somfy-RolllÃ¤den und -Toren Ã¼ber die Connexoon-BrÃ¼cke oder die Tahoma-Box.",
 	"forum_link": "http://forum.eedomus.com/viewtopic.php?t=6254",
 	"parameters":
 	[
@@ -18,11 +18,11 @@
 			"parameter": "login_url",
 			"description": "",
 			"xtype": "displayfield",
-			"field": "style: 'padding: 3px;', value: 'Cliquez <a target=\\'_blank\\' href=\\'https://secure.eedomus.com/script_proxy/?exec=connexoon.php&lan_only=1\\'>ici pour lister vos périphériques</a>'"
+			"field": "style: 'padding: 3px;', value: 'Cliquez <a target=\\'_blank\\' href=\\'https://secure.eedomus.com/script_proxy/?exec=connexoon.php&lan_only=1\\'>ici pour lister vos pÃ©riphÃ©riques</a>'"
 		},
 		{
 			"parameter": "OID",
-			"description": "Adresse du périphérique",
+			"description": "Adresse du pÃ©riphÃ©rique",
 			"xtype": "textfield",
 			"field": "width:300, allowBlank:false"
 		},
@@ -34,9 +34,9 @@
 		},
 		{
 			"parameter": "type",
-			"description": "Type de périphérique",
+			"description": "Type de pÃ©riphÃ©rique",
 			"xtype": "combo",
-			"field": "width:300, allowBlank:false, store:[['0','Capteur d état (à n installer qu une seule fois)'],['1', 'Volet IO'],['2', 'Volet RTS'],['3', 'Porte ou portail'],['4','Store vénitien IO'],['5','Multi Store vénitien IO'],['6','Périphérique IO non reconnu'],['7','Périphérique RTS non reconnu']], triggerAction: 'all'"
+			"field": "width:300, allowBlank:false, store:[['0','Capteur d Ã©tat (Ã  n installer qu une seule fois)'],['1', 'Volet IO'],['2', 'Volet RTS'],['3', 'Porte ou portail'],['4','Store vÃ©nitien IO'],['5','Multi Store vÃ©nitien IO'],['6','PÃ©riphÃ©rique IO non reconnu'],['7','PÃ©riphÃ©rique RTS non reconnu']], triggerAction: 'all'"
 		}
 	],
 	"scripts":
@@ -68,7 +68,7 @@
 			[
 				{ "value": "0", "description": "SOMFY Cloud OFF", "icon": "TahomaLinkKO.png" },
 				{ "value": "1", "description": "SOMFY Cloud ON / box OFF", "icon": "TahomaLinkCloudOK.png" },
-				{ "value": "2", "description": "Vérifier devices en erreur", "icon": "TahomaLinkDevice.png" },
+				{ "value": "2", "description": "VÃ©rifier devices en erreur", "icon": "TahomaLinkDevice.png" },
 				{ "value": "3", "description": "SOMFY Cloud ON / box ON", "icon": "TahomaLinkOK.png" }
 			]
 		},
@@ -298,7 +298,7 @@
 			"device_id": "io_generique",
 			"module_id": "41",
 			"type": "http",
-			"name_fr": "Inconnu",
+			"name_fr": "plugin.name",
 			"icon": "Volet40.png",
 			"utilisation_id": "48",
 			"create": "plugin.parameters.type==6",
@@ -325,7 +325,7 @@
 			"device_id": "rts_generique",
 			"module_id": "41",
 			"type": "http",
-			"name_fr": "Inconnu",
+			"name_fr": "plugin.name",
 			"icon": "Volet40.png",
 			"utilisation_id": "48",
 			"create": "plugin.parameters.type==7",
