@@ -68,6 +68,7 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedo
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste_non_reconnu.jpg)
 
 **Type** : Sélectionnez "Prériphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
+
 **Liste des états disponibles** : indique les états que peut prendre votre périphérique SOMFY. Choisissez l'état que vous souhaitez utiliser pour votre retour d'état eedomus et colez-le dans le champ Etat.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/parametre-non-reconnu.jpg)
