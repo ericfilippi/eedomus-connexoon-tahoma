@@ -47,9 +47,10 @@ Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minute
 
 Lors de l'installation d'un périphérique, vous devrez renseigner son adresse. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
 
+La liste des périphériques connectés à votre box SOMFY est affichée :
+
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
-La liste des périphériques connectés à votre box SOMFY est affichée.
 
 ## 2.1 Les périphériques connus sont listés dans le chapitre *Liste des peripheriques*.
 
