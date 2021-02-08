@@ -72,7 +72,7 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedo
 
 ### Exemple : 
 
-1. renseignez les champs en fonction des informations de la liste
+**1. renseignez les champs en fonction des informations de la liste**
 
 **Type** : Sélectionnez "Prériphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
 
@@ -82,7 +82,7 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedo
 
 Cliquez sur créer
 
-2. Ajustez les commandes 
+**2. Ajustez les commandes**
 
 **Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre périphérique SOMFY, avec le nombre de paramètres à fournir.
 
