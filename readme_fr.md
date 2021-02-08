@@ -47,14 +47,16 @@ Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minute
 
 Lors de l'installation d'un périphérique, vous devrez renseigner son adresse. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
 
-La liste des périphériques connectés à votre box SOMFY est affichée :
+La liste des périphériques connectés à votre box SOMFY est affichée.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
 
-## 2.1 Les périphériques connus sont listés dans le chapitre *Liste des peripheriques*.
+## 2.1 Les périphériques reconnus sont listés dans le chapitre *Liste des peripheriques*.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste.jpg)
+
+Et c'est tout.
 
 Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme indiqué ci-dessous.
 
@@ -68,13 +70,19 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedo
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste_non_reconnu.jpg)
 
+### Exemple : 
+
+1. renseignez les champs en fonction des informations de la liste
+
 **Type** : Sélectionnez "Prériphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
 
-**Liste des états disponibles** : indique les états que peut prendre votre périphérique SOMFY. Choisissez l'état que vous souhaitez utiliser pour votre retour d'état eedomus et colez-le dans le champ Etat.
+**Liste des états disponibles** : indique les états que peut prendre votre périphérique SOMFY. Choisissez l'état que vous souhaitez utiliser pour votre retour d'état eedomus et collez-le dans le champ Etat.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/parametre-non-reconnu.jpg)
 
-Après avoir créé le périphérique, crez les commandes
+Cliquez sur créer
+
+2. Ajustez les commandes 
 
 **Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre périphérique SOMFY, avec le nombre de paramètres à fournir.
 
