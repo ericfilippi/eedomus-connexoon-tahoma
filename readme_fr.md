@@ -29,6 +29,7 @@ La version 2 du plugin introduit un nouveau capteur d'état qu'il est nécessaire 
 Dans ce document on nomme :
 
 **Périphérique** pour eedomus
+
 **Equipement Somfy** pour Somfy
 
 # 1. Première utilisation
