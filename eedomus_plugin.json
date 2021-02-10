@@ -22,7 +22,7 @@
 		},
 		{
 			"parameter": "OID",
-			"description": "Adresse du périphérique",
+			"description": "Adresse de l\'équipement Somfy",
 			"xtype": "textfield",
 			"field": "width:300, allowBlank:false"
 		},
@@ -34,7 +34,7 @@
 		},
 		{
 			"parameter": "type",
-			"description": "Type de périphérique",
+			"description": "Type d\'équipement Somfy",
 			"xtype": "combo",
 			"field": "width:300, allowBlank:false, store:[['0','Capteur d état (à n installer qu une seule fois)'],['1', 'Volet IO'],['2', 'Volet RTS'],['3', 'Porte ou portail'],['4','Store vénitien IO'],['5','Multi Store vénitien IO'],['6','Périphérique IO non reconnu'],['7','Périphérique RTS non reconnu']], triggerAction: 'all'"
 		}

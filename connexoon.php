@@ -237,7 +237,7 @@ function sdk_display_devices($devices)
 
 	if (!empty($known_devices))
 	{
-		echo '<h1>'.'B) Liste des périphériques reconnus'.' :</h1>';
+		echo '<h1>'.'B) Liste des équipements Somfy reconnus'.' :</h1>';
 		$iKnown = 1;
 		foreach ($known_devices as $device)
 		{
@@ -248,11 +248,11 @@ function sdk_display_devices($devices)
 
 	if (!empty($unknown_devices))
 	{
-		echo '<h1>'.'C) Liste des périphériques non reconnus (mais probablement compatibles)'.' :</h1>';
+		echo '<h1>'.'C) Liste des équipements Somfy non reconnus (mais probablement compatibles)'.' :</h1>';
 		$iUnknown = 1;
 		foreach ($unknown_devices as $device)
 		{
-			echo '<h2>' . $iUnknown . ') ' . $device['label'].' => (type: '.$device['controllableName'].')</h2><p>Adresse du périphérique [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p><h3>Liste des commandes disponibles :</h3>';
+			echo '<h2>' . $iUnknown . ') ' . $device['label'].' => (type: '.$device['controllableName'].')</h2><p>Adresse de l\'équipement Somfy [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p><h3>Liste des commandes disponibles :</h3>';
 			foreach ($device['definition']['commands'] as $command)
 			{
 				switch ($command['nparams'])

@@ -13,6 +13,9 @@ Bridge entre box eedomus et le cloud SOMFY pour les boxs Tahoma et Connexoon
 0. Introduction
 1. Première utilisation
 2. Création d'un prériphérique
+   2.1 équipement reconnu
+   2.2 équipement non reconnu
+   2.3 Pilotage de plusieurs équipements avec un seul périphérique
 3. Migration depuis les versions 1.x.x
 
 # 0. Introduction
@@ -23,14 +26,19 @@ Ce plugin permet de contrôler les volets et stores SOMFY. Il est nécessaire pour
 
 La version 2 du plugin introduit un nouveau capteur d'état qu'il est nécessaire d'installer pour bénéficier des nouvelles fonctionnalités.
 
+Dans ce document on nomme :
+
+**Périphérique** pour eedomus
+**Equipement Somfy** pour Somfy
+
 # 1. Première utilisation
 
 Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu'une seule fois) :
 
 ![image capteur](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/capteur.jpg "Paramétrage capteur")
 
-Adresse du prériphérique : **Capteur SOMFY** (inutile mais le champ doit être rempli)
-Type de périphérique : **Capteur d'état**
+Adresse de l'équipement Somfy : **Capteur SOMFY** (inutile mais le champ doit être rempli)
+Type d'équipement Somfy : **Capteur d'état**
 
 Ce capteur a pour fonction :
 - d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
@@ -45,18 +53,16 @@ Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minute
 
 # 2. Création d'un périphérique
 
-Lors de l'installation d'un périphérique, vous devrez renseigner son adresse. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
+Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipment correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
 
-La liste des périphériques connectés à votre box SOMFY est affichée.
+La liste des équipements Somfy connectés à votre box SOMFY est affichée.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
 
-## 2.1 Les périphériques reconnus sont listés dans le chapitre *Liste des peripheriques*.
+## 2.1 Les équipements Somfy reconnus sont listés dans le chapitre *Liste des peripheriques*.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste.jpg)
-
-Et c'est tout.
 
 Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme indiqué ci-dessous.
 
@@ -64,7 +70,7 @@ Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme i
 
 **Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser son fonctionnement.
 
-## 2.2 Les périphériques non reconnus sont listés dans le chapitre *Liste des peripheriques non reconnus (mais probablement compatibles)*.
+## 2.2 Les équipements Somfy non reconnus sont listés dans le chapitre *Liste des peripheriques non reconnus (mais probablement compatibles)*.
 
 Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
 
@@ -72,9 +78,9 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedo
 
 **Type** : Sélectionnez "Prériphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
 
-**Liste des états disponibles** : indique les états que peut prendre votre périphérique SOMFY.
+**Liste des états disponibles** : indique les états que peut prendre votre équipement Somfy.
 
-**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre périphérique SOMFY, avec le nombre de paramètres à fournir.
+**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre équipement Somfy, avec le nombre de paramètres à fournir.
 
 ### Exemple : 
 
