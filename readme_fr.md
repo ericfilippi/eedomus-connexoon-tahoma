@@ -86,6 +86,10 @@ Cliquez sur créer
 
 **Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre périphérique SOMFY, avec le nombre de paramètres à fournir.
 
+Renseignez les commandes en tenant compte du nombre de paramètres comme illustreé ci-dessous.
+
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/commandes-non-reconnu.jpg)
+
 
 ## créer un périph générique pour les périphs non connus
 ## tester les modifs sur la fonction getState

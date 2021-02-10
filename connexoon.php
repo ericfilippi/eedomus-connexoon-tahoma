@@ -255,10 +255,27 @@ function sdk_display_devices($devices)
 			echo '<h2>' . $iUnknown . ') ' . $device['label'].' => (type: '.$device['controllableName'].')</h2><p>Adresse du périphérique [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p><h3>Liste des commandes disponibles :</h3>';
 			foreach ($device['definition']['commands'] as $command)
 			{
-				$txtParam = ($command['nparams'] == 0) ? '' : '<b>&value={liste séparée par des virgules}</b>';
-				echo 'commande <b>&action =</b> <input onclick="this.select();" type="text" size="40" readonly="readonly" value="' . $command['commandName'] . '">  '  . $command['nparams'] . ' paramètres) ' 					. $txtParam . '<br/>';
+				switch ($command['nparams'])
+				{
+					case 0 :
+						$motParam = ' paramètre';
+						$txtListe = 'paramètre';
+						$txtParam = '';
+						break;
+					case 1 :
+						$motParam = ' paramètre';
+						$txtListe = 'paramètre';
+						$txtParam = '<b>&value={' . $txtListe . '}</b>';
+						break;
+					default :
+						$motParam = ' paramètres';
+						$txtListe = 'liste séparée par des virgules';
+						$txtParam = '<b>&value={' . $txtListe . '}</b>';
+				}
+				
+				echo 'commande <b>&action =</b> <input onclick="this.select();" type="text" size="40" readonly="readonly" value="' . $command['commandName'] . '">  ('  . $command['nparams'] . $motParam . ') ' 					. $txtParam . '<br/>';
 			}
-			echo '<h3>liste des états disponibles :</h3>';
+			echo '<h3>Liste des états disponibles :</h3>';
 			foreach ($device['definition']['states'] as $state)
 			{
 				echo 'Etat [VAR2]: <input onclick="this.select();" type="text" size="40" readonly="readonly" value="' . $state['qualifiedName'] . '"> <b>type :</b> ' . $state['type'];
