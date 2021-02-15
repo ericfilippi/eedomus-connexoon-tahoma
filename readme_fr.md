@@ -106,11 +106,11 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 ## 2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
 
 Les prériphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
+Le paramétrage est très simple :
 
-Utilisez l'un des périphériques "multi" proposés.
+**Adresse de l'équipemen Somfy** : listez les adresses des équipements en les séparant avec des virgules.
+**Requête de mise à jour (Optionnelle)** : http://localhost/script/?exec=connexoon.php&action=auto
+**Chemin XPATH** : /connexoon/resultat
 
-Dans le champ Adresse de l'équipemen Somfy, listez les adresses des équipements en les séparant avec des virgules.
-
-## créer un périph générique pour les périphs non connus
 ## tester les modifs sur la fonction getState
 ## migration : setSlateOrientation -> setOrientation
