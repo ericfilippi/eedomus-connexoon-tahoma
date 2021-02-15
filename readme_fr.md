@@ -18,7 +18,7 @@ Bridge entre box eedomus et le cloud SOMFY pour les boxs Tahoma et Connexoon
    
    2.2 Equipement non reconnu
    
-   2.3 Pilotage de plusieurs équipements avec un seul périphérique
+   2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
    
 3. Migration depuis les versions 1.x.x
 
@@ -103,6 +103,13 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/commandes-non-reconnu.jpg)
 
+## 2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
+
+Les prériphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
+
+Utilisez l'un des périphériques "multi" proposés.
+
+Dans le champ Adresse de l'équipemen Somfy, listez les adresses des équipements en les séparant avec des virgules.
 
 ## créer un périph générique pour les périphs non connus
 ## tester les modifs sur la fonction getState
