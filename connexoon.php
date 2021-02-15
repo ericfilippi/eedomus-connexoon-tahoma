@@ -219,7 +219,7 @@ function sdk_display_devices($devices)
 	$known_devices = array();
 	$unknown_devices = array();
 
-	echo '<h1>'.'A) Capteur d état SOMFY'.' :</h1>';
+	echo '<h1>'.'A) Capteur d\'état SOMFY'.' :</h1>';
 	echo '<p>adresse [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="Capteur SOMFY"></p>';
 
 	foreach ($devices as $device_url => $device)
@@ -241,7 +241,7 @@ function sdk_display_devices($devices)
 		$iKnown = 1;
 		foreach ($known_devices as $device)
 		{
-			echo '<p><b>' . $iKnown . ') ' .$device['label'].'</b> (type: '.$device['type'].')</br>adresse [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p>';
+			echo '<p><b>' . $iKnown . ') ' .$device['label'].'</b> (type: '.$device['type'].')</br>adresse de l\'équipement Somfy [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.$device['url'].'"></p>';
 			$iKnown++;
 		}
 	}
