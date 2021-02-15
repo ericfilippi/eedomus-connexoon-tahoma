@@ -109,7 +109,9 @@ Les prériphériques "multi" permettent de commander plusieurs équipements Somfy e
 Le paramétrage est très simple :
 
 **Adresse de l'équipemen Somfy** : listez les adresses des équipements en les séparant avec des virgules.
+
 **Requête de mise à jour (Optionnelle)** : http://localhost/script/?exec=connexoon.php&action=auto
+
 **Chemin XPATH** : /connexoon/resultat
 
 ## tester les modifs sur la fonction getState
