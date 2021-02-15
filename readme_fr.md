@@ -13,8 +13,9 @@ Bridge entre box eedomus et le cloud SOMFY pour les boxs Tahoma et Connexoon
 0. Introduction
 1. Première utilisation
 2. Création d'un prériphérique
-   2.1 équipement reconnu
-   2.2 équipement non reconnu
+
+   2.1 Equipement reconnu
+   2.2 Equipement non reconnu
    2.3 Pilotage de plusieurs équipements avec un seul périphérique
 3. Migration depuis les versions 1.x.x
 
