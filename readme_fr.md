@@ -114,5 +114,18 @@ Le paramétrage est très simple :
 
 **Chemin XPATH** : /connexoon/resultat
 
-## tester les modifs sur la fonction getState
-## migration : setSlateOrientation -> setOrientation
+**Fréquence de la requête** : 1
+
+**Attention**
+
+- ne pilotez en mode multi que des équipements Somfy strictement identiques (même fonction, même commande, mêmes paramètres)
+
+- la liste d'adresses séparée par des virgules ne doit contenir aucun espace, y compris en fin de liste
+
+- il n'y a pas de retour d'état en mode multi, le périphérique revient automatiquement en état auto au bout d'une minute
+
+# 3. Migration depuis les versions 1.x.x
+
+La migration en version 2 ne change rien au fonctionnement de vos équipements Somfy, mais lève la restriction sur le nombre de requêtes par minutes au cloud Somfy.
+
+Cependant, afin de bénéficier des nouvelles fonctionnalités il faut installer le capteur Somfy (voir paragraphe 1).
