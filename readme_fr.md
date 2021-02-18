@@ -108,7 +108,7 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 Les prériphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
 
 Vous pouvez
-- soit dupliquer un périphérique existant et modifier le paramétrage
+- soit dupliquer un périphérique existant et modifier son paramétrage
 - soit créer un périphérique multi à partit du store
 
 Le paramétrage est très simple :
