@@ -103,6 +103,8 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/commandes-non-reconnu.jpg)
 
+**Attention** : pour les commandes avec 0 ou 1 paraètres, pensez à faire correspondre la valeur brute avec la valeur du paramètre.
+
 ## 2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
 
 Les prériphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
