@@ -106,9 +106,14 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 ## 2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
 
 Les prériphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
+
+Vous pouvez
+- soit dupliquer un périphérique existant et modifier le paramétrage
+- soit créer un périphérique multi à partit du store
+
 Le paramétrage est très simple :
 
-**Adresse de l'équipemen Somfy** : listez les adresses des équipements en les séparant avec des virgules.
+**Adresse de l'équipement Somfy** : listez les adresses des équipements en les séparant avec des virgules.
 
 **Requête de mise à jour (Optionnelle)** : http://localhost/script/?exec=connexoon.php&action=auto
 
@@ -118,11 +123,11 @@ Le paramétrage est très simple :
 
 **Attention**
 
-- ne pilotez en mode multi que des équipements Somfy strictement identiques (même fonction, même commande, mêmes paramètres)
+- ne pilotez en mode multi que des équipements Somfy strictement identiques (même fonction, même commande, mêmes paramètres).
 
-- la liste d'adresses séparée par des virgules ne doit contenir aucun espace, y compris en fin de liste
+- la liste d'adresses séparée par des virgules ne doit contenir aucun espace, y compris en fin de liste.
 
-- il n'y a pas de retour d'état en mode multi, le périphérique revient automatiquement en état auto au bout d'une minute
+- il n'y a pas de retour d'état en mode multi, le périphérique revient automatiquement en état "auto" au bout d'une minute grâce à la requête de mise à jour.
 
 # 3. Migration depuis les versions 1.x.x
 
