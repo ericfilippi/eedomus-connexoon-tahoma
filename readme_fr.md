@@ -103,7 +103,9 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/commandes-non-reconnu.jpg)
 
-**Attention** : pour les commandes avec 0 ou 1 paramètre(s), pensez à faire correspondre la valeur brute avec la valeur du paramètre.
+**Attention** : observez bien l'illustration ci-dessus !
+- pour les commandes avec 0 paramètre, il ne faut surtout pas ajouter &value en fin de ligne
+- pensez à faire correspondre les valeurs brutes avec les états que vous souhaitez avoir en retour
 
 ## 2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
 
