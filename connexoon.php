@@ -95,11 +95,12 @@ function sdk_get_setup()
 			$devices[$device_url]['controllableName'] = $device['controllableName'];
 
 			foreach ($device['states'] as $state)
-			{
+			{	// compatibilité ancienne version
 				if (preg_match('%^(core|io):(.*?)State$%', $state['name'], $match))
 				{
 					$devices[$device_url]['states'][$match[2]] = $state['value'];
 				}
+				// nouvelle version
 				$devices[$device_url]['coreStates'][$state['name']] = $state['value'];
 			}
 			// récupération des commandes API et états
@@ -118,10 +119,13 @@ function sdk_get_setup()
 // Mise à jour d'un périphérique eedomus
 function sdk_maj_periph($eeDevices,$deviceUrl,$state,$eeValue)
 {
-	$tmpValue = round($eeValue/5)*5;
-	if ($eeValue != 0 and $tmpValue == 0) $tmpValue = 5;
-	if ($eeValue != 100 and $tmpValue == 100) $tmpValue = 95;
-	$eeValue = $tmpValue;
+	if (in_array($state, array('core:ClosureState','core:SlateOrientationState')))
+	{
+		$tmpValue = round($eeValue/5)*5;
+		if ($eeValue != 0 and $tmpValue == 0) $tmpValue = 5;
+		if ($eeValue != 100 and $tmpValue == 100) $tmpValue = 95;
+		$eeValue = $tmpValue;
+	}
 	if ($state == 'all')
 	{
 		foreach ($eeDevices[$deviceUrl] as $statePeriph)
@@ -155,12 +159,14 @@ function sdk_process_setup($setup,$eeDevices)
 			{
 				if (array_key_exists($coreState,$eeDevices[$deviceUrl]))
 				{
+					// on met à jour les états
 					$valeurPassee = ($horsPortee) ? 'Connexion' : $value;
 					sdk_maj_periph($eeDevices,$deviceUrl,$coreState,$valeurPassee);
 				}
 			}
 		}
 	}
+
 	if ($horsPortee == true)
 	{
 		$eeResultat = 2;

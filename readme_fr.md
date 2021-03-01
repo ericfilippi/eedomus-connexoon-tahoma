@@ -135,6 +135,6 @@ Le paramétrage est très simple :
 
 # 3. Migration depuis les versions 1.x.x
 
-La migration en version 2 ne change rien au fonctionnement de vos équipements Somfy, mais lève la restriction sur le nombre de requêtes par minutes au cloud Somfy.
+La migration en version 2 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
 
 Cependant, afin de bénéficier des nouvelles fonctionnalités il faut installer le capteur Somfy (voir paragraphe 1).
