@@ -149,6 +149,7 @@ Le paramétrage est très simple :
 	 - **description** : auto
 	 - **URL** : laisser par défaut
 	 - **Paramètres** : vide
+- si vous avez dupliqué un périphérique existant qui fonctionnait avec la V1, et si vous avez plus de 5 ou 6 équipements Somfy dans [VAR1], [VAR1] doit passer du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
 
 # 3. Migration depuis les versions 1.x.x
 
