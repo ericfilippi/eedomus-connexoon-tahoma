@@ -50,7 +50,10 @@ Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu
 ![image capteur](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/capteur.jpg "Paramétrage capteur")
 
 Adresse de l'équipement Somfy : **Capteur SOMFY** (inutile mais le champ doit être rempli)
+
 Type d'équipement Somfy : **Capteur d'état**
+
+**Important** : Si vous n'avez pas encore fait la connexion au cloud Somfy, cliquez sur le lien et renseignez vos identifiants SOMFY. La liste des équipements Somfy va s'afficher (voir chapitre 2) et votre capteur pourra fonctionner !
 
 Ce capteur a pour fonction :
 - d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
