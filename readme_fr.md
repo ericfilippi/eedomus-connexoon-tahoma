@@ -150,17 +150,17 @@ La migration en version 2 ne change rien au fonctionnement de vos équipements So
 
 Cependant, afin de bénéficier des nouvelles fonctionnalités il faut :
 
-## 3.1 Installer le capteur Somfy (voir paragraphe 1)
+## 1. Installer le capteur Somfy (voir paragraphe 1)
 
-## 3.2 Pour chacun de vos périphériques, ajouter 2 états
+## 2. Pour chacun de vos périphériques, ajouter 2 états
 
 Ajouter les valeurs suivantes : 
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/nouveaux-etats.jpg)
 
-## 3.3 Pour chacun de vos périphériques, modifiez la configuration
+## 3. Pour chacun de vos périphériques, modifiez la configuration
 
-### 3.3.1 Variables utilisatur
+### Variables utilisatur
 
 **[VAR2]** : core:ClosureState
 
@@ -168,13 +168,13 @@ Ajouter les valeurs suivantes :
 
 **Important** : Le retour d'état ne fonctionnera pas si cette valeur n'est pas renseignée.
 
-### 3.3.2 Paramètres avancés
+### Paramètres avancés
 
 - **Requête de mise à jour (Optionnelle)** : effacer
 - **Chemin XPATH** : effacer
 - **Fréquence de la requête** : 0
 
-### 3.3.3 Onglet valeurs
+### Onglet valeurs
 
 modifier les valeurs des commandes comme suit : 
 
