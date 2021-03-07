@@ -31,6 +31,7 @@ Ce plugin permet de contrôler certains équipements SOMFY. Il est nécessaire pour
 **Attention** : l'installation du périphérique s'effectue uniquement en étant connecté sur le même réseau que votre box !
 
 La version 2 du plugin introduit un capteur d'état qu'il est nécessaire d'installer pour bénéficier des nouvelles fonctionnalités.
+
 La version 2 est normalement compatible avec la version 1. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", la V2 est proposée en tant que plugin autonôme dans le store eedomus.
 
 Dans ce document on nomme :
@@ -51,13 +52,13 @@ Type d'équipement Somfy : **Capteur d'état**
 Ce capteur a pour fonction :
 - d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
 - d'assurer le retour d'état des commandes envoyées par eedomus vers SOMFY
-- de mettre à jour les prériphériques eedomus suite à une action directe IO ou RTS
+- de mettre à jour les prériphériques eedomus suite à une action directe IO (RTS ne supporte pas le retour d'état)
 
 ### Valeurs
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/valeurs_capteur.jpg)
 
-Le capteur se met à jour toutes les minutes, mais il peut mettre quelques minutes à s'initialiser.
+A la première utilisation, le capteur peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes.
 
 # 2. Création d'un périphérique
 
@@ -68,7 +69,7 @@ La liste des équipements Somfy connectés à votre box SOMFY est affichée.
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
 
-## 2.1 Les équipements Somfy reconnus sont listés dans le chapitre *Liste des peripheriques*.
+## 2.1 Les équipements Somfy reconnus sont listés dans le chapitre *B*.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste.jpg)
 
@@ -76,11 +77,11 @@ Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme i
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/parametre-affichage.jpg)
 
-**Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser son fonctionnement.
+**Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser le retour d'état.
 
-## 2.2 Les équipements Somfy non reconnus sont listés dans le chapitre *Liste des peripheriques non reconnus (mais probablement compatibles)*.
+## 2.2 Les équipements Somfy non reconnus sont listés dans le chapitre *C*.
 
-Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
+Cela vous permettra (avec un peu d'entraînement) de paramétrer votre périphérique eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste_non_reconnu.jpg)
 
@@ -88,11 +89,11 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre device eedo
 
 **Liste des états disponibles** : indique les états que peut prendre votre équipement Somfy.
 
-**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre équipement Somfy, avec le nombre de paramètres à fournir.
+**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre équipement Somfy, avec le nombre de paramètres à fournir. L'API Somfy ne fournit pas le détail des valeurs des paramètres. Il va falloir fair preuve d'immagination, de bon sens, et procéder par essai/erreur pour toruver les bons paramètres.
 
 ### Exemple : 
 
-**1. renseignez les champs en fonction des informations de la liste**
+**1. A la création du prériphérique, renseignez les champs en fonction des informations de la liste**
 
 Choisissez l'état que vous souhaitez utiliser pour votre retour d'état eedomus et collez-le dans le champ Etat.
 
@@ -100,7 +101,7 @@ Choisissez l'état que vous souhaitez utiliser pour votre retour d'état eedomus e
 
 Cliquez sur créer
 
-**2. Ajustez les commandes**
+**2. Dans l'onglet "Valeurs" de la configuration de votre périphérique, ajustez les commandes**
 
 Renseignez les commandes en tenant compte du nombre de paramètres comme illustreé ci-dessous.
 
@@ -135,6 +136,13 @@ Le paramétrage est très simple :
 - la liste d'adresses séparée par des virgules ne doit contenir aucun espace, y compris en fin de liste.
 
 - il n'y a pas de retour d'état en mode multi, le périphérique revient automatiquement en état "auto" au bout d'une minute grâce à la requête de mise à jour.
+
+- si vous avez dupliqué un périphérique existant, pensez à ajouter une valeur auto :
+     - valeur brut : unknow (désolé pour la coquille, compatibilité avecla V1 oblige ...)
+	 - icone : ce que vous voulez
+	 - description : auto
+	 - URL : laisser par défaut
+	 - Paramètres : vide
 
 # 3. Migration depuis les versions 1.x.x
 
