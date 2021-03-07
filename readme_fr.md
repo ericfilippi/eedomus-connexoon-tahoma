@@ -154,8 +154,9 @@ Cependant, afin de bénéficier des nouvelles fonctionnalités il faut :
 
 ## 3.2 Pour chacun de vos périphériques, ajouter 2 états
 
-Ajouter les valuers suivantes : 
+Ajouter les valeurs suivantes : 
 
 | Valeur brute | Icone | Lien icone | Description | Visible | Paramètre |
 |--------------|-------|------------|-------------|---------|-----------|
-| Connexion | ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/VoletInterrogation.png) | https://secure.eedomus.com/img/mdm/user/27291/VoletErreur.png | Connexion | non | aucun |
+| Connexion | ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/VoletInterrogation.png) | https://secure.eedomus.com/img/mdm/user/27291/VoletInterrogation.png | Connexion | non | aucun |
+| Erreur | ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/VoletErreur.png) | https://secure.eedomus.com/img/mdm/user/27291/VoletErreur.png | Erreur | non | aucun |
