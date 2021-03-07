@@ -6,6 +6,7 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 ### Version 2.0.0
 - modification du login pour éviter les déconnexions
 - prise en compte des événements somfy pour gérer le retour d'état
+- ajout prise on/off io et fil pilote io
 
 ### Version 1.2.2 du 27/06/2020
 - ajout Brises soleil orientables : io:ExteriorVenetianBlindIOComponent' => 'BSO IO
@@ -16,11 +17,11 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 1. Première utilisation
 2. Création d'un prériphérique
 
-   2.1 Equipement reconnu
+   2.1 Equipement Somfy reconnu
    
-   2.2 Equipement non reconnu
+   2.2 Equipement Somfy non reconnu
    
-   2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
+   2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
    
 3. Migration depuis les versions 1.x.x
 
@@ -33,6 +34,8 @@ Ce plugin permet de contrôler certains équipements SOMFY. Il est nécessaire pour
 La version 2 du plugin introduit un capteur d'état qu'il est nécessaire d'installer pour bénéficier des nouvelles fonctionnalités.
 
 La version 2 est normalement compatible avec la version 1. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", la V2 est proposée en tant que plugin autonôme dans le store eedomus.
+
+Merci à @Pat pour le script initial, ainsi qu'à @jpf pour l'aide sur les tests et l'ajout des prises on/off et fil pilote io !
 
 Dans ce document on nomme :
 
