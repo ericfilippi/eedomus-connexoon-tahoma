@@ -1,3 +1,5 @@
+![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/logo_connexoon.png "Paramétrage capteur")
+
 # eedomus-connexoon-tahoma
 Bridge entre box eedomus et le cloud SOMFY pour les boxs Tahoma et Connexoon
 
