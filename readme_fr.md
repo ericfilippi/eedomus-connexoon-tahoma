@@ -166,7 +166,7 @@ Ajouter les valeurs suivantes :
 
 ... ou tout autre valeur pour le retour d'état si vous avez personnalisé votre périphérique
 
-**Important* : Le retour d'état ne fonctionnera pas si cette valeur n'est pas renseignée.
+**Important** : Le retour d'état ne fonctionnera pas si cette valeur n'est pas renseignée.
 
 ### 3.3.2 Paramètres avancés
 
@@ -180,3 +180,5 @@ modifier les valeurs des commandes comme suit :
 
 - **URL** : http://localhost/script/?exec=connexoon-status.php
 - **Paramètres** : &devices=[VAR1]&etat=[VAR2]&action=[votre action]&value=[votre paramètre]
+
+**Information** : [VAR1] passe du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
