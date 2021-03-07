@@ -166,6 +166,8 @@ Ajouter les valeurs suivantes :
 
 ... ou tout autre valeur pour le retour d'état si vous avez personnalisé votre périphérique
 
+**Important* : Le retour d'état ne fonctionnera pas si cette valeur n'est pas renseignée.
+
 ### 3.3.2 Paramètres avancés
 
 - **Requête de mise à jour (Optionnelle)** : effacer
