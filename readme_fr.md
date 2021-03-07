@@ -26,11 +26,12 @@ Bridge entre box eedomus et le cloud SOMFY pour les boxs Tahoma et Connexoon
 
 # 0. Introduction
 
-Ce plugin permet de contrôler les volets et stores SOMFY. Il est nécessaire pour cela de posséder le bridge Connexoon ou la box Tahoma, et d'avoir associé ses volets ou stores au bridge via l'application mobile Connexoon ou Tahoma de SOMFY.
+Ce plugin permet de contrôler certains équipements SOMFY. Il est nécessaire pour cela de posséder un bridge Connexoon ou une box Tahoma, et d'avoir associé ses équipements au bridge via l'application mobile Connexoon ou Tahoma de SOMFY.
 
 **Attention** : l'installation du périphérique s'effectue uniquement en étant connecté sur le même réseau que votre box !
 
-La version 2 du plugin introduit un nouveau capteur d'état qu'il est nécessaire d'installer pour bénéficier des nouvelles fonctionnalités.
+La version 2 du plugin introduit un capteur d'état qu'il est nécessaire d'installer pour bénéficier des nouvelles fonctionnalités.
+La version 2 est normalement compatible avec la version 1. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", la V2 est proposée en tant que plugin autonôme dans le store eedomus.
 
 Dans ce document on nomme :
 
