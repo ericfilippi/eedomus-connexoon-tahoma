@@ -157,3 +157,11 @@ Cependant, afin de bénéficier des nouvelles fonctionnalités il faut :
 Ajouter les valeurs suivantes : 
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/nouveaux-etats.jpg)
+
+## Pour chacun de vos périphériques, modifiez la configuration
+
+### Paramètres avancés
+
+- **Requête de mise à jour (Optionnelle)** : effacer
+- **Chemin XPATH** : effacer
+- **Fréquence de la requête** : 0
