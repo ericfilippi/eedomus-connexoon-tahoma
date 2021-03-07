@@ -1,5 +1,5 @@
 {
-	"plugin_id": "somfy-v2",
+	"plugin_id": "somfy2",
 	"name_fr": "Périphérique Somfy V2",
 	"icon": "logo_connexoon.png",
 	"version": "2.0.0",
@@ -316,11 +316,11 @@
 			},
 			"values":
 			[
-				{ "value": "closed", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=close" },
-				{ "value": "open", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=open" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "BSOHrricConnexion.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "BSOHrricErreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "etat1", "description": "commande 1", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
+				{ "value": "etat2", "description": "commande 2", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
+				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "Somfy-erreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
 		}
 		,
@@ -344,9 +344,9 @@
 			},
 			"values":
 			[
-				{ "value": "closed", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=close" },
-				{ "value": "open", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=open" },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "etat1", "description": "commande 1", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=votre-commande" },
+				{ "value": "etat2", "description": "commande 2", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=votre-commande" },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
 		}
 	]
