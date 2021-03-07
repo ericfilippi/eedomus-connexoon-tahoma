@@ -165,3 +165,10 @@ Ajouter les valeurs suivantes :
 - **Requête de mise à jour (Optionnelle)** : effacer
 - **Chemin XPATH** : effacer
 - **Fréquence de la requête** : 0
+
+### 3.3.2 Onglet valeurs
+
+modifier les valeurs des commandes comme suit : 
+
+- **URL** : http://localhost/script/?exec=connexoon-status.php
+- ** Paramètres ** : &devices=[VAR1]&etat=[VAR2]&action=[votre action]&value=[votre paramètre]
