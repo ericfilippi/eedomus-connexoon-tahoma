@@ -148,4 +148,13 @@ Le paramétrage est très simple :
 
 La migration en version 2 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
 
-Cependant, afin de bénéficier des nouvelles fonctionnalités il faut installer le capteur Somfy (voir paragraphe 1).
+Cependant, afin de bénéficier des nouvelles fonctionnalités il faut :
+
+## 3.1 Installer le capteur Somfy (voir paragraphe 1)
+
+## 3.2 Pour chacun de vos périphériques, ajouter 2 états
+
+Ajouter les valuers suivantes : 
+
+| Valeur brute | Icone | Lien icone | Description | Visible | Paramètre |
+| Connexion | ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/VoletInterrogation.png) | https://secure.eedomus.com/img/mdm/user/27291/VoletErreur.png | Connexion | non | aucun |
