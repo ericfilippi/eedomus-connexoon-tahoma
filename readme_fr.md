@@ -138,11 +138,11 @@ Le paramétrage est très simple :
 - il n'y a pas de retour d'état en mode multi, le périphérique revient automatiquement en état "auto" au bout d'une minute grâce à la requête de mise à jour.
 
 - si vous avez dupliqué un périphérique existant, pensez à ajouter une valeur auto :
-     - valeur brut : unknow (désolé pour la coquille, compatibilité avecla V1 oblige ...)
-	 - icone : ce que vous voulez
-	 - description : auto
-	 - URL : laisser par défaut
-	 - Paramètres : vide
+     - **valeur** brute : unknow (désolé pour la coquille, compatibilité avecla V1 oblige ...)
+	 - **icone** : ce que vous voulez
+	 - **description** : auto
+	 - **URL** : laisser par défaut
+	 - **Paramètres** : vide
 
 # 3. Migration depuis les versions 1.x.x
 
