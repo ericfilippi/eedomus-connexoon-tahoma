@@ -1,6 +1,6 @@
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/logo_connexoon.png "Paramétrage capteur")
 
-# Préiphérique Somfy V2
+# Périphérique Somfy V2
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
 ### Version 2.0.0
