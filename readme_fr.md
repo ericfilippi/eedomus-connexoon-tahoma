@@ -160,15 +160,21 @@ Ajouter les valeurs suivantes :
 
 ## 3.3 Pour chacun de vos périphériques, modifiez la configuration
 
-### 3.3.1 Paramètres avancés
+### 3.3.1 Variables utilisatur
+
+**[VAR2]** : core:ClosureState
+
+... ou tout autre valeur pour le retour d'état si vous avez personnalisé votre périphérique
+
+### 3.3.2 Paramètres avancés
 
 - **Requête de mise à jour (Optionnelle)** : effacer
 - **Chemin XPATH** : effacer
 - **Fréquence de la requête** : 0
 
-### 3.3.2 Onglet valeurs
+### 3.3.3 Onglet valeurs
 
 modifier les valeurs des commandes comme suit : 
 
 - **URL** : http://localhost/script/?exec=connexoon-status.php
-- ** Paramètres ** : &devices=[VAR1]&etat=[VAR2]&action=[votre action]&value=[votre paramètre]
+- **Paramètres** : &devices=[VAR1]&etat=[VAR2]&action=[votre action]&value=[votre paramètre]
