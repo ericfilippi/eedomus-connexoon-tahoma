@@ -156,7 +156,7 @@ Cependant, afin de bénéficier des nouvelles fonctionnalités il faut :
 
 Ajouter les valeurs suivantes : 
 
-| Valeur brute | Icone | Lien icone | Description | Visible | Paramètre |
+| Valeur brute | Icône | Lien icône | Description | Visible | Paramètre |
 |--------------|-------|------------|-------------|---------|-----------|
 | Connexion | ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/VoletInterrogation.png) | https://secure.eedomus.com/img/mdm/user/27291/VoletInterrogation.png | Connexion | non | aucun |
 | Erreur | ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/VoletErreur.png) | https://secure.eedomus.com/img/mdm/user/27291/VoletErreur.png | Erreur | non | aucun |
