@@ -591,7 +591,7 @@ switch ($action)
 		$deviceEtat = getArg('etat', false);						// Etat à traiter pour le retour d'état
 		$deviceId = getArg('eedomus_controller_module_id');			// L'id du prériphérique edomus en cours
 		$value = getArg('value', false) ;
-
+		
 		// enregistre le couple device_urls/periph_id courant
 		if ((count($device_urls) == 1) && ($deviceEtat <> ''))
 		{
@@ -610,6 +610,14 @@ switch ($action)
 		}
 		else
 		{	// un ou plusieurs paramètres
+			$valueTableau = explode (',',$value);
+			foreach ($valueTableau as $tKey => $tValue)
+			{
+				if (!is_numeric($tValue))
+				{ $valueTableau[$tKey] = '"'.$tValue.'"';}
+			}
+			$value = implode($valueTableau,',');
+		
 			$action = ($action == 'setSlateOrientation') ? 'setOrientation' : $action;		// compatibilité version 1
 			$commands[$action] = $value;
 			$path='exec/apply';
