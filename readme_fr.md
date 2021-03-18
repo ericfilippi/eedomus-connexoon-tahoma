@@ -156,9 +156,9 @@ Le paramétrage est très simple :
 
 La migration en version 2 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
 
-Cependant, afin de bénéficier des nouvelles fonctionnalités il faut :
+Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à pas les étapes suivantes.
 
-## 4.1. Installer le capteur Somfy (voir paragraphe 1)
+## 4.1. Installer le capteur Somfy (voir paragraphe 2)
 
 ## 4.2. Pour chacun de vos périphériques, ajouter 2 états
 
