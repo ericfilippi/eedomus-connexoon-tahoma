@@ -12,6 +12,9 @@ $devicesControllableNames = array(
 	'io:DiscreteGarageOpenerIOComponent' => 'porte ou portail',
 	'rts:SwingingShutterRTSComponent' => 'volet RTS',
 	'io:ExteriorVenetianBlindIOComponent' => 'Store vénitien IO',
+	'io:RollerShutterUnoIOComponent' => 'Commande murale filaire IO',
+	'io:OnOffIOComponent' => 'Prise On Off IO',
+	'io:AtlanticElectricalHeaterIOComponent' => 'Interface Fil Pilote IO',
 );
 
 $action = getArg('action', false);				// commande à envoyer à la box
