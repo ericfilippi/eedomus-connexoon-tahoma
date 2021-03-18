@@ -1,6 +1,6 @@
 <?php
 // script créé par Patrice Gauchon pour eedomus
-// Version 2.0.0 / 27 juin 2020
+// Version 2.0.0 développée par Herric / 15 mars 2021
 
 $api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
 
@@ -591,7 +591,7 @@ switch ($action)
 		$deviceEtat = getArg('etat', false);						// Etat à traiter pour le retour d'état
 		$deviceId = getArg('eedomus_controller_module_id');			// L'id du prériphérique edomus en cours
 		$value = getArg('value', false) ;
-		
+
 		// enregistre le couple device_urls/periph_id courant
 		if ((count($device_urls) == 1) && ($deviceEtat <> ''))
 		{

@@ -13,19 +13,21 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
 # Sommaire
 
-0. Introduction
-1. Première utilisation
-2. Création d'un prériphérique
+1. Introduction
 
-   2.1 Equipement Somfy reconnu
-   
-   2.2 Equipement Somfy non reconnu
-   
-   2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
-   
-3. Migration depuis les versions 1.x.x
+2. Première utilisation
 
-# 0. Introduction
+3. Création d'un prériphérique
+
+   3.1 Equipement Somfy reconnu
+   
+   3.2 Equipement Somfy non reconnu
+   
+   3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
+   
+4. Migration depuis les versions 1.x.x
+
+# 1. Introduction
 
 Ce plugin permet de contrôler certains équipements SOMFY. Il est nécessaire pour cela de posséder un bridge Connexoon ou une box Tahoma, et d'avoir associé ses équipements au bridge via l'application mobile Connexoon ou Tahoma de SOMFY.
 
@@ -43,11 +45,11 @@ Dans ce document on nomme :
 
 **Equipement Somfy** pour Somfy
 
-# 1. Première utilisation
+# 2. Première utilisation
 
 Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu'une seule fois) :
 
-![image capteur](https://github.com/ericfilippi/eedomus-connexoon-tahoma/blob/v2.0.0/capture/capteur.jpg "Paramétrage capteur")
+![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/capteur.jpg)
 
 **Adresse de l'équipement Somfy** : Capteur SOMFY (inutile mais le champ doit être rempli)
 
@@ -66,7 +68,7 @@ Ce capteur a pour fonction :
 
 A la première utilisation, le capteur peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes.
 
-# 2. Création d'un périphérique
+# 3. Création d'un périphérique
 
 Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipment correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
 
@@ -75,7 +77,7 @@ La liste des équipements Somfy connectés à votre box SOMFY est affichée.
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
 
-## 2.1 Les équipements Somfy reconnus sont listés dans le chapitre *B*.
+## 3.1 Les équipements Somfy reconnus sont listés dans le chapitre *B*.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste.jpg)
 
@@ -85,7 +87,7 @@ Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme i
 
 **Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser le retour d'état.
 
-## 2.2 Les équipements Somfy non reconnus sont listés dans le chapitre *C*.
+## 3.2 Les équipements Somfy non reconnus sont listés dans le chapitre *C*.
 
 Cela vous permettra (avec un peu d'entraînement) de paramétrer votre périphérique eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
 
@@ -114,14 +116,16 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/commandes-non-reconnu.jpg)
 
 **Attention** : observez bien l'illustration ci-dessus !
+
 - pour les commandes avec 0 paramètre, il ne faut surtout pas ajouter &value en fin de ligne
 - pensez à faire correspondre les valeurs brutes avec les états que vous souhaitez avoir en retour
 
-## 2.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
+## 3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
 
 Les prériphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
 
 Vous pouvez
+
 - soit dupliquer un périphérique existant et modifier son paramétrage
 - soit créer un périphérique multi à partit du store
 
@@ -138,11 +142,8 @@ Le paramétrage est très simple :
 **Attention**
 
 - ne pilotez en mode multi que des équipements Somfy strictement identiques (même fonction, même commande, mêmes paramètres).
-
 - la liste d'adresses séparée par des virgules ne doit contenir aucun espace, y compris en fin de liste.
-
 - il n'y a pas de retour d'état en mode multi, le périphérique revient automatiquement en état "auto" au bout d'une minute grâce à la requête de mise à jour.
-
 - si vous avez dupliqué un périphérique existant, pensez à ajouter une valeur auto :
      - **valeur** brute : unknow (désolé pour la coquille, compatibilité avecla V1 oblige ...)
 	 - **icone** : ce que vous voulez
@@ -151,21 +152,21 @@ Le paramétrage est très simple :
 	 - **Paramètres** : vide
 - si vous avez dupliqué un périphérique existant qui fonctionnait avec la V1, et si vous avez plus de 5 ou 6 équipements Somfy dans [VAR1], [VAR1] doit passer du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
 
-# 3. Migration depuis les versions 1.x.x
+# 4. Migration depuis les versions 1.x.x
 
 La migration en version 2 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
 
 Cependant, afin de bénéficier des nouvelles fonctionnalités il faut :
 
-## 1. Installer le capteur Somfy (voir paragraphe 1)
+## 4.1. Installer le capteur Somfy (voir paragraphe 1)
 
-## 2. Pour chacun de vos périphériques, ajouter 2 états
+## 4.2. Pour chacun de vos périphériques, ajouter 2 états
 
 Ajouter les valeurs suivantes : 
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/nouveaux-etats.jpg)
 
-## 3. Pour chacun de vos périphériques, modifiez la configuration
+## 4.3. Pour chacun de vos périphériques, modifiez la configuration
 
 ### Variables utilisatur
 

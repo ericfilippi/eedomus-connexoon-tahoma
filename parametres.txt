@@ -1,0 +1,59 @@
+http://localhost/script/?exec=connexoon.php&action=getState
+
+/connexoon/device[@url='io://1225-4383-2128/11873906']/Closure
+
+
+http://localhost/script/?exec=connexoon.php&devices=[VAR1]					&action=setClosure&value=0
+
+&etat=[VAR2]
+
+setClosure
+
+setOrientation
+
+setClosureAndOrientation
+
+unknow
+
+
+dernier Lamelles fnêtre cuisine !!!!!
+
+
+
+http://192.168.0.17/script/?exec=connexoon-status.php&devices=io://1225-4383-2128/11873906,io://1225-4383-2128/12250793,io://1225-4383-2128/1275789,io://1225-4383-2128/14496603,io://1225-4383-2128/14917188,io://1225-4383-2128/2831336,io://1225-4383-2128/7747774,io://1225-4383-2128/8913947,io://1225-4383-2128/895674,io://1225-4383-2128/9322820&etat=core:ClosureState&action=setClosure&value=50&eedomus_controller_module_id=2131917
+
+http://localhost/script/?exec=connexoon-status.php&devices=[VAR1]&etat=[VAR2]
+
+
+en passant par l'url :
+string(282) "io://1225-4383-2128/11873906,io://1225-4383-2128/12250793,io://1225-4383-2128/1275789,io://1225-4383-2128/14496603,io://1225-4383-2128/14917188,io://1225-4383-2128/2831336,io://1225-4383-2128/7747774,io://1225-4383-2128/8913947,io://1225-4383-2128/895674,io://1225-4383-2128/9322820"
+
+en passant par le widget :
+string(191) "io://1225-4383-2128/11873906,io://1225-4383-2128/12250793,io://1225-4383-2128/1275789,io://1225-4383-2128/14496603,io://1225-4383-2128/14917188,io://1225-4383-2128/2831336,io://1225-4383-2128"
+
+
+
+Bonjour,
+
+il semblerait que les variables, par exemple [VAR1], aient une capacité limitée. En effet, lorsque la longueur de la chaine saisie est trop longue, Celle-ci est tronquée.
+
+Sur mon périphérique "Général BSO", je passe en [VAR1] la liste des adresses des volets à commander, séparée par des virgules. ça marche parfaitement à moins de 7 adresses, et ça plante à 7 adresses et plus.
+
+Pour vérifier, j'ai lancé le script de 2 façons (widget ou url) et j'ai récupéré le contenu issu de [VAR1] via saveVariable('testDevices', getArg('devices', false)). J'affiche ensuite le contenue de 'testDevices' :
+
+1. directement depuis le widget en cliquant sur une icône je récupère :
+string(191) "io://1225-4383-2128/11873906,io://1225-4383-2128/12250793,io://1225-4383-2128/1275789,io://1225-4383-2128/14496603,io://1225-4383-2128/14917188,io://1225-4383-2128/2831336,io://1225-4383-2128"
+
+2. via l'url 
+http://192.168.0.17/script/?exec=connexoon-status.php&devices=io://1225-4383-2128/11873906,io://1225-4383-2128/12250793,io://1225-4383-2128/1275789,io://1225-4383-2128/14496603,io://1225-4383-2128/14917188,io://1225-4383-2128/2831336,io://1225-4383-2128/7747774,io://1225-4383-2128/8913947,io://1225-4383-2128/895674,io://1225-4383-2128/9322820&etat=core:ClosureState&action=setClosure&value=0&eedomus_controller_module_id=2131917
+je récupère :
+string(282) "io://1225-4383-2128/11873906,io://1225-4383-2128/12250793,io://1225-4383-2128/1275789,io://1225-4383-2128/14496603,io://1225-4383-2128/14917188,io://1225-4383-2128/2831336,io://1225-4383-2128/7747774,io://1225-4383-2128/8913947,io://1225-4383-2128/895674,io://1225-4383-2128/9322820"
+
+donc via le widget, le contenu est tronqué à 191 caractères, alors que via l'url le contenu n'est pas tronqué et la commande est appliquée sur tous les volets.
+
+S'agit-il d'un bug ou d'une limitation volontaire ?
+
+Merci de votre réponse.
+
+cordialement,
+Eric FILIPPI
