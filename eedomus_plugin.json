@@ -4,7 +4,7 @@
 	"icon": "logo_connexoon.png",
 	"version": "2.0.0",
 	"creation_date": "2017-12-04",
-	"modification_date": "2021-03-18",
+	"modification_date": "2021-03-15",
 	"author": "Herric & P@t",
 	"description_fr": "Gestion des volets roulants et portails Somfy via le bridge Connexoon ou la box Tahoma.",
 	"description_en": "Management of Somfy roller shutters and gates via the Connexoon bridge or the Tahoma box.",
@@ -18,7 +18,7 @@
 			"parameter": "login_url",
 			"description": "",
 			"xtype": "displayfield",
-			"field": "style: 'padding: 3px;', value: 'Cliquez <a target=\\'_blank\\' href=\\'https://secure.eedomus.com/script_proxy/?exec=connexoon-status.php&lan_only=1\\'>ici pour lister vos équipements Somfy</a>'"
+			"field": "style: 'padding: 3px;', value: 'Cliquez <a target=\\'_blank\\' href=\\'https://secure.eedomus.com/script_proxy/?exec=connexoon.php&lan_only=1\\'>ici pour lister vos équipements Somfy</a>'"
 		},
 		{
 			"parameter": "OID",
@@ -36,7 +36,7 @@
 			"parameter": "type",
 			"description": "Type d'équipement Somfy",
 			"xtype": "combo",
-			"field": "width:300, allowBlank:false, store:[['0','Capteur d état (à n installer qu une seule fois)'],['1', 'Volet IO'],['2', 'Volet RTS'],['3', 'Porte ou portail IO'],['4','Store vénitien IO'],['5','Multi Store vénitien IO'],['6','Prise On Off IO'],['7','Interface Fil Pilote IO'],['8','Commande murale filaire IO'],['9','Périphérique IO non reconnu'],['10','Périphérique RTS non reconnu']], triggerAction: 'all'"
+			"field": "width:300, allowBlank:false, store:[['0','Capteur d état (à n installer qu une seule fois)'],['1', 'Volet IO'],['2', 'Volet RTS'],['3', 'Porte ou portail IO'],['4','Store vénitien IO'],['5','Multi Store vénitien IO'],['6','Prise On Off IO'],['7','Interface Fil Pilote IO'],['8','Périphérique IO non reconnu'],['9','Périphérique RTS non reconnu']], triggerAction: 'all'"
 		}
 	],
 	"scripts":
@@ -60,7 +60,7 @@
 			{
 				"value_type": "list",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=connexoon-status.php&action=getAllStates",
+				"RAW_URL": "http://localhost/script/?exec=connexoon.php&action=getAllStates",
 				"RAW_XPATH": "/connexoon/resultat",
 				"POLLING": "1"
 			},
@@ -92,30 +92,30 @@
 			},
 			"values":
 			[
-				{ "value": "0", "description": "Ouvert", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=0" },
-				{ "value": "5", "description": "5%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=5", "hidden":1 },
-				{ "value": "10", "description": "10%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=10", "hidden":1 },
-				{ "value": "15", "description": "15%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=15", "hidden":1 },
-				{ "value": "20", "description": "20%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=20" },
-				{ "value": "25", "description": "25%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=25", "hidden":1 },
-				{ "value": "30", "description": "30%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=30", "hidden":1 },
-				{ "value": "35", "description": "35%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=35", "hidden":1 },
-				{ "value": "40", "description": "40%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=40" },
-				{ "value": "45", "description": "45%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=45", "hidden":1 },
-				{ "value": "50", "description": "50%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=50", "hidden":1 },
-				{ "value": "55", "description": "55%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=55", "hidden":1 },
-				{ "value": "60", "description": "60%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=60" },
-				{ "value": "65", "description": "65%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=65", "hidden":1 },
-				{ "value": "70", "description": "70%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=70", "hidden":1 },
-				{ "value": "75", "description": "75%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=75", "hidden":1 },
-				{ "value": "80", "description": "80%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=80" },
-				{ "value": "85", "description": "85%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=85", "hidden":1 },
-				{ "value": "90", "description": "90%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=90", "hidden":1 },
-				{ "value": "95", "description": "95%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=95", "hidden":1 },
-				{ "value": "100", "description": "Fermé", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=100" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "0", "description": "Ouvert", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=0" },
+				{ "value": "5", "description": "5%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=5", "hidden":1 },
+				{ "value": "10", "description": "10%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=10", "hidden":1 },
+				{ "value": "15", "description": "15%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=15", "hidden":1 },
+				{ "value": "20", "description": "20%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=20" },
+				{ "value": "25", "description": "25%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=25", "hidden":1 },
+				{ "value": "30", "description": "30%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=30", "hidden":1 },
+				{ "value": "35", "description": "35%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=35", "hidden":1 },
+				{ "value": "40", "description": "40%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=40" },
+				{ "value": "45", "description": "45%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=45", "hidden":1 },
+				{ "value": "50", "description": "50%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=50", "hidden":1 },
+				{ "value": "55", "description": "55%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=55", "hidden":1 },
+				{ "value": "60", "description": "60%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=60" },
+				{ "value": "65", "description": "65%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=65", "hidden":1 },
+				{ "value": "70", "description": "70%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=70", "hidden":1 },
+				{ "value": "75", "description": "75%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=75", "hidden":1 },
+				{ "value": "80", "description": "80%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=80" },
+				{ "value": "85", "description": "85%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=85", "hidden":1 },
+				{ "value": "90", "description": "90%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=90", "hidden":1 },
+				{ "value": "95", "description": "95%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=95", "hidden":1 },
+				{ "value": "100", "description": "Fermé", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=100" },
+				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
 		},
 		{
@@ -132,18 +132,18 @@
 				"VAR1": "plugin.parameters.OID",
 				"VAR2": "core:ClosureState",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=connexoon-status.php&action=auto",
+				"RAW_URL": "http://localhost/script/?exec=connexoon.php&action=auto",
 				"RAW_XPATH": "/connexoon/resultat",
 				"POLLING": "1"
 			},
 			"values":
 			[
-				{ "value": "closed", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=close" },
-				{ "value": "open", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=open" },
-				{ "value": "stop", "description": "Stop", "icon": "VoletStop.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=stop" },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 },
-				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 }
+				{ "value": "closed", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=close" },
+				{ "value": "open", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=open" },
+				{ "value": "stop", "description": "Stop", "icon": "VoletStop.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=stop" },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 },
+				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 }
 			]
 		},
 		{
@@ -166,12 +166,12 @@
 			},
 			"values":
 			[
-				{ "value": "closed", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=close" },
-				{ "value": "open", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=open" },
-				{ "value": "stop", "description": "Stop", "icon": "VoletStop.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=stop" },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 },
-				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 }
+				{ "value": "closed", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=close" },
+				{ "value": "open", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=open" },
+				{ "value": "stop", "description": "Stop", "icon": "VoletStop.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=stop" },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 },
+				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 }
 			]
 		},
 		{
@@ -194,32 +194,32 @@
 			},
 			"values":
 			[
-				{ "value": "0", "description": "Ouvert", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=0" },
-				{ "value": "5", "description": "5%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=5", "hidden":1 },
-				{ "value": "10", "description": "10%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=10", "hidden":1 },
-				{ "value": "15", "description": "15%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=15", "hidden":1 },
-				{ "value": "20", "description": "20%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=20" },
-				{ "value": "25", "description": "25%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=25", "hidden":1 },
-				{ "value": "30", "description": "30%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=30", "hidden":1 },
-				{ "value": "35", "description": "35%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=35", "hidden":1 },
-				{ "value": "40", "description": "40%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=40" },
-				{ "value": "45", "description": "45%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=45", "hidden":1 },
-				{ "value": "50", "description": "50%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=50", "hidden":1 },
-				{ "value": "55", "description": "55%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=55", "hidden":1 },
-				{ "value": "60", "description": "60%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=60" },
-				{ "value": "65", "description": "65%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=65", "hidden":1 },
-				{ "value": "70", "description": "70%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=70", "hidden":1 },
-				{ "value": "75", "description": "75%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=75", "hidden":1 },
-				{ "value": "80", "description": "80%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=80" },
-				{ "value": "85", "description": "85%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=85", "hidden":1 },
-				{ "value": "90", "description": "90%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=90", "hidden":1 },
-				{ "value": "95", "description": "95%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=95", "hidden":1 },
-				{ "value": "100", "description": "Fermé", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=100" },
-				{ "value": "101", "description": "Brise soleil", "icon": "Volet0000.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,0" },
-				{ "value": "102", "description": "Brise soleil 50%", "icon": "Volet0050.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,50" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "0", "description": "Ouvert", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=0" },
+				{ "value": "5", "description": "5%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=5", "hidden":1 },
+				{ "value": "10", "description": "10%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=10", "hidden":1 },
+				{ "value": "15", "description": "15%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=15", "hidden":1 },
+				{ "value": "20", "description": "20%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=20" },
+				{ "value": "25", "description": "25%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=25", "hidden":1 },
+				{ "value": "30", "description": "30%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=30", "hidden":1 },
+				{ "value": "35", "description": "35%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=35", "hidden":1 },
+				{ "value": "40", "description": "40%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=40" },
+				{ "value": "45", "description": "45%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=45", "hidden":1 },
+				{ "value": "50", "description": "50%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=50", "hidden":1 },
+				{ "value": "55", "description": "55%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=55", "hidden":1 },
+				{ "value": "60", "description": "60%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=60" },
+				{ "value": "65", "description": "65%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=65", "hidden":1 },
+				{ "value": "70", "description": "70%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=70", "hidden":1 },
+				{ "value": "75", "description": "75%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=75", "hidden":1 },
+				{ "value": "80", "description": "80%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=80" },
+				{ "value": "85", "description": "85%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=85", "hidden":1 },
+				{ "value": "90", "description": "90%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=90", "hidden":1 },
+				{ "value": "95", "description": "95%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=95", "hidden":1 },
+				{ "value": "100", "description": "Fermé", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=100" },
+				{ "value": "101", "description": "Brise soleil", "icon": "Volet0000.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,0" },
+				{ "value": "102", "description": "Brise soleil 50%", "icon": "Volet0050.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,50" },
+				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
 		},
 		{
@@ -242,29 +242,29 @@
 			},
 			"values":
 			[
-				{ "value": "0", "description": "Ouvert", "icon": "BSOHrricOuvert.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=0" },
-				{ "value": "5", "description": "5%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=5", "hidden":1 },
-				{ "value": "10", "description": "10%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=10" },
-				{ "value": "15", "description": "15%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=15", "hidden":1 },
-				{ "value": "20", "description": "20%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=20" },
-				{ "value": "25", "description": "25%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=25", "hidden":1 },
-				{ "value": "30", "description": "30%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=30" },
-				{ "value": "35", "description": "35%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=35", "hidden":1 },
-				{ "value": "40", "description": "40%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=40" },
-				{ "value": "45", "description": "45%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=45", "hidden":1 },
-				{ "value": "50", "description": "50%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=50" },
-				{ "value": "55", "description": "55%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=55", "hidden":1 },
-				{ "value": "60", "description": "60%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=60" },
-				{ "value": "65", "description": "65%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=65", "hidden":1 },
-				{ "value": "70", "description": "70%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=70" },
-				{ "value": "75", "description": "75%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=75", "hidden":1 },
-				{ "value": "80", "description": "80%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=80" },
-				{ "value": "85", "description": "85%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=85", "hidden":1 },
-				{ "value": "90", "description": "90%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=90" },
-				{ "value": "95", "description": "95%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=95", "hidden":1 },
-				{ "value": "100", "description": "Fermé", "icon": "BSOHrricFerme.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=100" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "BSOHrricConnexion.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "BSOHrricErreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 }
+				{ "value": "0", "description": "Ouvert", "icon": "BSOHrricOuvert.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=0" },
+				{ "value": "5", "description": "5%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=5", "hidden":1 },
+				{ "value": "10", "description": "10%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=10" },
+				{ "value": "15", "description": "15%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=15", "hidden":1 },
+				{ "value": "20", "description": "20%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=20" },
+				{ "value": "25", "description": "25%", "icon": "BSOHrric80.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=25", "hidden":1 },
+				{ "value": "30", "description": "30%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=30" },
+				{ "value": "35", "description": "35%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=35", "hidden":1 },
+				{ "value": "40", "description": "40%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=40" },
+				{ "value": "45", "description": "45%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=45", "hidden":1 },
+				{ "value": "50", "description": "50%", "icon": "BSOHrric60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=50" },
+				{ "value": "55", "description": "55%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=55", "hidden":1 },
+				{ "value": "60", "description": "60%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=60" },
+				{ "value": "65", "description": "65%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=65", "hidden":1 },
+				{ "value": "70", "description": "70%", "icon": "BSOHrric40.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=70" },
+				{ "value": "75", "description": "75%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=75", "hidden":1 },
+				{ "value": "80", "description": "80%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=80" },
+				{ "value": "85", "description": "85%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=85", "hidden":1 },
+				{ "value": "90", "description": "90%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=90" },
+				{ "value": "95", "description": "95%", "icon": "BSOHrric20.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=95", "hidden":1 },
+				{ "value": "100", "description": "Fermé", "icon": "BSOHrricFerme.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setOrientation&value=100" },
+				{ "value": "Connexion", "description": "Connexion", "icon": "BSOHrricConnexion.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "BSOHrricErreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 }
 			]
 		},
 		{
@@ -281,20 +281,21 @@
 				"VAR1": "plugin.parameters.OID",
 				"VAR2": "core:ClosureState",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=connexoon-status.php&action=auto",
+				"RAW_URL": "http://localhost/script/?exec=connexoon.php&action=auto",
 				"RAW_XPATH": "/connexoon/resultat",
 				"POLLING": "1"
 			},
 			"values":
 			[
-				{ "value": "unknow", "description": "Auto", "icon": "VoletAction.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "1", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=0" },
-				{ "value": "2", "description": "50%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=50" },
-				{ "value": "3", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=100"},
-				{ "value": "4", "description": "Brise soleil", "icon": "Volet0000.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,0" },
-				{ "value": "5", "description": "Brise soleil 50%", "icon": "Volet0050.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,50" }
+				{ "value": "unknow", "description": "Auto", "icon": "VoletAction.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "1", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=0" },
+				{ "value": "2", "description": "50%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=50" },
+				{ "value": "3", "description": "Fermer", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=100"},
+				{ "value": "4", "description": "Brise soleil", "icon": "Volet0000.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,0" },
+				{ "value": "5", "description": "Brise soleil 50%", "icon": "Volet0050.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosureAndOrientation&value=100,50" }
 			]
-		},
+		}
+		,
 		{
 			"device_id": "io_prise_onoff",
 			"module_id": "41",
@@ -315,13 +316,14 @@
 			},
 			"values":
 			[
-				{ "value": "on", "description": "ON", "icon": "default_on.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=on" },
-				{ "value": "off", "description": "OFF", "icon": "default_off.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=off" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "badge-Connexion.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "badge-Erreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "badge.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "on", "description": "ON", "icon": "default_on.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=on" },
+				{ "value": "off", "description": "OFF", "icon": "default_off.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=off" },
+				{ "value": "Connexion", "description": "Connexion", "icon": "badge-Connexion.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "badge-Erreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "badge.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
-		},
+		}
+		,
 		{
 			"device_id": "io_interface_fil_pilote",
 			"module_id": "41",
@@ -342,28 +344,29 @@
 			},
 			"values":
 			[
-				{ "value": "off", "description": "Off", "icon": "Chauffage_Arret_Salon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=off" },
-				{ "value": "frostprotection", "description": "Hors Gel", "icon": "Chauffage_HG_Salon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=frostprotection" },
-				{ "value": "eco", "description": "Eco", "icon": "Chauffage_Eco_Salon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=eco" },
-				{ "value": "comfort", "description": "Confort", "icon": "Chauffage_Conf_Salon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=comfort" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "Chauffage_Salon-Connexion.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "Chauffage_Salon-Erreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Chauffage_Salon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "off", "description": "Off", "icon": "Chauffage_Arret_Salon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=off" },
+				{ "value": "frostprotection", "description": "Hors Gel", "icon": "Chauffage_HG_Salon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=frostprotection" },
+				{ "value": "eco", "description": "Eco", "icon": "Chauffage_Eco_Salon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=eco" },
+				{ "value": "comfort", "description": "Confort", "icon": "Chauffage_Conf_Salon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setHeatingLevel&value=comfort" },
+				{ "value": "Connexion", "description": "Connexion", "icon": "Chauffage_Salon-Connexion.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "Chauffage_Salon-Erreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "Chauffage_Salon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
-		},
+		}
+		,
 		{
-			"device_id": "io_smoove",
+			"device_id": "io_generique",
 			"module_id": "41",
 			"type": "http",
 			"name_fr": "plugin.name",
-			"icon": "Volet40.png",
+			"icon": "logo_connexoon.png",
 			"utilisation_id": "48",
 			"create": "plugin.parameters.type==8",
 			"parameters":
 			{
 				"value_type": "list",
 				"VAR1": "plugin.parameters.OID",
-				"VAR2": "core:TargetClosureState",
+				"VAR2": "plugin.parameters.Ostate",
 				"ignore_errors": 1,
 				"RAW_URL": "",
 				"RAW_XPATH": "",
@@ -371,34 +374,16 @@
 			},
 			"values":
 			[
-				{ "value": "0", "description": "Ouvert", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=0" },
-				{ "value": "5", "description": "5%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=5", "hidden":1 },
-				{ "value": "10", "description": "10%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=10", "hidden":1 },
-				{ "value": "15", "description": "15%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=15", "hidden":1 },
-				{ "value": "20", "description": "20%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=20" },
-				{ "value": "25", "description": "25%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=25", "hidden":1 },
-				{ "value": "30", "description": "30%", "icon": "Volet80.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=30", "hidden":1 },
-				{ "value": "35", "description": "35%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=35", "hidden":1 },
-				{ "value": "40", "description": "40%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=40" },
-				{ "value": "45", "description": "45%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=45", "hidden":1 },
-				{ "value": "50", "description": "50%", "icon": "Volet60.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=50", "hidden":1 },
-				{ "value": "55", "description": "55%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=55", "hidden":1 },
-				{ "value": "60", "description": "60%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=60" },
-				{ "value": "65", "description": "65%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=65", "hidden":1 },
-				{ "value": "70", "description": "70%", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=70", "hidden":1 },
-				{ "value": "75", "description": "75%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=75", "hidden":1 },
-				{ "value": "80", "description": "80%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=80" },
-				{ "value": "85", "description": "85%", "icon": "Volet20.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=85", "hidden":1 },
-				{ "value": "90", "description": "90%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=90", "hidden":1 },
-				{ "value": "95", "description": "95%", "icon": "Volet10.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=95", "hidden":1 },
-				{ "value": "100", "description": "Fermé", "icon": "Volet00.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=setClosure&value=100" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "VoletInterrogation.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "Volet40.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "etat1", "description": "commande 1", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
+				{ "value": "etat2", "description": "commande 2", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
+				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "Erreur", "description": "Erreur", "icon": "Somfy-erreur.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
-		},
+		}
+		,
 		{
-			"device_id": "io_generique",
+			"device_id": "rts_generique",
 			"module_id": "41",
 			"type": "http",
 			"name_fr": "plugin.name",
@@ -411,43 +396,15 @@
 				"VAR1": "plugin.parameters.OID",
 				"VAR2": "plugin.parameters.Ostate",
 				"ignore_errors": 1,
-				"RAW_URL": "",
-				"RAW_XPATH": "",
-				"POLLING": ""
-			},
-			"values":
-			[
-				{ "value": "etat1", "description": "commande 1", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
-				{ "value": "etat2", "description": "commande 2", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "Somfy-erreur.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 }
-			]
-		}
-		,
-		{
-			"device_id": "rts_generique",
-			"module_id": "41",
-			"type": "http",
-			"name_fr": "plugin.name",
-			"icon": "logo_connexoon.png",
-			"utilisation_id": "48",
-			"create": "plugin.parameters.type==10",
-			"parameters":
-			{
-				"value_type": "list",
-				"VAR1": "plugin.parameters.OID",
-				"VAR2": "plugin.parameters.Ostate",
-				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=connexoon-status.php&action=auto",
+				"RAW_URL": "http://localhost/script/?exec=connexoon.php&action=auto",
 				"RAW_XPATH": "/connexoon/resultat",
 				"POLLING": "1"
 			},
 			"values":
 			[
-				{ "value": "etat1", "description": "commande 1", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=votre-commande" },
-				{ "value": "etat2", "description": "commande 2", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=votre-commande" },
-				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon-status.php", "http_type": "GET",	"hidden":1 }
+				{ "value": "etat1", "description": "commande 1", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=votre-commande" },
+				{ "value": "etat2", "description": "commande 2", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=votre-commande" },
+				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_connexoon.png", "http_url": "http://localhost/script/?exec=connexoon.php", "http_type": "GET",	"hidden":1 }
 			]
 		}
 	]
