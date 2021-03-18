@@ -42,7 +42,7 @@
 	"scripts":
 	[
 		{
-			"name": "connexoon-status.php"
+			"name": "connexoon.php"
 		}
 	],
 	"devices":
