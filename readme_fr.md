@@ -31,7 +31,8 @@ La version 3 du plugin utilise un capteur d'état qu'il est nécessaire d'installe
 
 La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", le nom du script a été modifié. Suivez attentivement les étapes du chapitre 4.
 
-Merci à @Pat pour le script initial, ainsi qu'à @jpf pour l'aide sur les tests et l'ajout des prises on/off et fil pilote io !
+Merci à @Pat pour le script initial, ainsi qu'à toute la Team EedmusSomfy pour le développement et les tests de la V3 : @herric, @dommarion, @dom54 et @sev
+
 
 Dans ce document on nomme :
 
@@ -41,6 +42,12 @@ Dans ce document on nomme :
 
 # 2. Première utilisation
 
+**Important** : Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipment correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
+
+La liste des équipements Somfy connectés à votre box SOMFY est affichée.
+
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
+
 Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu'une seule fois) :
 
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/capteur.jpg)
@@ -48,8 +55,6 @@ Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu
 **Adresse de l'équipement Somfy** : Capteur SOMFY (inutile mais le champ doit être rempli)
 
 **Type d'équipement Somfy** : Capteur d'état
-
-**Important** : Si vous n'avez pas encore fait la connexion au cloud Somfy, cliquez sur le lien et renseignez vos identifiants SOMFY. La liste des équipements Somfy va s'afficher (voir chapitre 3) et votre capteur pourra fonctionner !
 
 Ce capteur a pour fonction :
 
@@ -64,13 +69,6 @@ Ce capteur a pour fonction :
 A la première utilisation, le capteur peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes.
 
 # 3. Création d'un périphérique
-
-Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipment correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
-
-La liste des équipements Somfy connectés à votre box SOMFY est affichée.
-
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
-
 
 ## 3.1 Les équipements Somfy reconnus sont listés dans le chapitre *B*.
 
