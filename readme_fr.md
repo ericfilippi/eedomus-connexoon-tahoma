@@ -54,9 +54,9 @@ Avant de créer vos prériphériques, installez le Master Data (à n'installer qu'un
 
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/capteur.jpg)
 
-**Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la lsite des gateways
+**Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la lsite des gateways :
 
-
+![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste_gateways.jpg)
 
 
 Ce capteur a pour fonction :
