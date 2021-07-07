@@ -1,25 +1,80 @@
 <?php
 // script créé par Patrice Gauchon pour eedomus
-// Version 2.0.0 développée par Herric / 15 mars 2021
+// Version 2.0.0 développée par Herric / 15 mars 2021 
+// Version 20210527 23:00
 
 $api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
 
 $devicesControllableNames = array(
-	'io:RollerShutterVeluxIOComponent' => 'volet IO',
-	'io:RollerShutterGenericIOComponent' => 'volet IO',
-	'io:RollerShutterWithLowSpeedManagementIOComponent' => 'volet IO',
-	'io:WindowOpenerVeluxIOComponent' => 'volet IO',
-	'io:DiscreteGarageOpenerIOComponent' => 'porte ou portail',
-	'rts:SwingingShutterRTSComponent' => 'volet RTS',
-	'io:ExteriorVenetianBlindIOComponent' => 'Store vénitien IO',
-	'io:OnOffIOComponent' => 'Prise On Off IO',
+	// 'homekit:StackComponent' => 'interface home kit', pas d'intérêt pour l'instant
+	// 'io:StackComponent' => 'stack IO', à vérifier en catégorie 
+	// 'ogp:Bridge' => 'interface ogp', pas d'intérêt pour l'instant
+	// 'rts:Generic4TRTSComponent' => 'boitier commande RTS', à conserver en catégorie non reconue
+	// 'upnpcontrol:SonosPlayOneComponent' => 'sonos', Plugin existant SONOS
+	// 'zwave:NodeComponent' => 'noeud zave', pas d'intérêt pour l'instant
+	// 'zwave:TransceiverZWaveComponent' => 'transmetteur zwave', pas d'intérêt pour l'instant
+	'eliot:OnOffLightEliotComponent' => 'interrupteur Legrand',
+	'eliot:OnOffSwitchEliotComponent' => 'prise Legrand',
+	'internal:PodV2Component' => 'bouton actif',
+	'internal:TSKAlarmComponent' => 'télécommande Tahoma',
+	'io:AtlanticElectricalHeaterIOComponent' => 'Fil Pilote IO',
 	'io:AtlanticElectricalHeaterIOComponent' => 'Interface Fil Pilote IO',
+	'io:AtlanticPassAPCDHWComponent' => 'Chauffe-eau IO',
+	'io:AtlanticPassAPCHeatingAndCoolingZoneComponent' => 'Commande de chauffage IO',
+	'io:AtlanticPassAPCHeatPumpMainComponent' => 'Pompe à chaleur IO',
+	'io:AtlanticPassAPCOutsideTemperatureSensor' => 'Capteur de température IO',
+	'io:AtlanticPassAPCZoneTemperatureSensor' => 'Capteur de température IO',
+	'io:DHWElectricalEnergyConsumptionSensor' => 'Compteur électrique chauffe-eau IO',
+	'io:DHWRelatedElectricalEnergyConsumptionSensor' => 'Compteur électrique chauffe-eau IO',
+	'io:DiscreteGarageOpenerIOComponent' => 'porte ou portail',
+	'io:DomesticHotWaterTankComponent' => 'Résèrve eau chaude pompe à chaleur IO',
+	'io:ElectricityMeterComponent' => 'Compteur électrique tableau IO',
+	'io:EnergyConsumptionSensorsConfigurationComponent' => 'Compteur électrique divers IO',
+	'io:EnergyConsumptionSensorsHeatPumpComponent' => 'Compteur électrique pompe à chaleur IO',
+	'io:ExteriorVenetianBlindIOComponent' => 'Store vénitien IO',
+	'io:GarageOpenerIOComponent' => 'porte ou portail IO',
+	'io:HeatingElectricalEnergyConsumptionSensor' => 'Compteur électrique chauffage IO',
+	'io:HeatingRelatedElectricalEnergyConsumptionSensor' => 'Compteur électrique chauffage IO',
+	'io:HorizontalAwningIOComponent' => 'volet IO', 
+	'io:LightIOSystemSensor' => 'capteur IO', 
+	'io:LightMicroModuleSomfyIOComponent' => 'commande lampe IO', 
+	'io:MicroModuleRollerShutterSomfyIOComponent' => 'volet IO',
+	'io:OnOffIOComponent' => 'Prise On Off IO',
+	'io:OtherElectricalEnergyConsumptionSensor' => 'Compteur électrique autre IO',
+	'io:PlugsElectricalEnergyConsumptionSensor' => 'Compteur électrique prises IO',
+	'io:RollerShutterGenericIOComponent' => 'volet IO',
+	'io:RollerShutterVeluxIOComponent' => 'volet IO',
+	'io:RollerShutterWithLowSpeedManagementIOComponent' => 'volet IO',
+	'io:SlidingDiscreteGateOpenerIOComponent' => 'porte ou portail IO',
+	'io:SomfyContactIOSystemSensor' => 'contact ouverture IO',
+	'io:SomfyIndoorSimpleSirenIOComponent' => 'sirene IO', 
+	'io:SomfyOccupancyIOSystemSensor' => 'detecteur mouvement IO',
+	'io:SomfySmokeIOSystemSensor' => 'detecteur fumee IO', 
+	'io:TemperatureIOSystemSensor' => 'capteur IO',
+	'io:TotalElectricalEnergyConsumptionSensor' => 'Compteur énergie électrique IO',
+	'io:TotalElectricEnergyConsumptionIOSensor' => 'Compteur énergie électrique IO',
+	'io:WindowOpenerVeluxIOComponent' => 'volet IO',
+	'myfox:LightController' => 'camera (light)',
+	'myfox:SomfyProtectAlarmController' => 'surveillance camera',
+	'myfox:SomfyProtectSecurityCameraController' => 'camera',
+	'rtd:AlarmRTDComponent' => 'alarme protexiom',
+	'rtds:RTDSContactSensor' => 'contact ouverture RTDS',
+	'rtds:RTDSMotionSensor' => 'detecteur mouvement RTDS',
+	'rtds:RTDSRemoteControllerComponent' => 'telecommande alarme RTDS',
+	'rtds:RTDSSmokeSensor' => 'detecteur fumee RTDS',
+	'rts:GarageDoor4TRTSComponent' => 'boitier commande RTS', 
+	'rts:GateOpenerRTS4TComponent' => 'porte ou portail RTS', 
+	'rts:LightRTSComponent' => 'commande lampe RTS',
+	'rts:OnOffRTSComponent' => 'prise RTS', 
+	'rts:RollerShutterRTSComponent' => 'volet RTS', 
+	'rts:SwingingShutterRTSComponent' => 'volet RTS',
+	'rts:SwingingShutterRTSComponent' => 'volet RTS',
 );
 
 $action = getArg('action', false);				// commande à envoyer à la box
 $eeDevices = loadVariable('eeDevices');			// Liste des couples deviceUrl (somfy) / periphId (eedomus)
 $registerId = loadVariable('registerId');		// id d'abonnement aux événements somfy
-$capteurSomfy = loadVariable('capteurSomfy');	// sauvegarde du statut du capteur somfy
+$MasterDataSomfy = loadVariable('MasterDataSomfy');	// sauvegarde du statut du MasterData somfy
 
 //------------------------------
 // Fonctions
@@ -41,7 +96,7 @@ function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 	}
 
 	$result = httpQuery($api_url.$path, $method, $data, NULL, $header, true);
-
+	
 	return sdk_json_decode($result);
 }
 
@@ -77,45 +132,73 @@ function sdk_login()
 	return $resultLogin;
 }
 
-// Récupère les pièces et les périphériques
-function sdk_get_setup()
+// Récupère les gateways, les pièces et les périphériques
+function sdk_get_setup($eeDevices)
 {
 	sdk_make_request('setup/devices/states/refresh', 'POST');
 
-	// On récupère les périphériques
+	// On récupère toutes les informations gateways, devices, zones, disconnectionConfiguration, rootPlace et features
 	$setup = sdk_make_request('setup', 'GET');
 
+	// Les gateways
+	$gateways = array();
+	foreach ($setup['gateways'] as $gateway)
+	{
+
+	// masque de vérification pour extraire les gateways seulement (pas les catégories: devices, zones, disconnectionConfiguration, rootPlace et features)
+
+		if (preg_match('%^(.*?)-(.*?)$%', $gateway['gatewayId']))
+		{
+			$gateway_id = $gateway['gatewayId'];
+			$gateways[$gateway_id]['id'] = $gateway_id;
+			$gateways[$gateway_id]['type'] = $gateway['type'];
+			$gateways[$gateway_id]['mode'] = $gateway['mode'];
+			
+			if (($eeDevices != '') && ($gateway_id == $eeDevices['MasterDataSomfy']['MasterDataSomfyURL']))
+			{	// c'est la gateway principale
+				$statutGatewayPrincpale = $gateway['alive'];
+			}
+		}
+	}
+
+	// Les devices
 	$devices = array();
 	foreach ($setup['devices'] as $device)
 	{
-		if (preg_match('%^(io|rts)://.*?/\d*?$%', $device['deviceURL']))
-		{
-			$device_url = $device['deviceURL'];
-
-			$devices[$device_url]['url'] = $device_url;
-			$devices[$device_url]['label'] = $device['label'];
-			$devices[$device_url]['controllableName'] = $device['controllableName'];
-
+		$device_url = $device['deviceURL'];
+		$devices[$device_url]['url'] = $device_url;
+		$devices[$device_url]['label'] = $device['label'];
+		$devices[$device_url]['controllableName'] = $device['controllableName'];
+		if (isset($device['states'])) {
 			foreach ($device['states'] as $state)
 			{	// compatibilité ancienne version
-				if (preg_match('%^(core|io):(.*?)State$%', $state['name'], $match))
+				if (preg_match('%^(core|io|internal|myfox|rtds):(.*?)State$%', $state['name'], $match))
 				{
 					$devices[$device_url]['states'][$match[2]] = $state['value'];
 				}
 				// nouvelle version
 				$devices[$device_url]['coreStates'][$state['name']] = $state['value'];
 			}
-			// récupération des commandes API et états
-			$devices[$device_url]['definition']['commands'] = $device['definition']['commands'];
-			$devices[$device_url]['definition']['states'] = $device['definition']['states'];
 		}
+		// récupération des commandes API et états
+		$devices[$device_url]['definition']['commands'] = $device['definition']['commands'];
+		$devices[$device_url]['definition']['states'] = $device['definition']['states'];
 	}
 
 	return array(
 		'devices' => $devices,
-		'time' => time(),
-		'alive' => $setup['gateways'][0]['alive'],
+		'alive' => $statutGatewayPrincpale,
+		'gateways' => $gateways,
 	);
+}
+
+// Récupère l'état d'un périphérique
+function sdk_getDeviceStatus($deviceUrl)
+{   
+	$commande = 'setup/devices/' . urlencode($deviceUrl) . '/states';
+	$deviceStates = sdk_make_request($commande, 'GET');
+	
+	return $deviceStates;
 }
 
 // Mise à jour d'un périphérique eedomus
@@ -132,12 +215,26 @@ function sdk_maj_periph($eeDevices,$deviceUrl,$state,$eeValue)
 	{
 		foreach ($eeDevices[$deviceUrl] as $statePeriph)
 		{
-			setValue($statePeriph['eeDeviceId'], $eeValue,0,1,date('Y-m-d H:i:s'),0);
+			if ($eeValue <> 'Connexion')
+			{
+				setValue($statePeriph['eeDeviceId'], $eeValue,0,1,date('Y-m-d H:i:s'),0);
+			}
+			else if ($statePeriph['eeDeviceValueType'] <> 'float')
+			{
+				setValue($statePeriph['eeDeviceId'], $eeValue,0,1,date('Y-m-d H:i:s'),0);
+			}
 		}
 	}
 	else
 	{
-		setValue($eeDevices[$deviceUrl][$state]['eeDeviceId'], $eeValue,0,1,date('Y-m-d H:i:s'),0);
+		if ($eeValue <> 'Connexion')
+		{
+			setValue($eeDevices[$deviceUrl][$state]['eeDeviceId'], $eeValue,0,1,date('Y-m-d H:i:s'),0);
+		}
+		else if ($eeDevices[$deviceUrl][$state]['eeDeviceValueType'] <> 'float')
+		{
+			setValue($eeDevices[$deviceUrl][$state]['eeDeviceId'], $eeValue,0,1,date('Y-m-d H:i:s'),0);
+		}
 	}
 }
 
@@ -146,17 +243,26 @@ function sdk_process_setup($setup,$eeDevices)
 {
 	$eeResultat = 3;
 
-	$horsPortee = false;
+	$horsPortee = 0;
 	foreach ($setup['devices'] as $device)
 	{
 		$deviceUrl = $device['url'];
 
 		if (array_key_exists($deviceUrl,$eeDevices))
-		{
-			if ($device['states']['Status'] <> 'available')
+		{	
+			// Cas des équipements avec StatusState
+			if ((isset($device['coreStates']['core:StatusState'])) && ($device['coreStates']['core:StatusState'] <> 'available'))
 			{
-				$horsPortee = true;
+				$horsPortee++;
 			}
+			
+			// Cas des équipements avec SensorDefectState (rien quand OK, et présent quand problème) 
+			if ((array_key_exists('core:SensorDefectState',$eeDevices[$deviceUrl])) && (!array_key_exists('core:SensorDefectState',$device['coreStates'])))
+			{
+				sdk_maj_periph($eeDevices,$deviceUrl,'core:SensorDefectState','noDefect');
+			}
+			
+			// traitement des tous les states de l'équipment
 			foreach ($device['coreStates'] as $coreState => $value)
 			{
 				if (array_key_exists($coreState,$eeDevices[$deviceUrl]))
@@ -173,7 +279,8 @@ function sdk_process_setup($setup,$eeDevices)
 	{
 		$eeResultat = 2;
 	}
-
+	saveVariable('horsPortee', $horsPortee);
+	
 	return $eeResultat;
 }
 
@@ -219,16 +326,25 @@ function sdk_display_login_form($message='', $error='')
 }
 
 // Ecran des pièces
-function sdk_display_devices($devices)
+function sdk_display_equipements($devices,$gateways)
 {
 	global $devicesControllableNames;
 
 	echo '<html><head><title>eedomus</title></head><body>';
+	
 	$known_devices = array();
 	$unknown_devices = array();
 
-	echo '<h1>'.'A) Capteur d\'état SOMFY'.' :</h1>';
-	echo '<p>adresse [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="Capteur SOMFY"></p>';
+	echo '<h1>A) MasterData SOMFY :</h1>';
+	echo '<p>adresse [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="MasterData SOMFY"></p>';
+
+	echo '<h1>B) Liste des gateways Somfy :</h1>';
+	$iKnown = 1;
+	foreach ($gateways as $gateway)
+	{
+		echo '<p><b>' . $iKnown . ') </b> (type: '.$gateway['type'].')</br>adresse du Gateway [VAR1] : <input onclick="this.select();" type="text" size="100" readonly="readonly" value="'.$gateway['id'].'"></p>';
+		$iKnown++;
+	}
 
 	foreach ($devices as $device_url => $device)
 	{
@@ -245,7 +361,7 @@ function sdk_display_devices($devices)
 
 	if (!empty($known_devices))
 	{
-		echo '<h1>'.'B) Liste des équipements Somfy reconnus'.' :</h1>';
+		echo '<h1>'.'C) Liste des équipements Somfy reconnus (déjà configurés)'.' :</h1>';
 		$iKnown = 1;
 		foreach ($known_devices as $device)
 		{
@@ -256,7 +372,7 @@ function sdk_display_devices($devices)
 
 	if (!empty($unknown_devices))
 	{
-		echo '<h1>'.'C) Liste des équipements Somfy non reconnus (mais probablement compatibles)'.' :</h1>';
+		echo '<h1>'.'D) Liste des équipements Somfy non reconnus (mais probablement compatibles)'.' :</h1>';
 		$iUnknown = 1;
 		foreach ($unknown_devices as $device)
 		{
@@ -340,14 +456,14 @@ switch ($action)
 			}
 		}
 
-		$setup = sdk_get_setup();
+		$setup = sdk_get_setup($eeDevices);
 
 		if (!count($setup['devices']))
 		{
 			sdk_display_login_form('', 'Aucun périphérique détecté.');
 		}
 
-		sdk_display_devices($setup['devices']);
+		sdk_display_equipements($setup['devices'],$setup['gateways']);
 		break;
 	case 'reset' :
 		//------------------------------------
@@ -355,24 +471,34 @@ switch ($action)
 		//------------------------------------
 		$eeDevices = '';
 		saveVariable('eeDevices', $eeDevices);
-		$capteurSomfy['valeur'] = '';
-		saveVariable('capteurSomfy', $capteurSomfy);
+		$MasterDataSomfy['valeur'] = '';
+		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		echo 'Reset effectué';
 		break;
 	case 'display' :
 		//------------------------------------
 		// Utilisé pour les tests
 		//------------------------------------
-		echo '<br/><pre>';  var_dump($eeDevices) ; echo '</pre>';
-		$setup = sdk_get_setup();
-		sdk_display_devices($setup['devices']);
+		//$tesID = getArg('eedomus_controller_module_id');
+		//$priphValeur = getPeriphList(true, $tesID);
+		echo '<br/>$eeDevices = <pre>';  var_dump($eeDevices) ; echo '</pre>';
+		//$setup = sdk_get_setup($eeDevices);
+		//sdk_display_equipements($setup['devices'],$setup['gateways']);
+		break;
+	case 'track' :
+		//------------------------------------
+		// Utilisé pour les tracker le nombre de devices
+		//------------------------------------
+		$track_counter = count($eeDevices);
+		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><compteur>'.$track_counter.'</compteur></somfy>';
+		echo $xml;
 		break;
 	case 'getState' :
 		//--------------------------------------
 		// Compatibilité retour d'état version 1
 		//--------------------------------------
-		$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
-		if (array_key_exists('error',$resultFetch))
+		$resultRefresh =  sdk_make_request('setup/devices/states/refresh', 'POST');
+		if (array_key_exists('error',$resultRefresh))
 		{
 			if (sdk_login() != 'ERROR_LOGIN')
 			{
@@ -390,11 +516,17 @@ switch ($action)
 
 		if ($logge)
 		{
-			$setup = sdk_get_setup();
+			$setup = sdk_get_setup($eeDevices);
 			sdk_header('text/xml');
 			$xml = '<?xml version="1.0" encoding="ISO-8859-1"?>';
 			$xml .= '<connexoon>';
-
+			
+			foreach ($setup['gateways'] as $gateway)
+			{
+				$xml .= '<gateway Id="'.$gateway['id'].'" type="'.$gateway['type'].'">';
+				$xml .= '<mode>'.$gateway['mode'].'</mode></gateway>';
+			}
+			
 			foreach ($setup['devices'] as $device)
 			{
 				$xml .= '<device url="'.$device['url'].'" label="'.$device['label'].'">';
@@ -421,20 +553,25 @@ switch ($action)
 				$xml .= '</device>';
 			}
 
-			$xml .= '<Timestamp>'.$setup['time'].'</Timestamp>';
 			$xml .= '</connexoon>';
 			echo $xml;
 		}
 		break;
 	case 'getAllStates' :
 		//------------------------------------------
-		// Capteur SOMFY et retour d'états version 2
+		// MasterData SOMFY et retour d'états version 2
 		//------------------------------------------
 		
 		// enregistre le couple device_urls/periph_id courant
-		if (!array_key_exists('capteurSomfy',$eeDevices))
-		{
-			$eeDevices['capteurSomfy'] = getArg('eedomus_controller_module_id');
+		if (!array_key_exists('MasterDataSomfy',$eeDevices))
+		{	
+			$device_urls = explode(',', getArg('devices', false));		// les périphériques à traiter
+			$deviceId = getArg('eedomus_controller_module_id');			// L'id du prériphérique edomus en cours
+			
+			$eeDevices['MasterDataSomfy'] = array (
+												'eeDeviceId' => $deviceId,
+												'MasterDataSomfyURL' => $device_urls[0],
+												);
 			saveVariable('eeDevices', $eeDevices);
 		}
 
@@ -448,7 +585,7 @@ switch ($action)
 			}
 			else
 			{
-				$setup = sdk_get_setup();
+				$setup = sdk_get_setup($eeDevices);
 				if ($setup['alive'] <> 'true')
 				{	// La box n'est pas connectée à son cloud
 					$eeResultat = 1;
@@ -461,14 +598,14 @@ switch ($action)
 			}
 		}
 		else
-		{	// le fetch s'es bien passé, on reprend la valeur sauvegardée du capteur somfy ou on la recalcule
-			if ($capteurSomfy['valeur'] <> '')
+		{	// le fetch s'est bien passé, on reprend la valeur sauvegardée du MasterData somfy ou on la recalcule
+			if ($MasterDataSomfy['valeur'] <> '')
 			{
-				$eeResultat = $capteurSomfy['valeur'];
+				$eeResultat = $MasterDataSomfy['valeur'];
 			}
 			else
 			{
-				$setup = sdk_get_setup();
+				$setup = sdk_get_setup($eeDevices);
 				if ($setup['alive'] <> 'true')
 				{	// La box n'est pas connectée à son cloud
 					$eeResultat = 1;
@@ -488,18 +625,27 @@ switch ($action)
 				switch ($evenement['name'])
 				{
 					case 'GatewayAliveEvent' :
-						$setup = sdk_get_setup();
-						$eeResultat = sdk_process_setup($setup,$eeDevices);
+						if ($evenement['gatewayId'] == $eeDevices['MasterDataSomfy']['MasterDataSomfyURL'])
+						{
+							$setup = sdk_get_setup($eeDevices);
+							$eeResultat = sdk_process_setup($setup,$eeDevices);
+						}
 						break;
 					case 'GatewayDownEvent' :
-						$eeResultat = 1;
-						foreach ($eeDevices as $eeName => $eeDevice)
+						if ($evenement['gatewayId'] == $eeDevices['MasterDataSomfy']['MasterDataSomfyURL'])
 						{
-							if ($eeName <> 'capteurSomfy')
+							$eeResultat = 1;
+							foreach ($eeDevices as $eeName => $eeDevice)
 							{
-								foreach ($eeDevice as $statePeriph)
+								if ($eeName <> 'MasterDataSomfy')
 								{
-									setValue($statePeriph['eeDeviceId'], 'Connexion',0,1,date('Y-m-d H:i:s'),0);
+									foreach ($eeDevice as $statePeriph)
+									{	
+										if ($statePeriph['eeDeviceValueType'] <> 'float')
+										{
+											setValue($statePeriph['eeDeviceId'], 'Connexion',0,1,date('Y-m-d H:i:s'),0);
+										}
+									}
 								}
 							}
 						}
@@ -529,15 +675,27 @@ switch ($action)
 								{
 									if (in_array($execCommand['failureType'], array('NONEXEC_OTHER')))
 									{
-										$setup = sdk_get_setup();
-										$eeResultat = sdk_process_setup($setup,$eeDevices);
+										$deviceStates = sdk_getDeviceStatus($execCommand['deviceURL']);
+										if (array_key_exists($execCommand['deviceURL'],$eeDevices))
+										{	
+											// traitement des tous les states de l'équipment
+											foreach ($deviceStates as $key => $state)
+											{
+												if (array_key_exists($state['name'],$eeDevices[$deviceUrl]))
+												{
+													// on met à jour les états
+													sdk_maj_periph($eeDevices,$deviceUrl,$state['name'],$state['value']);
+												}
+											}
+										}
+										
 									}
 									else
 									{
 										$deviceUrl = $execCommand['deviceURL'];
 										foreach ($eeDevices[$deviceUrl] as $stateKey => $stateItems)
 										{
-											if (($execCommand['command'] == $stateItems['eeDeviceCommandName']))
+											if ($execCommand['command'] == $stateItems['eeDeviceCommandName'])
 											{
 												sdk_maj_periph($eeDevices,$deviceUrl,$stateKey,'Erreur');
 											}
@@ -548,6 +706,9 @@ switch ($action)
 						}
 						break;
 					case 'DeviceUnavailableEvent' :
+						$horsPortee = loadVariable('horsPortee');
+						$horsPortee++;
+						saveVariable('horsPortee', $horsPortee);
 						$eeResultat = 2;
 						$deviceUrl = $evenement['deviceURL'];
 						if (array_key_exists($deviceUrl,$eeDevices))
@@ -556,34 +717,83 @@ switch ($action)
 						}
 						break;
 					case 'DeviceAvailableEvent' :
-						$setup = sdk_get_setup();
-						$eeResultat = sdk_process_setup($setup,$eeDevices);
+						$horsPortee = loadVariable('horsPortee');
+						$horsPortee = ($horsPortee == 0) ? 0 : --$horsPortee;
+						saveVariable('horsPortee', $horsPortee);
+						$eeResultat = ($horsPortee) ? 2 : 3;
+						$deviceUrl = $evenement['deviceURL'];
+						$deviceStates = sdk_getDeviceStatus($deviceUrl);
+						if (array_key_exists($deviceUrl,$eeDevices))
+						{	
+							// traitement des tous les states de l'équipment
+							foreach ($deviceStates as $key => $state)
+							{
+								if (array_key_exists($state['name'],$eeDevices[$deviceUrl]))
+								{
+									// on met à jour les états
+									sdk_maj_periph($eeDevices,$deviceUrl,$state['name'],$state['value']);
+								}
+							}
+						}
 						break;
 
 				}
 			}
 		}
-		$capteurSomfy['valeur'] = $eeResultat;
-		saveVariable('capteurSomfy', $capteurSomfy);
+		$MasterDataSomfy['valeur'] = $eeResultat;
+		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 
 		// construction du résultat
 		// 0 : cloud injoignable
 		// 1 : cloud OK, box injoignable
 		// 2 : un des devices est injoignable
 		// 3 : tout est OK
-		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?>';
-		$xml .= '<connexoon>';
-		$xml .= '<resultat>'.$eeResultat.'</resultat>';
-		$xml .= '<Timestamp>'.$setup['time'].'</Timestamp>';
-		$xml .= '</connexoon>';
+		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><resultat>'.$eeResultat.'</resultat></somfy>';
 		echo $xml;
 		break;
 	case 'auto' :
 		//------------------------------------------------------------------------
 		// remise en statut auto des actionneurs http multiples et actionneurs RTS
 		//------------------------------------------------------------------------
-		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><connexoon><resultat>unknow</resultat><Timestamp>'.time().'</Timestamp></connexoon>';
+		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><resultat>unknow</resultat><Timestamp>'.time().'</Timestamp></somfy>';
 		echo $xml;
+		break;
+	case 'init' :
+		//------------------------------------------------------------------------
+		// Initialisation des capteurs HTTP et récupération de leur état
+		//------------------------------------------------------------------------
+		$device_urls = explode(',', getArg('devices', false));		// les périphériques à traiter
+		$deviceEtat = getArg('etat', false);						// Etat à traiter pour le retour d'état
+		$deviceId = getArg('eedomus_controller_module_id');			// L'id du prériphérique edomus en cours
+		$deviceData = getPeriphList(true, $deviceId); 				// les paramètres du périphérique
+		$deviceValueType = $deviceData[$deviceId]['value_type'];
+		$value = getArg('value', false) ;
+		// enregistre le couple device_urls/periph_id courant
+		if ((count($device_urls) == 1) && ($deviceEtat <> ''))
+		{
+			$eeDevices[$device_urls[0]][$deviceEtat] = array (
+														'eeDeviceId' => $deviceId,
+														'eeDeviceCommandName' => $action,
+														'eeDeviceValueType' => $deviceValueType,
+														);
+			saveVariable('eeDevices', $eeDevices);
+			$deviceStates = sdk_getDeviceStatus($device_urls[0]);
+			if (array_key_exists('error',$deviceStates))
+			{
+				if (sdk_login() != 'ERROR_LOGIN')
+				{
+					$deviceStates = sdk_getDeviceStatus($device_urls[0]);
+				}
+			}
+			foreach ($deviceStates as $deviceState)
+			{
+				if ($deviceState['name'] == $deviceEtat)
+				{
+					$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><state>' . $deviceState['value'] . '</state></somfy>';
+					echo $xml;
+				}
+			}
+		}
 		break;
 	default :
 		//------------------------------------------
@@ -592,6 +802,8 @@ switch ($action)
 		$device_urls = explode(',', getArg('devices', false));		// les périphériques à traiter
 		$deviceEtat = getArg('etat', false);						// Etat à traiter pour le retour d'état
 		$deviceId = getArg('eedomus_controller_module_id');			// L'id du prériphérique edomus en cours
+		$deviceData = getPeriphList(true, $deviceId); 				// les paramètres du périphérique
+		$deviceValueType = $deviceData[$deviceId]['value_type'];
 		$value = getArg('value', false) ;
 
 		// enregistre le couple device_urls/periph_id courant
@@ -600,6 +812,7 @@ switch ($action)
 			$eeDevices[$device_urls[0]][$deviceEtat] = array (
 														'eeDeviceId' => $deviceId,
 														'eeDeviceCommandName' => $action,
+														'eeDeviceValueType' => $deviceValueType,
 														);
 			saveVariable('eeDevices', $eeDevices);
 		}

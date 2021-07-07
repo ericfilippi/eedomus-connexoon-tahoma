@@ -34,7 +34,7 @@
             },
 		{
 			"parameter": "mas_datOID",
-			"description": "Adresse de la Gateway SOMFY Tahoma",
+			"description": "Adresse du Master Data",
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
 		},
@@ -411,20 +411,15 @@
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
 		},            
-            {
-                "parameter": "per_rts",
-                "description": "Périphérique RTS non reconnu",
-                "xtype": "checkbox",
-                "field": "style: 'margin-top: 6px;', checked: false"              
-            },
+		{
+			"parameter": "per_rts",
+			"description": "Périphérique RTS non reconnu",
+			"xtype": "checkbox",
+			"field": "style: 'margin-top: 6px;', checked: false"              
+		},
 		{
 			"parameter": "per_rtsOID",
-			"description": "Adresse du Périphérique IO non reconnu",
-			"xtype": "textfield",
-			"field": "width:900, allowBlank:true"
-		},		{
-			"parameter": "per_rtsOstate",
-			"description": "Etat du Périphérique RTS non reconnu",
+			"description": "Adresse du Périphérique RTS non reconnu",
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
 		}
@@ -1066,7 +1061,7 @@
 			{
 				"value_type": "list",
 				"VAR1": "plugin.parameters.per_ioOID",
-				"VAR2": "plugin.parameters.Ostate",
+				"VAR2": "plugin.parameters.per_ioOstate",
 				"ignore_errors": 1,
 				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
 				"RAW_XPATH": "/somfy/state",
@@ -1094,7 +1089,6 @@
 			{
 				"value_type": "list",
 				"VAR1": "plugin.parameters.per_rtsOID",
-				"VAR2": "plugin.parameters.Ostate",
 				"ignore_errors": 1,
 				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
 				"RAW_XPATH": "/somfy/state",

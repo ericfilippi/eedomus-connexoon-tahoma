@@ -40,6 +40,8 @@ Dans ce document on nomme :
 
 **Equipement Somfy** pour Somfy
 
+**Master Data** pour le capteur d'état du cloud Somfy
+
 # 2. Première utilisation
 
 **Important** : Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipment correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
@@ -48,7 +50,9 @@ La liste des équipements Somfy connectés à votre box SOMFY est affichée.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
 
-Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu'une seule fois) :
+Avant de créer vos prériphériques, installez le Master Data (à n'installer qu'une seule fois) :
+
+
 
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/capteur.jpg)
 

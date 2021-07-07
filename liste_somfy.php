@@ -373,14 +373,11 @@ function sdk_display_equipements($devices,$gateways)
 	$known_devices = array();
 	$unknown_devices = array();
 
-	echo '<h1>A) MasterData SOMFY :</h1>';
-	echo '<p>adresse [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="MasterData SOMFY"></p>';
-
-	echo '<h1>B) Liste des gateways Somfy :</h1>';
+	echo '<h1>A) Liste des gateways Somfy :</h1>';
 	$iKnown = 1;
 	foreach ($gateways as $gateway)
 	{
-		echo '<p><b>' . $iKnown . ') </b> (type: '.$gateway['type'].')</br>adresse du Gateway [VAR1] : <input onclick="this.select();" type="text" size="100" readonly="readonly" value="'.urlencode($gateway['id']).'"></p>';
+		echo '<p><b>' . $iKnown . ') </b> (type: '.$gateway['type'].')</br>adresse de la Gateway [VAR1] : <input onclick="this.select();" type="text" size="100" readonly="readonly" value="'.urlencode($gateway['id']).'"></p>';
 		$iKnown++;
 	}
 
@@ -399,7 +396,7 @@ function sdk_display_equipements($devices,$gateways)
 
 	if (!empty($known_devices))
 	{
-		echo '<h1>'.'C) Liste des équipements Somfy reconnus (déjà configurés)'.' :</h1>';
+		echo '<h1>'.'B) Liste des équipements Somfy reconnus (déjà configurés)'.' :</h1>';
 		$iKnown = 1;
 		foreach ($known_devices as $device)
 		{
@@ -410,7 +407,7 @@ function sdk_display_equipements($devices,$gateways)
 
 	if (!empty($unknown_devices))
 	{
-		echo '<h1>'.'D) Liste des équipements Somfy non reconnus (mais probablement compatibles)'.' :</h1>';
+		echo '<h1>'.'C) Liste des équipements Somfy non reconnus (mais probablement compatibles)'.' :</h1>';
 		$iUnknown = 1;
 		foreach ($unknown_devices as $device)
 		{
