@@ -52,13 +52,12 @@ La liste des équipements Somfy connectés à votre box SOMFY est affichée.
 
 Avant de créer vos prériphériques, installez le Master Data (à n'installer qu'une seule fois) :
 
-
-
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/capteur.jpg)
 
-**Adresse de l'équipement Somfy** : Capteur SOMFY (inutile mais le champ doit être rempli)
+**Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la lsite des gateways
 
-**Type d'équipement Somfy** : Capteur d'état
+
+
 
 Ce capteur a pour fonction :
 
