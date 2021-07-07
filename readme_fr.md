@@ -1,15 +1,7 @@
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/logo_connexoon.png "Paramétrage capteur")
 
-# Périphérique Somfy V2
+# Périphérique Somfy V3
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
-
-### Version 2.0.0
-- modification du login pour éviter les déconnexions
-- prise en compte des événements somfy pour gérer le retour d'état
-- ajout prise on/off io et fil pilote io
-
-### Version 1.2.2 du 27/06/2020
-- ajout Brises soleil orientables : io:ExteriorVenetianBlindIOComponent' => 'BSO IO
 
 # Sommaire
 
@@ -27,15 +19,17 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
    
 4. Migration depuis les versions 1.x.x
 
+5. Historique des versions
+
 # 1. Introduction
 
 Ce plugin permet de contrôler certains équipements SOMFY. Il est nécessaire pour cela de posséder un bridge Connexoon ou une box Tahoma, et d'avoir associé ses équipements au bridge via l'application mobile Connexoon ou Tahoma de SOMFY.
 
 **Attention** : l'installation du périphérique s'effectue uniquement en étant connecté sur le même réseau que votre box eedomus !
 
-La version 2 du plugin introduit un capteur d'état qu'il est nécessaire d'installer pour bénéficier des nouvelles fonctionnalités.
+La version 3 du plugin utilise un capteur d'état qu'il est nécessaire d'installer pour bénéficier de toutes les fonctionnalités.
 
-La version 2 est normalement compatible avec la version 1. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", la V2 est proposée en tant que plugin autonôme dans le store eedomus.
+La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", le nom du script a été modifié. Suivez attentivement les étapes du chapitre 4.
 
 Merci à @Pat pour le script initial, ainsi qu'à @jpf pour l'aide sur les tests et l'ajout des prises on/off et fil pilote io !
 
@@ -55,9 +49,10 @@ Avant de créer vos prériphériques, installez le capteur d'état (à n'installer qu
 
 **Type d'équipement Somfy** : Capteur d'état
 
-**Important** : Si vous n'avez pas encore fait la connexion au cloud Somfy, cliquez sur le lien et renseignez vos identifiants SOMFY. La liste des équipements Somfy va s'afficher (voir chapitre 2) et votre capteur pourra fonctionner !
+**Important** : Si vous n'avez pas encore fait la connexion au cloud Somfy, cliquez sur le lien et renseignez vos identifiants SOMFY. La liste des équipements Somfy va s'afficher (voir chapitre 3) et votre capteur pourra fonctionner !
 
 Ce capteur a pour fonction :
+
 - d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
 - d'assurer le retour d'état des commandes envoyées par eedomus vers SOMFY
 - de mettre à jour les prériphériques eedomus suite à une action directe IO (RTS ne supporte pas le retour d'état)
@@ -190,3 +185,17 @@ modifier les valeurs des commandes comme suit :
 - **Paramètres** : &devices=[VAR1]&etat=[VAR2]&action=[votre action]&value=[votre paramètre]
 
 **Information** : [VAR1] passe du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
+
+# 5. Historique des versions
+
+### V2.0.1 du
+- ajout io:MicroModuleRollerShutterSomfyIOComponent => volet IO
+- correction code usage sur le capteur
+
+### v2.0.0 du 26/03/2021
+- modification du login pour éviter les déconnexions
+- prise en compte des événements somfy pour gérer le retour d'état
+- ajout prise on/off io et fil pilote io
+
+### v1.2.2 du 27/06/2020
+- ajout Brises soleil orientables : io:ExteriorVenetianBlindIOComponent' => 'BSO IO
