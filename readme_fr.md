@@ -1,4 +1,4 @@
-![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/img/logo_connexoon.png "Paramétrage capteur")
+![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/img/logo_connexoon.png "Paramétrage capteur")
 
 # Périphérique Somfy V3
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
@@ -48,11 +48,11 @@ Dans ce document on nomme :
 
 La liste des équipements Somfy connectés à votre box SOMFY est affichée.
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/lien.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/lien.jpg)
 
 Avant de créer vos prériphériques, installez le Master Data (à n'installer qu'une seule fois) :
 
-![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/capteur.jpg)
+![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/capteur.jpg)
 
 **Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la lsite des gateways :
 
@@ -67,7 +67,7 @@ Ce capteur a pour fonction :
 
 ### Valeurs
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/valeurs_capteur.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/valeurs_capteur.jpg)
 
 A la première utilisation, le capteur peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes.
 
@@ -75,11 +75,11 @@ A la première utilisation, le capteur peut mettre plusieurs minutes à s'initiali
 
 ## 3.1 Les équipements Somfy reconnus sont listés dans le chapitre *B*.
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste.jpg)
 
 Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme indiqué ci-dessous.
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/parametre-affichage.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/parametre-affichage.jpg)
 
 **Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser le retour d'état.
 
@@ -87,7 +87,7 @@ Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme i
 
 Cela vous permettra (avec un peu d'entraînement) de paramétrer votre périphérique eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/liste_non_reconnu.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste_non_reconnu.jpg)
 
 **Type** : Sélectionnez "Prériphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
 
@@ -101,7 +101,7 @@ Cela vous permettra (avec un peu d'entraînement) de paramétrer votre périphériqu
 
 Choisissez l'état que vous souhaitez utiliser pour votre retour d'état eedomus et collez-le dans le champ Etat.
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/parametre-non-reconnu.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/parametre-non-reconnu.jpg)
 
 Cliquez sur créer
 
@@ -109,7 +109,7 @@ Cliquez sur créer
 
 Renseignez les commandes en tenant compte du nombre de paramètres comme illustreé ci-dessous.
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/commandes-non-reconnu.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/commandes-non-reconnu.jpg)
 
 **Attention** : observez bien l'illustration ci-dessus !
 
@@ -160,7 +160,7 @@ Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à
 
 Ajouter les valeurs suivantes : 
 
-![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/v2.0.0/capture/nouveaux-etats.jpg)
+![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/nouveaux-etats.jpg)
 
 ## 4.3. Pour chacun de vos périphériques, modifiez la configuration
 
