@@ -77,7 +77,7 @@ A la première utilisation, le Master Data peut mettre plusieurs minutes à s'init
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste.jpg)
 
-Il suffit de renseigner l'adresse et le type dans l'écran de paramétrage comme indiqué ci-dessous.
+Il suffit de recopier l'adresse dans l'écran de paramétrage comme indiqué ci-dessous.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/parametre-affichage.jpg)
 
