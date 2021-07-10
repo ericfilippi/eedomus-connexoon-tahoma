@@ -159,15 +159,9 @@ Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à
 
 ## 4.1. Installer le Master Data (voir paragraphe 2)
 
-#### - depuis la v1 : installation à partir du store
+**- depuis la v1** : installer le Master Data à partir du store
 
-#### - depuis la v2 : modification
-
-1. Ajouter l'adresse du Master Data dans [VAR1]
-
-C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la liste des gateways :effectuez un reset du Master Data
-
-2. effectuez un reset du Master Data par la commande : http://votre_@_IP/script/?exec=liste_somfy.php&action=reset
+**- depuis la v2** : Supprimer le Capteur SOMFY et installer le Master Data à partir du store
 
 ## 4.2. Pour chacun de vos périphériques IO, ajouter 2 états
 
