@@ -81,7 +81,10 @@ Il suffit de recopier l'adresse dans l'écran de paramétrage comme indiqué ci-des
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/parametre-affichage.jpg)
 
-**Important** : Une fois le périphérique créé, il est nécessaire d'envoyer une première commande (par exemple "ouvrir") afin d'initialiser le retour d'état.
+**Important** afin d'initialiser le retour d'état (sinon il n'y en aura pas ! ):
+
+- Pour les actionneurs : envoyer une première commande (par exemple "ouvrir").
+- Pour les capteurs : l'init se lance toutes les 10 heures, mais vous pouvez le forcer : (paraètres experts, tester le chemin XPATH
 
 ## 3.2 Les équipements Somfy non reconnus sont listés dans le chapitre *C*.
 
@@ -129,7 +132,7 @@ Le paramétrage est très simple :
 
 **Adresse de l'équipement Somfy** : listez les adresses des équipements en les séparant avec des virgules.
 
-**Requête de mise à jour (Optionnelle)** : http://localhost/script/?exec=connexoon.php&action=auto
+**Requête de mise à jour ** : http://localhost/script/?exec=connexoon.php&action=auto
 
 **Chemin XPATH** : /connexoon/resultat
 
