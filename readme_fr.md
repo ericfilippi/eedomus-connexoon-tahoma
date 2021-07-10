@@ -159,6 +159,16 @@ Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à
 
 ## 4.1. Installer le Master Data (voir paragraphe 2)
 
+#### - depuis la v1 : (voir paragraphe 2)
+
+#### - depuis la v2 : 
+
+1. Ajouter l'adresse du Master Data dans [VAR1]
+
+C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la liste des gateways :effectuez un reset du Master Data
+
+2. effectuez un reset du Master Data par la commande : http://votre_@_IP/script/?exec=liste_somfy.php&action=reset
+
 ## 4.2. Pour chacun de vos périphériques IO, ajouter 2 états
 
 Ajouter les valeurs suivantes : 
@@ -169,14 +179,15 @@ Ajouter les valeurs suivantes :
 
 ### Variables utilisatur
 
-#### depuis la v1 :
+#### - depuis la v1 :
 
-A l'aide du chemin XPATH initial et de l'outil de migration : http://votre_@_IP/script/?exec=liste_somfy.php&action=migration
-renseignez [VAR2] avec l'état
+A l'aide du chemin XPATH initial et de l'outil de migration : http://votre_@_IP/script/?exec=liste_somfy.php&action=migration , renseignez [VAR2] avec l'état approprié
 
 **exemple** : [VAR2] = core:ClosureState
 
-#### depuis la v2 :
+Vous pouvez aussi recréer un péripérique pour prendre exemple.
+
+#### - depuis la v2 :
 
 normalement, [VAR2] est déjà bien paramétré
 
@@ -184,7 +195,7 @@ normalement, [VAR2] est déjà bien paramétré
 
 ### Paramètres avancés
 
-- **Requête de mise à jour (Optionnelle)** : http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init
+- **Requête de mise à jour ** : http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init
 - **Chemin XPATH** : /somfy/state
 - **Fréquence de la requête** : 600
 
