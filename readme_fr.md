@@ -31,8 +31,11 @@ La version 3 du plugin utilise un capteur d'état qu'il est nécessaire d'installe
 
 La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", le nom du script a été modifié. Suivez attentivement les étapes du chapitre 4.
 
-Merci à @Pat pour le script initial, ainsi qu'à toute la Team EedmusSomfy pour le développement et les tests de la V3 : @herric, @dommarion, @dom54 et @sev
-
+##qui est TeamListeSomfy
+@Pat : créateur du script initial v1
+@herric : script v2, v3 et tests
+@dommarion : nouveaux équipements, json v3 et tests
+@dom54 et @sev : nouveaux équipements et tests
 
 Dans ce document on nomme :
 
