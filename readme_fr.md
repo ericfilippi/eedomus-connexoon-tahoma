@@ -159,9 +159,9 @@ Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à
 
 ## 4.1. Installer le Master Data (voir paragraphe 2)
 
-#### - depuis la v1 : (voir paragraphe 2)
+#### - depuis la v1 : installation à partir du store
 
-#### - depuis la v2 : 
+#### - depuis la v2 : modification
 
 1. Ajouter l'adresse du Master Data dans [VAR1]
 
