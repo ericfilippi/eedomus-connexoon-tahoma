@@ -171,7 +171,8 @@ Ajouter les valeurs suivantes :
 
 #### depuis la v1 :
 
-A l'aide du chemin XPATH initial et de l'outil de migration : http://votre_@_IP/script/?exec=liste_somfy.php&action=migration , renseignez [VAR2] avec l'état
+A l'aide du chemin XPATH initial et de l'outil de migration : http://votre_@_IP/script/?exec=liste_somfy.php&action=migration
+renseignez [VAR2] avec l'état
 
 **exemple** : [VAR2] = core:ClosureState
 
