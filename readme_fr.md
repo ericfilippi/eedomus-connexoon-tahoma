@@ -17,7 +17,7 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
    
    3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
    
-4. Migration depuis les versions 1.x.x
+4. Migration depuis les versions 1.x.x et 2.x.x
 
 5. Historique des versions
 
