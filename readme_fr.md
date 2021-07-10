@@ -132,7 +132,7 @@ Le paramétrage est très simple :
 
 **Adresse de l'équipement Somfy** : listez les adresses des équipements en les séparant avec des virgules.
 
-**Requête de mise à jour ** : http://localhost/script/?exec=connexoon.php&action=auto
+**Requête de mise à jour ** : http://localhost/script/?exec=liste_somfy.php&action=auto
 
 **Chemin XPATH** : /connexoon/resultat
 
@@ -154,6 +154,8 @@ Le paramétrage est très simple :
 # 4. Migration depuis les versions 1.x.x et 2.x.x
 
 La migration en version 3 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
+
+Le nom du script (connexoon.php) a été changé (liste_somfy.php) afin de ne pas perturber les installations existantes.
 
 Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à pas les étapes suivantes.
 
@@ -197,7 +199,7 @@ normalement, [VAR2] est déjà bien paramétré
 
 modifier les valeurs des commandes comme suit : 
 
-- **URL** : http://localhost/script/?exec=connexoon.php
+- **URL** : http://localhost/script/?exec=liste_somfy.php
 - **Paramètres** : &devices=[VAR1]&etat=[VAR2]&action=[votre action]&value=[votre paramètre]
 
 **Information** : [VAR1] passe du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
