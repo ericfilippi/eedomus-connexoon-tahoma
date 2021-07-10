@@ -206,7 +206,21 @@ modifier les valeurs des commandes comme suit :
 
 # 5. Historique des versions
 
-### V2.0.1 du
+### V3.0.0 du 10/07/2021
+**Amélioratiuons et nouvelles fonctionnalités :**
+- ajout de nombreux équipements SOMFY
+- gestion des équipements à piles
+- optimisation du retour d'état : limitation des appels à sdk_get_setup() pour privilégier sdk_getDeviceStatus()
+- sécurisation des logins pour éviter le blacklistage de Somfy
+- gestion des gateways
+- amélioration de l'écran de création de périphérique
+
+**Corrections :**
+- suppression de l'état "connexion" pour les capteurs (pour éviter de l'avoir dans l'historique)
+- prise en compte des caractères spéciaux dans les adresses d'équipement (urlencode)
+
+
+### V2.0.1 du 05/04/2021
 - ajout io:MicroModuleRollerShutterSomfyIOComponent => volet IO
 - correction code usage sur le capteur
 
