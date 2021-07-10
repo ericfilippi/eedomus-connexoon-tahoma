@@ -364,7 +364,7 @@ function sdk_display_login_form($message='', $error='')
 }
 
 // Ecran des pièces
-function sdk_display_equipements($devices,$gateways)
+function sdk_display_equipements($devices,$gateways,$migration=false)
 {
 	global $devicesControllableNames;
 
@@ -400,7 +400,28 @@ function sdk_display_equipements($devices,$gateways)
 		$iKnown = 1;
 		foreach ($known_devices as $device)
 		{
-			echo '<p><b>' . $iKnown . ') ' .$device['label'].'</b> (type: '.$device['type'].')</br>adresse de l\'équipement Somfy [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.urlencode($device['url']).'"></p>';
+			if ($migration)
+			{
+				echo '<h2>' . $iKnown . ') ' . $device['label'].' => (type: '.$device['controllableName'].')</h2><p>Adresse de l\'équipement Somfy [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.urlencode($device['url']).'"></p><h3>Liste des états disponibles :</h3>';
+				foreach ($device['definition']['states'] as $state)
+				{
+					echo 'Etat [VAR2]: <input onclick="this.select();" type="text" size="40" readonly="readonly" value="' . $state['qualifiedName'] . '"> <b>type :</b> ' . $state['type'];
+					if (isset($state['values']))
+					{
+						echo '<b> | valeurs :</b> ';
+						foreach ($state['values'] as $valeur)
+						{
+							echo  $valeur .  ',';
+						}
+					}
+					echo '<br/>';
+				}
+				echo '</p>';
+			}
+			else
+			{
+				echo '<p><b>' . $iKnown . ') ' .$device['label'].'</b> (type: '.$device['type'].')</br>adresse de l\'équipement Somfy [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.urlencode($device['url']).'"></p>';
+			}
 			$iKnown++;
 		}
 	}
@@ -523,6 +544,40 @@ switch ($action)
 		//sdk_display_equipements($setup['devices'],$setup['gateways']);
 		
 		break;
+	case 'migration' :
+		//------------------------------------
+		// Utilisé pour la migration en V3
+		//------------------------------------
+		
+		// Traitement des actions POST
+		if (isset($_POST['submit']))
+		{
+			saveVariable('countProtect', 0);
+			saveVariable('username', $_POST['username']);
+			saveVariable('password', $_POST['password']);
+		}
+		
+		$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+		if (array_key_exists('error',$resultFetch))
+		{
+			$testUser = loadVariable('username');
+			if ($testUser == '')
+			{
+				sdk_display_login_form('Veuillez renseigner vos identifiants Somfy.');
+			}
+			else
+			{
+				if (sdk_login() == 'ERROR_LOGIN')
+				{	// Erreur d'identification au cloud
+					sdk_display_login_form('', 'Identifiants de connexion incorrects');
+				}
+			}
+		}
+		
+		$setup = sdk_get_setup($eeDevices);
+		sdk_display_equipements($setup['devices'],$setup['gateways'],true);
+		break;
+		
 	case 'track' :
 		//------------------------------------
 		// Utilisé pour les tracker le nombre de devices

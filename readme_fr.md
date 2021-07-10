@@ -151,15 +151,15 @@ Le paramétrage est très simple :
 	 - **Paramètres** : vide
 - si vous avez dupliqué un périphérique existant qui fonctionnait avec la V1, et si vous avez plus de 5 ou 6 équipements Somfy dans [VAR1], [VAR1] doit passer du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
 
-# 4. Migration depuis les versions 1.x.x
+# 4. Migration depuis les versions 1.x.x et 2.x.x
 
-La migration en version 2 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
+La migration en version 3 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
 
 Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à pas les étapes suivantes.
 
-## 4.1. Installer le capteur Somfy (voir paragraphe 2)
+## 4.1. Installer le Master Data (voir paragraphe 2)
 
-## 4.2. Pour chacun de vos périphériques, ajouter 2 états
+## 4.2. Pour chacun de vos périphériques IO, ajouter 2 états
 
 Ajouter les valeurs suivantes : 
 
@@ -169,17 +169,23 @@ Ajouter les valeurs suivantes :
 
 ### Variables utilisatur
 
-**[VAR2]** : core:ClosureState
+#### depuis la v1 :
 
-... ou tout autre valeur pour le retour d'état si vous avez personnalisé votre périphérique
+A l'aide du chemin XPATH initial et de l'outil de migration : http://votre_@_IP/script/?exec=liste_somfy.php&action=migration , renseignez [VAR2] avec l'état
 
-**Important** : Le retour d'état ne fonctionnera pas si cette valeur n'est pas renseignée.
+**exemple** : [VAR2] = core:ClosureState
+
+#### depuis la v2 :
+
+normalement, [VAR2] est déjà bien paramétré
+
+**Important** : Le retour d'état ne fonctionnera pas si [VAR2] n'est pas renseignée correctement.
 
 ### Paramètres avancés
 
-- **Requête de mise à jour (Optionnelle)** : effacer
-- **Chemin XPATH** : effacer
-- **Fréquence de la requête** : 0
+- **Requête de mise à jour (Optionnelle)** : http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init
+- **Chemin XPATH** : /somfy/state
+- **Fréquence de la requête** : 600
 
 ### Onglet valeurs
 
