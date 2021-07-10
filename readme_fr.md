@@ -31,7 +31,7 @@ La version 3 du plugin utilise un capteur d'état qu'il est nécessaire d'installe
 
 La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", le nom du script a été modifié. Suivez attentivement les étapes du chapitre 4.
 
-##qui est TeamListeSomfy
+## qui est TeamListeSomfy
 
 - @Pat : créateur du script initial v1
 - @herric : script v2, v3 et tests
