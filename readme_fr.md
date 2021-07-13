@@ -1,6 +1,6 @@
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/img/logo_connexoon.png "Paramétrage capteur")
 
-# Périphérique Somfy V3
+# Plugin Somfy V3
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
 # Sommaire
@@ -9,7 +9,7 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
 2. Première utilisation
 
-3. Création d'un prériphérique
+3. Création d'un périphérique
 
    3.1 Equipement Somfy reconnu
    
@@ -19,7 +19,9 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
    
 4. Migration depuis les versions 1.x.x et 2.x.x
 
-5. Historique des versions
+5. Outils pratiques
+
+6. Historique des versions
 
 # 1. Introduction
 
@@ -29,13 +31,13 @@ Ce plugin permet de contrôler certains équipements SOMFY. Il est nécessaire pour
 
 La version 3 du plugin utilise un capteur d'état qu'il est nécessaire d'installer pour bénéficier de toutes les fonctionnalités.
 
-La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afin d'éviter tout problème en production et de premettre une migration "en douceur", le nom du script a été modifié. Suivez attentivement les étapes du chapitre 4.
+La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afin d'éviter tout problème en production et de permettre une migration "en douceur", le nom du script a été modifié. Suivez attentivement les étapes du chapitre 4.
 
 **qui est TeamListeSomfy ?**
 
 - @Pat : créateur du script initial v1
 - @herric : script v2, v3 et tests
-- @dommarion : nouveaux équipements, json v3 et tests
+- @dommarion : nouveaux équipements, json v3, graphismes et tests
 - @dom54 et @sev : nouveaux équipements et tests
 
 Dans ce document on nomme :
@@ -48,13 +50,13 @@ Dans ce document on nomme :
 
 # 2. Première utilisation
 
-**Important** : Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipment correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
+**Important** : Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipement correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
 
-La liste des équipements Somfy connectés à votre box SOMFY est affichée.
+La liste des équipements Somfy connectés à votre box SOMFY est affichée, veillez à bien conserver cette liste (copier/coller dans un fichier et sauvegarde pour utilisation ultérieure).
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/lien.jpg)
 
-Avant de créer vos prériphériques, installez le Master Data (à n'installer qu'une seule fois) :
+Avant de créer vos périphériques, installez le Master Data (à n'installer qu'une seule fois) :
 
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/capteur.jpg)
 
@@ -67,17 +69,24 @@ Ce Master Data a pour fonction :
 
 - d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
 - d'assurer le retour d'état des commandes envoyées par eedomus vers SOMFY
-- de mettre à jour les prériphériques eedomus suite à une action directe IO (RTS ne supporte pas le retour d'état)
+- de mettre à jour les périphériques eedomus suite à une action directe IO (RTS ne supporte pas le retour d'état)
 
 ### Valeurs
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/valeurs_capteur.jpg)
 
-A la première utilisation, le Master Data peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes.
+A la première utilisation, le Master Data peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes (fréquence dans le polling = 1).
 
 # 3. Création d'un périphérique
 
 ## 3.1 Les équipements Somfy reconnus sont listés dans le chapitre *B*.
+
+Un équipement reconnu est « codé » dans le plugin, le périphérique a été prédéfini avec ses commandes, son retour d’état, la requête http, son polling et tous les graphismes correspondants.
+
+Le système n’installe qu’un seul périphérique par type d’équipement. Si vous disposez de plusieurs équipements de ce type alors 2 options sont possibles :
+
+-	soit relancer autant de fois que nécessaire le Plugin (assez fastidieux et source d’erreur car il faut cocher le bon type d’équipement)
+-	soit dupliquer le périphérique dans la box eedomus et changer l’adresse avec celle de l’équipement à créer dans [VAR1]
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste.jpg)
 
@@ -88,23 +97,25 @@ Il suffit de recopier l'adresse dans l'écran de paramétrage comme indiqué ci-des
 **Important** afin d'initialiser le retour d'état (sinon il n'y en aura pas ! ):
 
 - Pour les actionneurs : envoyer une première commande (par exemple "ouvrir").
-- Pour les capteurs : l'init se lance toutes les 10 heures, mais vous pouvez le forcer : (paraètres experts, tester le chemin XPATH
+- Pour les capteurs : l'init se lance toutes les 10 heures (polling à 600 minutes), mais vous pouvez le forcer : (paramètres experts, tester le chemin XPATH).
 
 ## 3.2 Les équipements Somfy non reconnus sont listés dans le chapitre *C*.
 
-Cela vous permettra (avec un peu d'entraînement) de paramétrer votre périphérique eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
+Cela vous permettra (avec un peu d'entraînement) de créer et paramétrer votre périphérique eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
+
+**Attention** : certaines commandes ont des paramètres associés à l’action. Malheureusement le cloud Somfy et donc le listing ne donnent pas les valeurs des paramètres, il faut les « deviner », souvent en s’aidant des valeurs d’état.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste_non_reconnu.jpg)
 
-**Type** : Sélectionnez "Prériphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
+**Type** : Sélectionnez "Périphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
 
-**Liste des états disponibles** : indique les états que peut prendre votre équipement Somfy.
+**Liste des états disponibles** : indique les variables d’état que peut prendre votre équipement Somfy, chaque variable ayant une liste de valeurs, ou une valeur booléenne, numérique.
 
-**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptée par votre équipement Somfy, avec le nombre de paramètres à fournir. L'API Somfy ne fournit pas le détail des valeurs des paramètres. Il va falloir fair preuve d'immagination, de bon sens, et procéder par essai/erreur pour toruver les bons paramètres.
+**Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptées par votre équipement Somfy, avec le nombre de paramètres à fournir. L'API Somfy ne fournit pas le détail des valeurs des paramètres. Il va falloir faire preuve d'imagination, de bon sens, et procéder par essai/erreur pour trouver les bonnes valeurs des paramètres.
 
 ### Exemple : 
 
-**1. A la création du prériphérique, renseignez les champs en fonction des informations de la liste**
+**1. A la création du périphérique, renseignez les champs en fonction des informations de la liste**
 
 Choisissez l'état que vous souhaitez utiliser pour votre retour d'état eedomus et collez-le dans le champ Etat.
 
@@ -114,7 +125,7 @@ Cliquez sur créer
 
 **2. Dans l'onglet "Valeurs" de la configuration de votre périphérique, ajustez les commandes**
 
-Renseignez les commandes en tenant compte du nombre de paramètres comme illustreé ci-dessous.
+Renseignez les commandes en tenant compte du nombre de paramètres comme illustré ci-dessous.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/commandes-non-reconnu.jpg)
 
@@ -125,12 +136,12 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustre
 
 ## 3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique
 
-Les prériphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
+Les périphériques "multi" permettent de commander plusieurs équipements Somfy en n'envoyant qu'une seule commande à la box Somfy.
 
 Vous pouvez
 
 - soit dupliquer un périphérique existant et modifier son paramétrage
-- soit créer un périphérique multi à partit du store
+- soit créer un périphérique multi à partir du store
 
 Le paramétrage est très simple :
 
@@ -148,7 +159,7 @@ Le paramétrage est très simple :
 - la liste d'adresses séparée par des virgules ne doit contenir aucun espace, y compris en fin de liste.
 - il n'y a pas de retour d'état en mode multi, le périphérique revient automatiquement en état "auto" au bout d'une minute grâce à la requête de mise à jour.
 - si vous avez dupliqué un périphérique existant, pensez à ajouter une valeur auto :
-     - **valeur** brute : unknow (désolé pour la coquille, compatibilité avecla V1 oblige ...)
+     - **valeur** brute : unknow (désolé pour la coquille, compatibilité avec la V1 oblige ...)
 	 - **icone** : ce que vous voulez
 	 - **description** : auto
 	 - **URL** : laisser par défaut
@@ -157,7 +168,7 @@ Le paramétrage est très simple :
 
 # 4. Migration depuis les versions 1.x.x et 2.x.x
 
-La migration en version 3 ne change rien au fonctionnement de vos équipements Somfy, mais améliore la communication avec le cloud Somfy.
+La migration en version 3 ne change rien au fonctionnement de base de vos équipements Somfy, mais elle améliore la communication avec le cloud Somfy gère les gateway, ouvre à une liste plus importante d’équipements, gère les piles couplées aux capteurs, résout des dysfonctionnements, permet un meilleur suivi du fonctionnement de l’application (compteur de devices et autres fonctions internes) et réduit la consommation du CPU.
 
 Le nom du script (connexoon.php) a été changé (liste_somfy.php) afin de ne pas perturber les installations existantes.
 
@@ -181,15 +192,15 @@ Ajouter les valeurs suivantes :
 
 #### - depuis la v1 :
 
-A l'aide du chemin XPATH initial et de l'outil de migration : http://votre_@_IP/script/?exec=liste_somfy.php&action=migration , renseignez [VAR2] avec l'état approprié
+A l'aide du chemin XPATH initial et de l'outil de migration : http://@IP_votre_eedomus/script/?exec=liste_somfy.php&action=migration , renseignez [VAR2] avec l'état approprié
 
 **exemple** : [VAR2] = core:ClosureState
 
-Vous pouvez aussi recréer un péripérique pour prendre exemple.
+Vous pouvez aussi recréer un périphérique pour prendre exemple.
 
 #### - depuis la v2 :
 
-normalement, [VAR2] est déjà bien paramétré
+Normalement, [VAR2] est déjà bien paramétrée
 
 **Important** : Le retour d'état ne fonctionnera pas si [VAR2] n'est pas renseignée correctement.
 
@@ -201,37 +212,85 @@ normalement, [VAR2] est déjà bien paramétré
 
 ### Onglet valeurs
 
-modifier les valeurs des commandes comme suit : 
+Modifier les valeurs des commandes comme suit : 
 
 - **URL** : http://localhost/script/?exec=liste_somfy.php
 - **Paramètres** : &devices=[VAR1]&etat=[VAR2]&action=[votre action]&value=[votre paramètre]
 
 **Information** : [VAR1] passe du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
 
-# 5. Historique des versions
+# 5. Outils pratiques (pour les utilisateurs avancés)
+
+Ces outils réservés aux utilisateurs avancés peuvent vous aider paramétrer les périphériques non reconnus. 
+
+## Vérification des commandes sur la box Tahoma
+
+Il est possible de visualiser les commandes passées de la box eedomus vers la box Tahoma, il suffit de se connecter à sa Tahoma, puis aller dans "Supervision/Tableau de bord", choisir l'onglet "Tableau de Bord" et choisir "HISTORIQUE". Les commandes passées aux équipements SOMFY apparaissent avec l'heure de commande, en cliquant sur le + on peut voir le détail de la commande.
+
+## Réinitialisation du plugin
+
+Dans certains cas (si vous avez trop testé, copié, dupliqué ... bref bidouillé) , il peut-être nécessaire de réinitialiser le PLugin. Cela effacera les informations de vos périphériques.
+
+Passer la commande : http://@IP_votre_eedomus/script/?exec=liste_somfy.php&action=reset
+
+La page devrait afficher "Reset effectué".
+
+Ensuite deux options sont possibles :
+
+- laisser le système initialiser les périphériques selon le polling (attente jusqu’à 600 minutes soit 10 heures).
+- initialiser manuellement tous les périphériques avec retour d'état en testant le XPATH. Le retour d’état doit s’afficher dans résultat XPath.
+
+Tous les devices doivent être initialisés, y compris les piles et autres devices liés.
+
+## Display
+
+Affiche la liste des périphériques avec retour d'état initialisés dans le plugin (dont le Master Data).
+
+Passer la commande : http://@IP_votre_eedomus/script/?exec=liste_somfy.php&action=display
+
+## Track
+
+Permet de compter combien de périphériques sont initialisés (pratique si vous laissez faire le polling)
+
+Créer un ériphérique de type Capteur http
+
+- **Requête de mise à jour ** : http://localhost/script/?exec=liste_somfy.php&action=track
+- **Chemin XPATH** : /somfy/compteur
+- **Fréquence de la requête** : ce que vous voulez 
+
+# 6. Historique des versions
 
 ### V3.0.0 du 10/07/2021
-**Amélioratiuons et nouvelles fonctionnalités :**
-- ajout de nombreux équipements SOMFY
-- gestion des équipements à piles
+
+**Améliorations et nouvelles fonctionnalités :**
+
+- ajout de nombreux équipements SOMFY (lien entre script et Json, et création Json)
+- gestion des piles des équipements
 - optimisation du retour d'état : limitation des appels à sdk_get_setup() pour privilégier sdk_getDeviceStatus()
 - sécurisation des logins pour éviter le blacklistage de Somfy
 - gestion des gateways
 - amélioration de l'écran de création de périphérique
+- amélioration du suivi du script avec des fonctions internes (display, compteur)
+- optimisation de la charge CPU
+
 
 **Corrections :**
+
 - suppression de l'état "connexion" pour les capteurs (pour éviter de l'avoir dans l'historique)
 - prise en compte des caractères spéciaux dans les adresses d'équipement (urlencode)
 
 
 ### V2.0.1 du 05/04/2021
+
 - ajout io:MicroModuleRollerShutterSomfyIOComponent => volet IO
 - correction code usage sur le capteur
 
 ### v2.0.0 du 26/03/2021
+
 - modification du login pour éviter les déconnexions
 - prise en compte des événements somfy pour gérer le retour d'état
 - ajout prise on/off io et fil pilote io
 
 ### v1.2.2 du 27/06/2020
+
 - ajout Brises soleil orientables : io:ExteriorVenetianBlindIOComponent' => 'BSO IO

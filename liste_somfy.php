@@ -372,7 +372,6 @@ function sdk_display_equipements($devices,$gateways,$migration=false)
 	
 	$known_devices = array();
 	$unknown_devices = array();
-
 	echo '<h1>A) Liste des gateways Somfy :</h1>';
 	$iKnown = 1;
 	foreach ($gateways as $gateway)
@@ -539,7 +538,7 @@ switch ($action)
 		//------------------------------------
 		//$tesID = getArg('eedomus_controller_module_id');
 		//$priphValeur = getPeriphList(true, $tesID);
-		echo '<br/>$eeDevices = <pre>';  var_dump($eeDevices) ; echo '</pre>';
+		echo '<br/>Affichage des périphériques initialisés : <pre>';  var_dump($eeDevices) ; echo '</pre>';
 		//$setup = sdk_get_setup($eeDevices);
 		//sdk_display_equipements($setup['devices'],$setup['gateways']);
 		
@@ -573,7 +572,7 @@ switch ($action)
 				}
 			}
 		}
-		
+		echo '<h1>Affichage détaillé de tous les équipements : </h1>';
 		$setup = sdk_get_setup($eeDevices);
 		sdk_display_equipements($setup['devices'],$setup['gateways'],true);
 		break;
