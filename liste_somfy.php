@@ -1,7 +1,6 @@
 <?php
-// script créé par Patrice Gauchon pour eedomus
-// Version 3.0.0 développée par TeamListeSomfy / 10/07/2021 
-// Code version 20210710 14:00
+// Version 3.0.0 développée par TeamListeSomfy / 13/07/2021 
+// Code version 20210713 14:00
 
 $api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
 

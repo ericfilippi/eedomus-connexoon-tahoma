@@ -36,7 +36,7 @@ La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afi
 **qui est TeamListeSomfy ?**
 
 - @Pat : créateur du script initial v1
-- @herric : script v2, v3 et tests
+- @herric : script v2, v3, graphismes et tests
 - @dommarion : nouveaux équipements, json v3, graphismes et tests
 - @dom54 et @sev : nouveaux équipements et tests
 
@@ -266,7 +266,6 @@ Le périphérique "Compteur devices" est créé en même temps que le Master Data.
 - amélioration de l'écran de création de périphérique
 - amélioration du suivi du script avec des fonctions internes (display, compteur)
 - optimisation de la charge CPU
-
 
 **Corrections :**
 
