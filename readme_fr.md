@@ -58,11 +58,9 @@ La liste des équipements Somfy connectés à votre box SOMFY est affichée, veillez
 
 Avant de créer vos périphériques, installez le Master Data (à n'installer qu'une seule fois) :
 
-![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/capteur.jpg)
-
 **Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la liste des gateways :
 
-![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste_gateways.jpg)
+![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/Master-Data.jpg)
 
 
 Ce Master Data a pour fonction :
@@ -252,11 +250,7 @@ Passer la commande : http://@IP_votre_eedomus/script/?exec=liste_somfy.php&actio
 
 Permet de compter combien de périphériques sont initialisés (pratique si vous laissez faire le polling)
 
-Créer un ériphérique de type Capteur http
-
-- **Requête de mise à jour ** : http://localhost/script/?exec=liste_somfy.php&action=track
-- **Chemin XPATH** : /somfy/compteur
-- **Fréquence de la requête** : ce que vous voulez 
+Le périphérique "Compteur devices" est créé en même temps que le Master Data. 
 
 # 6. Historique des versions
 
