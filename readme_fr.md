@@ -81,7 +81,7 @@ A la première utilisation, le Master Data peut mettre plusieurs minutes à s'init
 | Valeur | Libellé | Signification |
 | --- | --- | --- |
 | 0 | SOMFY OFF | Le cloud SOMFY est injoignable, vérifiez votre connexion internet. |
-| 1 | SOMFY ON / Tahome OFF | Connexion au cloud SOMFY OK, mais le cloud SOMFY remonte une perte de connexion avec sa box Tahoma, le problème n'est **pas** eedomus mais **côté Somfy**. |
+| 1 | SOMFY ON / Tahome OFF | Connexion au cloud SOMFY OK, mais le cloud SOMFY remonte une perte de connexion avec sa box Tahoma, le problème n'est **pas** côté eedomus mais **côté Somfy**. |
 | 2 | Vérifier devices en erreur | Connexion au cloud SOMFY OK, mais le cloud SOMFY remonte une erreur de connexion avec un ou plusieurs équipement. Identifier l'équipement et **corriger le problème côté Somfy**. |
 | 3 | SOMFY ON / Tahome ON | tout va bien |
 | 4 | SOMFY login vérouillé | Le plugin s'est mis en sécurité suite à 3 problèmes de login successifs (voir chapitre 6 pour déblocage) |
