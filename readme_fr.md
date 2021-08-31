@@ -17,7 +17,7 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
    
    3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
   
-4. Migration depuis les versions 1.x.x, 2.x.x et 3.0.0
+4. Migration
 
 5. Outils pratiques
 
@@ -170,7 +170,7 @@ Le paramétrage est très simple :
 
 # 4. Migration
 
-## 4.1. A partir de la version 3.0.0
+## 4.1. A partir de la version 3
 
 Simplement supprimer puis recréez le Master Data.
 
@@ -264,7 +264,26 @@ Le périphérique "Compteur devices" est créé en même temps que le Master Data.
 
 # 6. Déblocage du plugin
 
+Le Master Data à la valeur 4 (SOMFY login vérouillé) signifique que le plugin s'est mis en sécurité suite à 3 problèmes de login successifs afin d'éviter d'être blacklisté par Somfy.
 
+Les causes connues sont :
+
+## Changement de mot de passe SOMFY
+
+actions :
+
+1. vérifiez vos identifiants
+2. appliquez la correction côté eedomus
+3. cliquez sur Reset vérouillage sur votre Master Data
+
+## Maintenance ou mise à jour Majeure de la box Tahoma
+
+Ce cas génère un message lors d votre connexion directe à comfy-connect.com, ce qui bloque le login
+
+actions : 
+
+1. assurez-vous que la maintennace est terminée avec succès
+2. cliquez sur Reset vérouillage sur votre Master Data
 
 # 7. Historique des versions
 
