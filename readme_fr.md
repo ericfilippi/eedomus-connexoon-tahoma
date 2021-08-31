@@ -1,6 +1,6 @@
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/img/logo_connexoon.png "Paramétrage capteur")
 
-# Plugin Somfy V3
+# Plugin Somfy V3.1.0
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
 # Sommaire
@@ -17,11 +17,13 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
    
    3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
    
-4. Migration depuis les versions 1.x.x et 2.x.x
+4. Migration depuis les versions 1.x.x, 2.x.x et 3.0.0
 
 5. Outils pratiques
 
-6. Historique des versions
+6. Déblocage du plugin
+
+7. Historique des versions
 
 # 1. Introduction
 
@@ -68,12 +70,19 @@ Ce Master Data a pour fonction :
 - d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
 - d'assurer le retour d'état des commandes envoyées par eedomus vers SOMFY
 - de mettre à jour les périphériques eedomus suite à une action directe IO (RTS ne supporte pas le retour d'état)
+- de bloquer/débloquer les requêtes au cloud SOMFY pour éviter les blacklistages
+
+A la première utilisation, le Master Data peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes (fréquence dans le polling = 1).
 
 ### Valeurs
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/valeurs_capteur.jpg)
 
-A la première utilisation, le Master Data peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes (fréquence dans le polling = 1).
+0 SOMFY OFF : le cloud SOMFY est injoignable, vérifiez votre connexion internet.
+1 SOMFY ON / Tahome OFF : Connexion au cloud SOMFY OK, mais le cloud SOMFY remonte une perte de connexion avec sa box Tahoma, le problème n'est **pas** eedomus mais **côté Somfy**.
+2 Vérifier device en erreur : Connexion au cloud SOMFY OK, mais le cloud SOMFY remonte une erreur de connexion avec un ou plusieurs équipement. Identifier l'équipement et **corriger le problème côté Somfy**.
+3 SOMFY ON / Tahome OFF : tout va bien
+4 SOMFY login vérouillé : Le plugin s'est mis en sécurité suite à 3 problèmes de login successifs (voir chapitre 6 pour déblocage)
 
 # 3. Création d'un périphérique
 
@@ -252,7 +261,11 @@ Permet de compter combien de périphériques sont initialisés (pratique si vous la
 
 Le périphérique "Compteur devices" est créé en même temps que le Master Data. 
 
-# 6. Historique des versions
+# 6. Déblocage du plugin
+
+
+
+# 7. Historique des versions
 
 ### V3.0.0 du 10/07/2021
 
