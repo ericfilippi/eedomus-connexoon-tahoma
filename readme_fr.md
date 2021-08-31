@@ -16,7 +16,7 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
    3.2 Equipement Somfy non reconnu
    
    3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
-   
+  
 4. Migration depuis les versions 1.x.x, 2.x.x et 3.0.0
 
 5. Outils pratiques
@@ -168,7 +168,11 @@ Le paramétrage est très simple :
 	 - **Paramètres** : vide
 - si vous avez dupliqué un périphérique existant qui fonctionnait avec la V1, et si vous avez plus de 5 ou 6 équipements Somfy dans [VAR1], [VAR1] doit passer du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
 
-# 4. Migration depuis les versions 1.x.x et 2.x.x
+# 4. Migration depuis les versions 1.x.x, 2.x.x et 3.0.0
+
+**A partir de la version 3.0.0** : simplement supprimer puis recréez le Master Data
+
+**A partir des versions précédentes 1.x.x et 2.x.x ** :
 
 La migration en version 3 ne change rien au fonctionnement de base de vos équipements Somfy, mais elle améliore la communication avec le cloud Somfy gère les gateway, ouvre à une liste plus importante d’équipements, gère les piles couplées aux capteurs, résout des dysfonctionnements, permet un meilleur suivi du fonctionnement de l’application (compteur de devices et autres fonctions internes) et réduit la consommation du CPU.
 
