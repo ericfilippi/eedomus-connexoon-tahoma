@@ -168,11 +168,13 @@ Le paramétrage est très simple :
 	 - **Paramètres** : vide
 - si vous avez dupliqué un périphérique existant qui fonctionnait avec la V1, et si vous avez plus de 5 ou 6 équipements Somfy dans [VAR1], [VAR1] doit passer du côté paramètres car il existe une limitation eedomus dans la taille du champ URL (URL = 250 caractères max / Paramètres = 1024 caractères max)
 
-# 4. Migration depuis les versions 1.x.x, 2.x.x et 3.0.0
+# 4. Migration
 
-**A partir de la version 3.0.0** : simplement supprimer puis recréez le Master Data
+## 4.1. A partir de la version 3.0.0
 
-**A partir des versions précédentes 1.x.x et 2.x.x ** :
+Simplement supprimer puis recréez le Master Data.
+
+## 4.2. Depuis les versions précédentes 1.x.x et 2.x.x
 
 La migration en version 3 ne change rien au fonctionnement de base de vos équipements Somfy, mais elle améliore la communication avec le cloud Somfy gère les gateway, ouvre à une liste plus importante d’équipements, gère les piles couplées aux capteurs, résout des dysfonctionnements, permet un meilleur suivi du fonctionnement de l’application (compteur de devices et autres fonctions internes) et réduit la consommation du CPU.
 
@@ -180,23 +182,23 @@ Le nom du script (connexoon.php) a été changé (liste_somfy.php) afin de ne pas p
 
 Cependant, afin de bénéficier des nouvelles fonctionnalités il faut suivre pas à pas les étapes suivantes.
 
-## 4.1. Installer le Master Data (voir paragraphe 2)
+### 4.2.1. Installer le Master Data (voir paragraphe 2)
 
 **- depuis la v1** : installer le Master Data à partir du store
 
 **- depuis la v2** : Supprimer le Capteur SOMFY et installer le Master Data à partir du store
 
-## 4.2. Pour chacun de vos périphériques IO, ajouter 2 états
+### 4.2.2. Pour chacun de vos périphériques IO, ajouter 2 états
 
 Ajouter les valeurs suivantes : 
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/nouveaux-etats.jpg)
 
-## 4.3. Pour chacun de vos périphériques, modifiez la configuration
+### 4.2.3. Pour chacun de vos périphériques, modifiez la configuration
 
-### Variables utilisatur
+#### Variables utilisatur
 
-#### - depuis la v1 :
+##### - depuis la v1 :
 
 A l'aide du chemin XPATH initial et de l'outil de migration : http://@IP_votre_eedomus/script/?exec=liste_somfy.php&action=migration , renseignez [VAR2] avec l'état approprié
 
@@ -204,19 +206,19 @@ A l'aide du chemin XPATH initial et de l'outil de migration : http://@IP_votre_e
 
 Vous pouvez aussi recréer un périphérique pour prendre exemple.
 
-#### - depuis la v2 :
+##### - depuis la v2 :
 
 Normalement, [VAR2] est déjà bien paramétrée
 
 **Important** : Le retour d'état ne fonctionnera pas si [VAR2] n'est pas renseignée correctement.
 
-### Paramètres avancés
+#### Paramètres avancés
 
 - **Requête de mise à jour ** : http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init
 - **Chemin XPATH** : /somfy/state
 - **Fréquence de la requête** : 600
 
-### Onglet valeurs
+#### Onglet valeurs
 
 Modifier les valeurs des commandes comme suit : 
 
