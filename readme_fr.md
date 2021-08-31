@@ -278,7 +278,7 @@ actions :
 
 ## Maintenance ou mise à jour Majeure de la box Tahoma
 
-Ce cas génère un message lors d votre connexion directe à comfy-connect.com, ce qui bloque le login depuis eedomus
+Ce cas génère un message lors de votre connexion directe à comfy-connect.com, ce qui bloque le login depuis eedomus
 
 actions : 
 
@@ -290,6 +290,8 @@ actions :
 Utilisez l'outil Display (voir chapitre 5) pour afficher la valeur **Affichage erreurs login** qui contient la dernière réponse du cloud SOMFY afin d'essayer de comprendre le problème.
 
 Poster si besoin cette valeur dans le forum afin d'en informer la communauté.
+
+Lorsque le problème est identifié et corrigé, cliquez sur Reset vérouillage sur votre Master Data.
 
 # 7. Historique des versions
 
