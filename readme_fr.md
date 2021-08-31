@@ -287,7 +287,7 @@ actions :
 
 ## Cas inconnu
 
-Utilisez l'outil Display pour afficher la valeur **Affichage erreurs login** qui contient la dernière réponse du cloud SOMFY afin d'essayer de comprendre le problème.
+Utilisez l'outil Display (voir chapitre 5) pour afficher la valeur **Affichage erreurs login** qui contient la dernière réponse du cloud SOMFY afin d'essayer de comprendre le problème.
 
 Poster si besoin cette valeur dans le forum afin d'en informer la communauté.
 
