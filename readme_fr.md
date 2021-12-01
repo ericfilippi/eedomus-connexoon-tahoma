@@ -235,15 +235,20 @@ Ces outils réservés aux utilisateurs avancés peuvent vous aider paramétrer les p
 
 Il est possible de visualiser les commandes passées de la box eedomus vers la box Tahoma, il suffit de se connecter à sa Tahoma, puis aller dans "Supervision/Tableau de bord", choisir l'onglet "Tableau de Bord" et choisir "HISTORIQUE". Les commandes passées aux équipements SOMFY apparaissent avec l'heure de commande, en cliquant sur le + on peut voir le détail de la commande.
 
+## Mise en pause du plugin
+
+En cas de manipulations sur le plugin et afin d'éviter d'être balcklisté par Somfy, il peut être nécessaire de mettre en pause le plugin.
+La pause  stoppe toute requête vers le cloud Somfy.
+
+1. cliquez sur "Pause" sur votre Master Data
+2. Pour revenir à un fonctionnement normal, cliquez sur "Reset vérouillage / pause" sur votre Master Data
+
 ## Réinitialisation du plugin
 
 Dans certains cas (si vous avez trop testé, copié, dupliqué ... bref bidouillé) , il peut-être nécessaire de réinitialiser le PLugin. Cela effacera les informations de vos périphériques.
 
-Passer la commande : http://@IP_votre_eedomus/script/?exec=liste_somfy.php&action=reset
-
-La page devrait afficher "Reset effectué".
-
-Ensuite deux options sont possibles :
+1. cliquez sur "Reset vérouillage / pause" sur votre Master Data
+2. Ensuite deux options sont possibles :
 
 - laisser le système initialiser les périphériques selon le polling (attente jusqu’à 600 minutes soit 10 heures).
 - initialiser manuellement tous les périphériques avec retour d'état en testant le XPATH. Le retour d’état doit s’afficher dans résultat XPath.
@@ -274,7 +279,7 @@ actions :
 
 1. vérifiez vos identifiants
 2. appliquez la correction côté eedomus
-3. cliquez sur Reset vérouillage sur votre Master Data
+3. cliquez sur "Reset vérouillage / pause" sur votre Master Data
 
 ## Maintenance ou mise à jour Majeure de la box Tahoma
 
@@ -282,8 +287,8 @@ Ce cas génère un message lors de votre connexion directe à comfy-connect.com, ce
 
 actions : 
 
-1. assurez-vous que la maintennace est terminée avec succès
-2. cliquez sur Reset vérouillage sur votre Master Data
+1. assurez-vous que la maintenance est terminée avec succès
+2. cliquez sur "Reset vérouillage / pause" sur votre Master Data
 
 ## Cas inconnu
 
@@ -294,6 +299,15 @@ Poster si besoin cette valeur dans le forum afin d'en informer la communauté.
 Lorsque le problème est identifié et corrigé, cliquez sur Reset vérouillage sur votre Master Data.
 
 # 7. Historique des versions
+
+### V3.1.0 du 13/09/2021
+
+**Améliorations et nouvelles fonctionnalités :**
+
+- Sécurisation des logins pour éviter le blacklistage de Somfy :
+correction bug
+ajout action Unlock dans Master Data
+- Ajout action Resst ghlobal dans Master Data
 
 ### V3.0.0 du 10/07/2021
 

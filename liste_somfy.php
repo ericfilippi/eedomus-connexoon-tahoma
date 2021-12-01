@@ -1,6 +1,6 @@
 <?php
 // Version 3.0.0 développée par TeamListeSomfy / 13/07/2021 
-// Code version 20210713 14:00
+// Code version 20210803 23:00
 
 $api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
 
@@ -79,7 +79,7 @@ $action = getArg('action', false);				// commande à envoyer à la box
 $eeDevices = loadVariable('eeDevices');			// Liste des couples deviceUrl (somfy) / periphId (eedomus)
 $registerId = loadVariable('registerId');		// id d'abonnement aux événements somfy
 $MasterDataSomfy = loadVariable('MasterDataSomfy');	// sauvegarde du statut du MasterData somfy
-$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
+
 
 //------------------------------
 // Fonctions
@@ -89,6 +89,8 @@ $countProtect = loadVariable('countProtect');	// Protection contre les trop nomb
 function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 {
 	global $api_url;
+	
+	$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
 
 	$header = NULL;
 	if ($content_type == 'json')
@@ -99,8 +101,17 @@ function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 	{
 		$data = http_build_query($data);
 	}
-
-	$result = httpQuery($api_url.$path, $method, $data, NULL, $header, true);
+    
+    if ($countProtect < 3)
+	{
+	    $result = httpQuery($api_url.$path, $method, $data, NULL, $header, true);
+	}
+	else
+	{
+	   $result =  array(
+	            'error' => 'countProtect',
+	       );
+	}
 	
 	return sdk_json_decode($result);
 }
@@ -113,18 +124,24 @@ function sdk_login()
 		'userPassword' => loadVariable('password'),
 	);
 	
+	$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
+	
 	if ($countProtect < 3)
 	{
 		$answerLogin = sdk_make_request('login', 'POST', $data);
+		$answerLoginTemp = $answerLogin;
 	}
 	else
 	{
-		$answerLogin = array();
+		$answerLogin = array(
+	            'error' => 'countProtect',
+	       );
 	}
 
 	if (($answerLogin['success'] == 'true') && ($answerLogin['roles'][0]['name'] == 'ENDUSER'))
 	{
 		$countProtect = 0;
+		$countProtectDisplay = array();
 	    $answerRegister = sdk_make_request('events/register', 'POST');
 
 	    if (array_key_exists('id',$answerRegister))
@@ -140,15 +157,20 @@ function sdk_login()
 	else
 	{
 	    $resultLogin = 'ERROR_LOGIN';
-		$countProtect++;
+	    if ($countProtect < 3)
+	    {
+		    $countProtect++;
+			$countProtectDisplay[$countProtect] = $answerLoginTemp;
+	    }
 	}
 	
 	saveVariable('countProtect', $countProtect);
+	saveVariable('countProtectDisplay', $countProtectDisplay);
 
 	return $resultLogin;
 }
 
-// Récupère les gateways, les pièces et les périphériques
+// Récupère les gateways, les pièces, les scenarios et les périphériques
 function sdk_get_setup($eeDevices)
 {
 	sdk_make_request('setup/devices/states/refresh', 'POST');
@@ -200,11 +222,22 @@ function sdk_get_setup($eeDevices)
 		$devices[$device_url]['definition']['commands'] = $device['definition']['commands'];
 		$devices[$device_url]['definition']['states'] = $device['definition']['states'];
 	}
-
+	
+	// On récupère les scenarios
+	$actionGroups = sdk_make_request('actionGroups', 'GET');
+	$scenarios = array();
+	foreach ($actionGroups as $actionGroup)
+	{
+		$scn_oid = $actionGroup['oid'];
+		$scenarios[$scn_oid]['oid'] = $actionGroup['oid'];
+		$scenarios[$scn_oid]['label'] = $actionGroup['label'];
+	}
+	
 	return array(
 		'devices' => $devices,
 		'alive' => $statutGatewayPrincpale,
 		'gateways' => $gateways,
+		'scenarios' => $scenarios,
 	);
 }
 
@@ -363,7 +396,7 @@ function sdk_display_login_form($message='', $error='')
 }
 
 // Ecran des pièces
-function sdk_display_equipements($devices,$gateways,$migration=false)
+function sdk_display_equipements($devices,$gateways,$scenarios,$migration=false)
 {
 	global $devicesControllableNames;
 
@@ -471,6 +504,18 @@ function sdk_display_equipements($devices,$gateways,$migration=false)
 			$iUnknown++;
 		}
 	}
+	
+	if (!empty($scenarios))
+	{
+		echo '<h1>'.'D) Liste des scenarios'.' :</h1>';
+		$iScn = 1;
+		foreach ($scenarios as $scenario)
+		{
+			echo '<p><b>' . $iScn . ') ' . $scenario['label'].'</b></br>Adresse du scenario [VAR1] : <input onclick="this.select();" type="text" size="40" readonly="readonly" value="'.urlencode($scenario['oid']).'"></p>';
+			$iScn++;
+		}
+	}
+	
 	echo '</body>';
 	die;
 }
@@ -490,6 +535,7 @@ switch ($action)
 		if (isset($_POST['submit']))
 		{
 			saveVariable('countProtect', 0);
+			saveVariable('countProtectDisplay',array());
 			saveVariable('username', $_POST['username']);
 			saveVariable('password', $_POST['password']);
 		}
@@ -518,7 +564,7 @@ switch ($action)
 			sdk_display_login_form('', 'Aucun périphérique détecté.');
 		}
 
-		sdk_display_equipements($setup['devices'],$setup['gateways']);
+		sdk_display_equipements($setup['devices'],$setup['gateways'],$setup['scenarios']);
 		break;
 	case 'reset' :
 		//------------------------------------
@@ -529,7 +575,20 @@ switch ($action)
 		$MasterDataSomfy['valeur'] = '';
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		saveVariable('countProtect', 0);
+		saveVariable('countProtectDisplay', array());
 		echo 'Reset effectué';
+		break;
+	case 'resetCount' :
+		saveVariable('countProtect', 0);
+		saveVariable('countProtectDisplay', array());
+		$MasterDataSomfy['valeur'] = '';
+		saveVariable('MasterDataSomfy', $MasterDataSomfy);
+		break;
+	case 'pause' :
+	    saveVariable('countProtect', 4);
+		saveVariable('countProtectDisplay', array(4, 'MasterData en pause'));
+		$MasterDataSomfy['valeur'] = 7;
+		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		break;
 	case 'display' :
 		//------------------------------------
@@ -537,9 +596,13 @@ switch ($action)
 		//------------------------------------
 		//$tesID = getArg('eedomus_controller_module_id');
 		//$priphValeur = getPeriphList(true, $tesID);
+		$countProtect = loadVariable('countProtect');
+		$countProtectDisplay = loadVariable('countProtectDisplay');
+		echo '<br/>Count Protect = ' . $countProtect . '<br/>';
+		echo '<br/>Affichage erreurs login : <pre>';  var_dump($countProtectDisplay) ; echo '</pre>';
 		echo '<br/>Affichage des périphériques initialisés : <pre>';  var_dump($eeDevices) ; echo '</pre>';
 		//$setup = sdk_get_setup($eeDevices);
-		//sdk_display_equipements($setup['devices'],$setup['gateways']);
+		//sdk_display_equipements($setup['devices'],$setup['gateways'],$setup['scenarios']);
 		
 		break;
 	case 'migration' :
@@ -551,6 +614,7 @@ switch ($action)
 		if (isset($_POST['submit']))
 		{
 			saveVariable('countProtect', 0);
+			saveVariable('countProtectDisplay', array());
 			saveVariable('username', $_POST['username']);
 			saveVariable('password', $_POST['password']);
 		}
@@ -573,7 +637,7 @@ switch ($action)
 		}
 		echo '<h1>Affichage détaillé de tous les équipements : </h1>';
 		$setup = sdk_get_setup($eeDevices);
-		sdk_display_equipements($setup['devices'],$setup['gateways'],true);
+		sdk_display_equipements($setup['devices'],$setup['gateways'],$setup['scenarios'],true);
 		break;
 		
 	case 'track' :
@@ -665,50 +729,58 @@ switch ($action)
 												);
 			saveVariable('eeDevices', $eeDevices);
 		}
-
-		// Lecture des événements
-		$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
-		if (array_key_exists('error',$resultFetch))
-		{
-			if (sdk_login() == 'ERROR_LOGIN')
-			{	// Erreur d'identification au cloud
-				$eeResultat = 0;
-			}
-			else
+        
+        if ($MasterDataSomfy['valeur'] <> 7)
+		{// Lecture des événements
+			$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+			if (array_key_exists('error',$resultFetch))
 			{
-				$setup = sdk_get_setup($eeDevices);
-				if ($setup['alive'] <> 'true')
-				{	// La box n'est pas connectée à son cloud
-					$eeResultat = 1;
+				if (sdk_login() == 'ERROR_LOGIN')
+				{	// Erreur d'identification au cloud
+					$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
+					$eeResultat = ($countProtect >= 3) ? 4 : 0;
 				}
 				else
 				{
-					$eeResultat = sdk_process_setup($setup,$eeDevices);
+					$setup = sdk_get_setup($eeDevices);
+					if ($setup['alive'] <> 'true')
+					{	// La box n'est pas connectée à son cloud
+						$eeResultat = 1;
+					}
+					else
+					{
+						$eeResultat = sdk_process_setup($setup,$eeDevices);
+					}
+					$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
 				}
-				$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+			}
+			else
+			{	// le fetch s'est bien passé, on reprend la valeur sauvegardée du MasterData somfy ou on la recalcule
+				if ($MasterDataSomfy['valeur'] <> '')
+				{
+					$eeResultat = ($MasterDataSomfy['valeur'] == 4 ) ? 3 : $MasterDataSomfy['valeur'];
+					
+				}
+				else
+				{
+					$setup = sdk_get_setup($eeDevices);
+					if ($setup['alive'] <> 'true')
+					{	// La box n'est pas connectée à son cloud
+						$eeResultat = 1;
+					}
+					else
+					{
+						$eeResultat = sdk_process_setup($setup,$eeDevices);
+					}
+				}
 			}
 		}
 		else
-		{	// le fetch s'est bien passé, on reprend la valeur sauvegardée du MasterData somfy ou on la recalcule
-			if ($MasterDataSomfy['valeur'] <> '')
-			{
-				$eeResultat = $MasterDataSomfy['valeur'];
-			}
-			else
-			{
-				$setup = sdk_get_setup($eeDevices);
-				if ($setup['alive'] <> 'true')
-				{	// La box n'est pas connectée à son cloud
-					$eeResultat = 1;
-				}
-				else
-				{
-					$eeResultat = sdk_process_setup($setup,$eeDevices);
-				}
-			}
+		{
+			$eeResultat = 7;
 		}
 
-		if ($eeResultat > 0)
+		if (($eeResultat > 0) && ($eeResultat < 4))
 		{
 			// On est connecté au cloud et on peut traiter les événements
 			foreach ($resultFetch as $evenement)
@@ -909,6 +981,23 @@ switch ($action)
 				}
 				$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><gateway>' . $deviceStates['mode'] . '</gateway></somfy>';
 				echo $xml;
+			}
+		}
+		break;
+	case 'scenario' :
+		$device_urls = explode(',', getArg('devices', false));		// le scenario a traiter
+		if (count($device_urls) == 1)
+		{
+			$commands[$action] = null;
+			$path='exec/' . $device_urls[0];
+			// Exécution de la commande
+			$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+			if (array_key_exists('error',$resultCommand))
+			{
+				if (sdk_login() != 'ERROR_LOGIN')
+				{
+					$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+				}
 			}
 		}
 		break;

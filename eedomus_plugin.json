@@ -2,9 +2,9 @@
 	"plugin_id": "somfy",
 	"name_fr": "Plugin Somfy",
 	"icon": "logo_liste_somfy.png",
-	"version": "3.0.0",
+	"version": "3.1.0",
 	"creation_date": "2017-12-04",
-	"modification_date": "2021-07-13",
+	"modification_date": "2021-09-13",
 	"author": "TeamListeSomfy",
 	"description_fr": "Gestion des gateways et équipements Somfy avec MasterData",
 	"description_en": "Management of Somfy equipments and gateways with MasterData",
@@ -422,6 +422,18 @@
 			"description": "Adresse du Périphérique RTS non reconnu",
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
+		},
+		{
+			"parameter": "scenario",
+			"description": "Scenario",
+			"xtype": "checkbox",
+			"field": "style: 'margin-top: 6px;', checked: false"              
+		},
+		{
+			"parameter": "scenarioOID",
+			"description": "Adresse du scenario",
+			"xtype": "textfield",
+			"field": "width:900, allowBlank:true"
 		}
 	],
 
@@ -435,11 +447,11 @@
 	[
 		{
 			"device_id": "somfy_master",
-			"module_id": "51",
+			"module_id": "41",
 			"type": "http",
 			"name_fr": "MasterData SOMFY",
 			"icon": "TahomaLinkOK.png",
-			"utilisation_id": "35",
+			"utilisation_id": "43",
 			"default_value":"0",
 			"create": "plugin.parameters.mas_dat",
 			"parameters":
@@ -453,10 +465,13 @@
 			},
 			"values":
 			[
-				{ "value": "0", "description": "SOMFY Cloud OFF", "icon": "TahomaLinkKO.png" },
-				{ "value": "1", "description": "SOMFY Cloud ON / box OFF", "icon": "TahomaLinkCloudOK.png" },
-				{ "value": "2", "description": "Vérifier devices en erreur", "icon": "TahomaLinkDevice.png" },
-				{ "value": "3", "description": "SOMFY Cloud ON / box ON", "icon": "TahomaLinkOK.png" }
+				{ "value": "0", "description": "SOMFY Cloud OFF", "icon": "TahomaLinkKO.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "1", "description": "SOMFY Cloud ON / box OFF", "icon": "TahomaLinkCloudOK.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "2", "description": "Vérifier devices en erreur", "icon": "TahomaLinkDevice.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "3", "description": "SOMFY Cloud ON / box ON", "icon": "TahomaLinkOK.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "4", "description": "SOMFY login vérouillé", "icon": "TahomaLinkLocked.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "5", "description": "Reset vérouillage", "icon": "TahomaLinkUnock.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&action=resetCount" },
+				{ "value": "6", "description": "Reset global", "icon": "TahomaLinkReset.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&action=reset" }
 			]
 		},
 		{
@@ -746,9 +761,9 @@
 				"VAR1": "plugin.parameters.msv_ioOID",
 				"VAR2": "core:ClosureState",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
-				"RAW_XPATH": "/somfy/state",
-				"POLLING": "600"
+				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
+				"RAW_XPATH": "/somfy/resultat",
+				"POLLING": "1"
 			},
 			"values":
 			[
@@ -1557,6 +1572,29 @@
 				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "Erreur", "description": "Erreur", "icon": "badge-Erreur.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "unknow", "description": "Statut inconnu", "icon": "badge.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"hidden":1 }
+			]
+		},
+		{
+			"device_id": "scenario",
+			"module_id": "41",
+			"type": "http",
+			"name_fr": "plugin.name - Scenario",
+			"icon": "Scenario.png",
+			"utilisation_id": "48",
+			"create": "plugin.parameters.scenario",
+			"parameters":
+			{
+				"value_type": "list",
+				"VAR1": "plugin.parameters.scenarioOID",
+				"ignore_errors": 1,
+				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
+				"RAW_XPATH": "/somfy/resultat",
+				"POLLING": "1"
+			},
+			"values":
+			[
+				{ "value": "unknow", "description": "Auto", "icon": "Scenario.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
+				{ "value": "1", "description": "Démarer", "icon": "ScenarioPlay.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&action=scenario" }
 			]
 		}
 	]
