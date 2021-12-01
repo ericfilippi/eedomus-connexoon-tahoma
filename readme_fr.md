@@ -80,7 +80,11 @@ A la première utilisation, le Master Data peut mettre plusieurs minutes à s'init
 
 ## 2.2 Commandes
 
-- Pause : met le Master Data en paiuse (voir chapitre )
+![image Master Data](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/Master-Data-2.jpg)
+
+- Pause : met le Master Data en pause (voir chapitre 5)
+- Reset verrouillage / pause : réinitialisation des valeurs et retour à un fonctionnement normal (voir chapitres 5 et 6)
+- Reset global : réinitialisation générale de tous les équipements (voit chapitre 5)
 
 # 3. Création d'un périphérique
 
