@@ -74,10 +74,13 @@ Ce Master Data a pour fonction :
 
 A la première utilisation, le Master Data peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes (fréquence dans le polling = 1).
 
-### Valeurs
+## 2.1 Valeurs
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/valeurs_capteur.jpg)
 
+## 2.2 Commandes
+
+- Pause : met le Master Data en paiuse (voir chapitre )
 
 # 3. Création d'un périphérique
 
