@@ -113,6 +113,17 @@ function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 	       );
 	}
 	
+	$debug = loadVariable('debug');
+	if ($debug == 'on')
+	{
+		$debugDisplay = loadVariable('debugDisplay');
+		$debugCount = loadVariable('debugCount');
+		$debugDisplay[$debugCount] = sdk_json_decode($result);
+		$debugCount++;
+		saveVariable('debugDisplay', $debugDisplay);
+		saveVariable('debugCount', $debugCount);
+	}
+	
 	return sdk_json_decode($result);
 }
 
@@ -536,6 +547,7 @@ switch ($action)
 		{
 			saveVariable('countProtect', 0);
 			saveVariable('countProtectDisplay',array());
+			saveVariable('debug', 'off');
 			saveVariable('username', $_POST['username']);
 			saveVariable('password', $_POST['password']);
 		}
@@ -576,6 +588,7 @@ switch ($action)
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		saveVariable('countProtect', 0);
 		saveVariable('countProtectDisplay', array());
+		saveVariable('debug', 'off');
 		echo 'Reset effectué';
 		break;
 	case 'resetCount' :
@@ -590,6 +603,18 @@ switch ($action)
 		$MasterDataSomfy['valeur'] = 7;
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		break;
+	case 'debugON' : 
+	    saveVariable('debug', 'on');
+		saveVariable('debugDisplay', array());
+		saveVariable('debugCount', 0);
+		echo 'mode debug ON';
+	    break;
+	case 'debugOFF' : 
+	    saveVariable('debug', 'off');
+		saveVariable('debugDisplay', array());
+		saveVariable('debugCount', 0);
+		echo 'mode debug OFF';
+	    break;
 	case 'display' :
 		//------------------------------------
 		// Utilisé pour les tests
@@ -598,6 +623,12 @@ switch ($action)
 		//$priphValeur = getPeriphList(true, $tesID);
 		$countProtect = loadVariable('countProtect');
 		$countProtectDisplay = loadVariable('countProtectDisplay');
+		$debug = loadVariable('debug');
+		if ($debug == 'on')
+		{
+			$debugDisplay = loadVariable('debugDisplay');
+			echo '<br/>Debug reponses API : <pre>';  var_dump($debugDisplay) ; echo '</pre>';
+		}
 		echo '<br/>Count Protect = ' . $countProtect . '<br/>';
 		echo '<br/>Affichage erreurs login : <pre>';  var_dump($countProtectDisplay) ; echo '</pre>';
 		echo '<br/>Affichage des périphériques initialisés : <pre>';  var_dump($eeDevices) ; echo '</pre>';

@@ -38,6 +38,12 @@
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
 		},
+		{
+			"parameter": "separation0",
+			"description": "================================",
+			"xtype": "textfield",
+			"field": "allowBlank: true, width: 0, style: 'visibility:hidden;'"
+	     	},
 	    {
                 "parameter": "gateway",
                 "description": "Gateway",
@@ -49,7 +55,13 @@
 			"description": "Adresse du Gateway",
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
-		},            
+		},
+		{
+			"parameter": "separation1",
+			"description": "================================",
+			"xtype": "textfield",
+			"field": "allowBlank: true, width: 0, style: 'visibility:hidden;'"
+	    },		
             {
                 "parameter": "vol_io",
                 "description": "Volet IO",
@@ -122,7 +134,13 @@
 			"description": "Adresse de la porte ou portail IO",
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
-		},            
+		}, 
+		{
+			"parameter": "separation2",
+			"description": "================================",
+			"xtype": "textfield",
+			"field": "allowBlank: true, width: 0, style: 'visibility:hidden;'"
+	    },
             {
                 "parameter": "lam_rts",
                 "description": "Commande éclairage RTS",
@@ -206,7 +224,13 @@
 			"description": "Adresse Fil Pilote IO",
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
-		},                       
+		},
+		{
+			"parameter": "separation3",
+			"description": "================================",
+			"xtype": "textfield",
+			"field": "allowBlank: true, width: 0, style: 'visibility:hidden;'"
+	    },		
             {
                 "parameter": "cam_ext",
                 "description": "Camera",
@@ -392,7 +416,13 @@
 			"description": "Adresse du Active button Tahoma",
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
-		},   
+		},
+		{
+			"parameter": "separation4",
+			"description": "================================",
+			"xtype": "textfield",
+			"field": "allowBlank: true, width: 0, style: 'visibility:hidden;'"
+	     },
             {
                 "parameter": "per_io",
                 "description": "Périphérique IO non reconnu",
@@ -423,6 +453,12 @@
 			"xtype": "textfield",
 			"field": "width:900, allowBlank:true"
 		},
+		{
+			"parameter": "separation5",
+			"description": "================================",
+			"xtype": "textfield",
+			"field": "allowBlank: true, width: 0, style: 'visibility:hidden;'"
+	    },
 		{
 			"parameter": "scenario",
 			"description": "Scenario",

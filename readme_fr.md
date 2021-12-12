@@ -179,6 +179,10 @@ Le paramétrage est très simple :
 
 ![image scenarios](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste-scenarios.jpg)
 
+Il suffit de recopier l'adresse dans l'écran de paramétrage comme indiqué ci-dessous.
+
+![image scenarios](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/parametre-affichage-scenario.jpg)
+
 # 4. Migration
 
 ## 4.1. A partir de la version 3
