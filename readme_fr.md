@@ -1,5 +1,5 @@
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/img/logo_connexoon.png "Paramétrage capteur")
-Le cloud SOMFY est injoignable. Vérifiez votre connexion internet ou vos identifiants.
+
 # Plugin Somfy V3.1.0
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
