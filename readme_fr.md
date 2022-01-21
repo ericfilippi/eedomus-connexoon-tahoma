@@ -264,7 +264,7 @@ La pause  stoppe toute requête vers le cloud Somfy.
 
 ## Réinitialisation du plugin
 
-Dans certains cas (si vous avez trop testé, copié, dupliqué ... bref bidouillé) , il peut-être nécessaire de réinitialiser le PLugin. Cela effacera les informations de vos périphériques.
+Dans certains cas (si vous avez trop testé, copié, dupliqué ... bref bidouillé) , il peut-être nécessaire de réinitialiser le Plugin. Cela effacera les informations de vos périphériques.
 
 1. cliquez sur "Reset verrouillage / pause" sur votre Master Data
 2. Ensuite deux options sont possibles :
