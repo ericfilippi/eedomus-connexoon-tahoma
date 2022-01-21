@@ -16,6 +16,8 @@ Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
    3.2 Equipement Somfy non reconnu
    
    3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
+   
+   3.4 Les scénarios
   
 4. Migration
 
