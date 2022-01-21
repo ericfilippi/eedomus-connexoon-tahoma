@@ -1,6 +1,6 @@
 <?php
-// Version 3.0.0 développée par TeamListeSomfy / 13/07/2021 
-// Code version 20210803 23:00
+// Version 3.1.0 développée par TeamListeSomfy / 20/01/2022 
+// Code version 20220120 23:13
 
 $api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
 
@@ -85,6 +85,56 @@ $MasterDataSomfy = loadVariable('MasterDataSomfy');	// sauvegarde du statut du M
 // Fonctions
 //------------------------------
 
+// Gestion de la protection API
+function sdk_countProtect($control='OK', $countProtect=array())
+{
+	switch ($control)
+	{
+		case 'reset' :
+			$countReset = array(
+							'count' => 0,
+							'startTime' => 0,
+							'offset' => 0,
+							'display' => array(),
+							);
+			return $countReset;
+			break;
+		case 'pause' :
+			$countReset = array(
+							'count' => 4,
+							'startTime' => 0,
+							'offset' => 0,
+							'display' => array(
+											4 => 'MasterData en pause',
+										),
+							);
+			return $countReset;
+		case 'OK' :
+			if ($countProtect['count'] >= 3)
+			{
+				// si on est bloqué, on regarde si le timer (offset) est écoulé
+				$tempsRestant = $countProtect['startTime'] + $countProtect['offset'] - time();
+				if ($tempsRestant <= 0)
+				{
+					// le timer est écoulé
+					$countProtect['count'] = 2;
+					saveVariable('countProtect', $countProtect);
+					return true;
+				}
+				else
+				{
+					// le timer n est pas écoulé
+					return false;
+				}
+			}
+			else
+			{
+				return true;
+			}
+			break;
+	}
+}
+
 // Envoi une requête à l'API
 function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 {
@@ -102,7 +152,7 @@ function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 		$data = http_build_query($data);
 	}
     
-    if ($countProtect < 3)
+    if ($countProtect['count'] < 3)
 	{
 	    $result = httpQuery($api_url.$path, $method, $data, NULL, $header, true);
 	}
@@ -137,7 +187,7 @@ function sdk_login()
 	
 	$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
 	
-	if ($countProtect < 3)
+	if ($countProtect['count'] < 3)
 	{
 		$answerLogin = sdk_make_request('login', 'POST', $data);
 		$answerLoginTemp = $answerLogin;
@@ -151,8 +201,7 @@ function sdk_login()
 
 	if (($answerLogin['success'] == 'true') && ($answerLogin['roles'][0]['name'] == 'ENDUSER'))
 	{
-		$countProtect = 0;
-		$countProtectDisplay = array();
+		$countProtect = sdk_countProtect('reset');
 	    $answerRegister = sdk_make_request('events/register', 'POST');
 
 	    if (array_key_exists('id',$answerRegister))
@@ -168,15 +217,30 @@ function sdk_login()
 	else
 	{
 	    $resultLogin = 'ERROR_LOGIN';
-	    if ($countProtect < 3)
-	    {
-		    $countProtect++;
-			$countProtectDisplay[$countProtect] = $answerLoginTemp;
+	    if ($countProtect['count'] < 3)
+	    {	// si on n'a pas encore 3 tentatives en echec
+		    $countProtect['count'] = $countProtect['count'] + 1;
+			$countProtect['display'][$countProtect['count']] = $answerLoginTemp;
+			if ($countProtect['count'] == 3)
+			{	// on bloque
+				if ($countProtect['startTime'] == 0)
+				{	// premier blocage
+					$countProtect['startTime'] = time();
+					$countProtect['offset'] = 300;
+				}
+				else
+				{	// on double le timer
+					$calcOffset = $countProtect['offset'];
+					if (calcOffset < 14400)
+					{	// on ne bloque pas plus de 4 heures
+						$countProtect['offset'] = $calcOffset * 2;
+					}
+				}
+			}
 	    }
 	}
 	
 	saveVariable('countProtect', $countProtect);
-	saveVariable('countProtectDisplay', $countProtectDisplay);
 
 	return $resultLogin;
 }
@@ -545,11 +609,13 @@ switch ($action)
 		// Traitement des actions POST
 		if (isset($_POST['submit']))
 		{
-			saveVariable('countProtect', 0);
-			saveVariable('countProtectDisplay',array());
+			$countProtect = sdk_countProtect('reset');
+			saveVariable('countProtect', $countProtect);
 			saveVariable('debug', 'off');
 			saveVariable('username', $_POST['username']);
 			saveVariable('password', $_POST['password']);
+			$MasterDataSomfy['valeur'] = '';
+			saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		}
 		
 		$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
@@ -586,21 +652,21 @@ switch ($action)
 		saveVariable('eeDevices', $eeDevices);
 		$MasterDataSomfy['valeur'] = '';
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
-		saveVariable('countProtect', 0);
-		saveVariable('countProtectDisplay', array());
+		$countProtect = sdk_countProtect('reset');
+		saveVariable('countProtect', $countProtect);
 		saveVariable('debug', 'off');
 		echo 'Reset effectué';
 		break;
 	case 'resetCount' :
-		saveVariable('countProtect', 0);
-		saveVariable('countProtectDisplay', array());
+		$countProtect = sdk_countProtect('reset');
+		saveVariable('countProtect', $countProtect);
 		$MasterDataSomfy['valeur'] = '';
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		break;
 	case 'pause' :
-	    saveVariable('countProtect', 4);
-		saveVariable('countProtectDisplay', array(4, 'MasterData en pause'));
-		$MasterDataSomfy['valeur'] = 7;
+		$countProtect = sdk_countProtect('pause');
+	    saveVariable('countProtect', $countProtect);
+		$MasterDataSomfy['valeur'] = 5;
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		break;
 	case 'debugON' : 
@@ -615,6 +681,10 @@ switch ($action)
 		saveVariable('debugCount', 0);
 		echo 'mode debug OFF';
 	    break;
+	case 'resetUser' : 
+	    saveVariable('username', '');
+		saveVariable('password', '');
+	    break;
 	case 'display' :
 		//------------------------------------
 		// Utilisé pour les tests
@@ -622,15 +692,20 @@ switch ($action)
 		//$tesID = getArg('eedomus_controller_module_id');
 		//$priphValeur = getPeriphList(true, $tesID);
 		$countProtect = loadVariable('countProtect');
-		$countProtectDisplay = loadVariable('countProtectDisplay');
 		$debug = loadVariable('debug');
 		if ($debug == 'on')
 		{
 			$debugDisplay = loadVariable('debugDisplay');
 			echo '<br/>Debug reponses API : <pre>';  var_dump($debugDisplay) ; echo '</pre>';
 		}
-		echo '<br/>Count Protect = ' . $countProtect . '<br/>';
-		echo '<br/>Affichage erreurs login : <pre>';  var_dump($countProtectDisplay) ; echo '</pre>';
+		echo '<br/>Count Protect = ' . $countProtect['count'] . '<br/>';
+		if ($countProtect['count'] == 3)
+		{
+			echo 'depuis = ' . date('Y-m-d H:i:s', $countProtect['startTime']) . '<br/>';
+			$tempsRestant =  $countProtect['startTime'] + $countProtect['offset'] - time();
+			echo 'nouvel essai dans = ' . $tempsRestant . ' secondes<br/>';
+		}
+		echo '<br/>Affichage erreurs login : <pre>';  var_dump($countProtect['display']) ; echo '</pre>';
 		echo '<br/>Affichage des périphériques initialisés : <pre>';  var_dump($eeDevices) ; echo '</pre>';
 		//$setup = sdk_get_setup($eeDevices);
 		//sdk_display_equipements($setup['devices'],$setup['gateways'],$setup['scenarios']);
@@ -644,7 +719,8 @@ switch ($action)
 		// Traitement des actions POST
 		if (isset($_POST['submit']))
 		{
-			saveVariable('countProtect', 0);
+			$countProtect = sdk_countProtect('reset');
+			saveVariable('countProtect', $countProtect);
 			saveVariable('countProtectDisplay', array());
 			saveVariable('username', $_POST['username']);
 			saveVariable('password', $_POST['password']);
@@ -745,7 +821,7 @@ switch ($action)
 		break;
 	case 'getAllStates' :
 		//------------------------------------------
-		// MasterData SOMFY et retour d'états version 2
+		// MasterData SOMFY et retour d'états version 2 et +
 		//------------------------------------------
 		
 		// enregistre le couple device_urls/periph_id courant
@@ -761,15 +837,23 @@ switch ($action)
 			saveVariable('eeDevices', $eeDevices);
 		}
         
-        if ($MasterDataSomfy['valeur'] <> 7)
-		{// Lecture des événements
+		$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
+		if (!array_key_exists('count',$countProtect))
+		{
+			$countProtect = sdk_countProtect('reset');
+			saveVariable('countProtect', $countProtect);
+		}
+			
+        if (($MasterDataSomfy['valeur'] <> 5) && (sdk_countProtect('OK', $countProtect)))
+		{	// On n'est pas en mode pause (5) ni en mode vérouillé (4)
+			// Lecture des événements
 			$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
 			if (array_key_exists('error',$resultFetch))
 			{
 				if (sdk_login() == 'ERROR_LOGIN')
 				{	// Erreur d'identification au cloud
 					$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
-					$eeResultat = ($countProtect >= 3) ? 4 : 0;
+					$eeResultat = ($countProtect['count'] >= 3) ? 4 : 0;
 				}
 				else
 				{
@@ -787,7 +871,7 @@ switch ($action)
 			}
 			else
 			{	// le fetch s'est bien passé, on reprend la valeur sauvegardée du MasterData somfy ou on la recalcule
-				if ($MasterDataSomfy['valeur'] <> '')
+				if (($MasterDataSomfy['valeur'] <> '') && ($MasterDataSomfy['valeur'] <> 0))
 				{
 					$eeResultat = ($MasterDataSomfy['valeur'] == 4 ) ? 3 : $MasterDataSomfy['valeur'];
 					
@@ -808,7 +892,7 @@ switch ($action)
 		}
 		else
 		{
-			$eeResultat = 7;
+			$eeResultat = $MasterDataSomfy['valeur'];
 		}
 
 		if (($eeResultat > 0) && ($eeResultat < 4))
@@ -934,6 +1018,22 @@ switch ($action)
 				}
 			}
 		}
+		else
+		{
+			foreach ($eeDevices as $eeName => $eeDevice)
+			{
+				if ($eeName <> 'MasterDataSomfy')
+				{
+					foreach ($eeDevice as $statePeriph)
+					{	
+						if ($statePeriph['eeDeviceValueType'] <> 'float')
+						{
+							setValue($statePeriph['eeDeviceId'], 'Connexion',0,1,date('Y-m-d H:i:s'),0);
+						}
+					}
+				}
+			}
+		}
 		$MasterDataSomfy['valeur'] = $eeResultat;
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 
@@ -949,7 +1049,17 @@ switch ($action)
 		//------------------------------------------------------------------------
 		// remise en statut auto des actionneurs http multiples et actionneurs RTS
 		//------------------------------------------------------------------------
-		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><resultat>unknow</resultat><Timestamp>'.time().'</Timestamp></somfy>';
+		$deviceEtat = getArg('etat', false);						// Etat à traiter pour le retour d'état																										
+		if ($deviceEtat == 'mode:CommandState')
+		{
+			// @dommarion [VAR2] = mode:CommandState signifie pas de retour d'état, on garde la dernière commande comme retour d'état
+			$device_urls = explode(',', getArg('devices', false));		// les périphériques à traiter
+			$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><resultat>'.$eeDevices[$device_urls[0]]["mode:CommandState"]["eeDeviceCommandName"].$eeDevices[$device_urls[0]]["mode:CommandState"]["eeDeviceValues"].'</resultat><Timestamp>'.time().'</Timestamp></somfy>';
+		}
+		else
+		{
+			$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><resultat>unknow</resultat><Timestamp>'.time().'</Timestamp></somfy>';
+		}
 		echo $xml;
 		break;
 	case 'init' :
@@ -971,6 +1081,7 @@ switch ($action)
 														'eeDeviceName' => $deviceName,
 														'eeDeviceCommandName' => $action,
 														'eeDeviceValueType' => $deviceValueType,
+														'eeDeviceValues' => $value,
 														);
 			saveVariable('eeDevices', $eeDevices);
 			if ($deviceEtat<> 'mode:GatewayState')
@@ -1052,6 +1163,7 @@ switch ($action)
 														'eeDeviceName' => $deviceName,
 														'eeDeviceCommandName' => $action,
 														'eeDeviceValueType' => $deviceValueType,
+														'eeDeviceValues' => $value,
 														);
 			saveVariable('eeDevices', $eeDevices);
 		}

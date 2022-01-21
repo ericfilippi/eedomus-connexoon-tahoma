@@ -1,92 +1,92 @@
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/img/logo_connexoon.png "Paramétrage capteur")
 
 # Plugin Somfy V3.1.0
-Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
+Bridge between eedomus box and SOMFY cloud via the Tahoma and Connexoon boxes
 
 # Sommaire
 
 1. Introduction
 
-2. Première utilisation
+2. First use
 
-3. Création d'un périphérique
+3. Device creation
 
-   3.1 Equipement Somfy reconnu
+   3.1 Known Somfy device
    
-   3.2 Equipement Somfy non reconnu
+   3.2 Unknown Somfy device
    
-   3.3 Pilotage de plusieurs équipements Somfy avec un seul périphérique eedomus
+   3.3 Control of several Somfy devices with a single eedomus device
   
 4. Migration
 
-5. Outils pratiques
+5. Tools
 
-6. Déblocage du plugin
+6. Unblocking the plugin
 
-7. Historique des versions
+7. Version history
 
 # 1. Introduction
 
-Ce plugin permet de contrôler certains équipements SOMFY. Il est nécessaire pour cela de posséder un bridge Connexoon ou une box Tahoma, et d'avoir associé ses équipements au bridge via l'application mobile Connexoon ou Tahoma de SOMFY.
+This plugin is used to control some SOMFY equipments. To do so, you need to have a Connexoon bridge or a Tahoma box, and have included your devices via the SOMFY Connexoon or Tahoma mobile application.
 
-**Attention** : l'installation du plugin s'effectue uniquement en étant connecté sur le même réseau que votre box eedomus !
+**Caution** : the plugin can only be installed by being connected to the same network as your eedomus box!
 
-La version 3 du plugin utilise un capteur d'état (le Master Data) qu'il est nécessaire d'installer pour bénéficier de toutes les fonctionnalités.
+Version 3 of the plugin uses a state sensor (the Master Data) which must be installed to get full functionalities.
 
-La version 3 est normalement compatible avec les versions 1 et 2. Toutefois, afin d'éviter tout problème en production et de permettre une migration "en douceur", le nom du script a été modifié. Suivez attentivement les étapes du chapitre 4.
+Version 3 is normally compatible with versions 1 and 2. However, in order to avoid any problems in production and to allow a "smooth" migration, the name of the script has been changed. Carefully follow the steps in chapter 4.
 
-**qui est TeamListeSomfy ?**
+**who is TeamListeSomfy ?**
 
-- @Pat : créateur du script initial v1
-- @herric : script v2, v3, graphismes et tests
-- @dommarion : nouveaux équipements, json v3, graphismes et tests
-- @dom54 et @sev : nouveaux équipements et tests
+- @Pat: creator of the initial script v1
+- @herric: script v2, v3, graphics and tests
+- @dommarion: new equipment, json v3, graphics and tests
+- @ dom54 and @sev: new equipment and tests
 
-Dans ce document on nomme :
+In this document we name:
 
-**Périphérique** pour eedomus
+**Device** for eedomus
 
-**Equipement Somfy** pour Somfy
+**Somfy equipment** for Somfy
 
-**Master Data** pour le capteur d'état du cloud Somfy
+**Master Data** for the Somfy cloud status sensor
 
-# 2. Première utilisation
+# 2. First use
 
-**Important** : Lors de l'installation d'un périphérique, vous devrez renseigner l'adresse de l'équipement correspondant. Pour cela, cliquez sur le lien et renseignez vos identifiants SOMFY.
+**Important** : When installing a Device, you will need to enter the address of the corresponding equipment. To do this, click on the link and enter your SOMFY identifiers.
 
-La liste des équipements Somfy connectés à votre box SOMFY est affichée, veillez à bien conserver cette liste (copier/coller dans un fichier et sauvegarde pour utilisation ultérieure).
+The list of Somfy equipment connected to your SOMFY box is displayed, be sure to keep this list (copy / paste into a file and save for later use).
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/lien.jpg)
 
-Avant de créer vos périphériques, installez le Master Data (à n'installer qu'une seule fois) :
+Before creating your devices, install the Master Data (to be installed only once):
 
-**Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la liste des gateways :
+**Adresse du Master data** : This is the PIN of your Somfy box (located on the label under the box) that you also find in the gateways list:
 
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/Master-Data.jpg)
 
 
-Ce Master Data a pour fonction :
+The Master Data has the following functions:
 
-- d'indiquer l'état de la connexion avec le cloud SOMFY et les box Connexoon/Tahoma
-- d'assurer le retour d'état des commandes envoyées par eedomus vers SOMFY
-- de mettre à jour les périphériques eedomus suite à une action directe IO (RTS ne supporte pas le retour d'état)
-- de bloquer/débloquer les requêtes au cloud SOMFY pour éviter les blacklistages
+- indicates the state of the connection between the SOMFY cloud and the Connexoon / Tahoma boxes
+- get the feedback status of orders sent by eedomus to SOMFY
+- updates eedomus devices following a direct IO action (RTS does not support feedback status)
+- block / unblock requests to the SOMFY cloud to avoid blacklists
 
-A la première utilisation, le Master Data peut mettre plusieurs minutes à s'initialiser. Puis, il se met à jour toutes les minutes.
+On first use, the master data may take several minutes to initialize. Then, it updates every minute.
 
-**Important** : La fréquence de polling doit absolument rester réglée à 1 minute en raison du fonctionnement interne de l'API somfy et du script (au-delà,  à chaque polling, le cloud SOMFY va forcer un re-login et le script va procéder à un setup complet).
+**Important** : The polling frequency must absolutely remain set to 1 minute due to the somfy API and the plugin internal logic (otherwise, at each polling, the SOMFY cloud will force a re-login and the script will proceed to a full devices setup).
 
-## 2.1 Valeurs
+## 2.1 Values
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/valeurs_capteur.jpg)
 
-## 2.2 Commandes
+## 2.2 Commands
 
 ![image Master Data](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/Master-Data-2.jpg)
 
-- Pause : met le Master Data en pause (voir chapitre 5)
-- Reset verrouillage/pause : réinitialisation des valeurs et retour à un fonctionnement normal (voir chapitres 5 et 6)
-- Reset global : réinitialisation générale de tous les équipements (voit chapitre 5)
+- Pause: set the master data on pause (see chapter 5)
+- Reset verrouillage/pause: reset values and return to normal operation (see chapters 5 and 6)
+- Reset global: general reset of all devices (see chapter 5)
 
 # 3. Création d'un périphérique
 
@@ -114,7 +114,7 @@ Il suffit de recopier l'adresse dans l'écran de paramétrage comme indiqué ci-des
 
 Cela vous permettra (avec un peu d'entraînement) de créer et paramétrer votre périphérique eedomus pour envoyer la bonne commande à SOMFY et récupérer les bons états.
 
-**Attention** : certaines commandes ont des paramètres associés à l’action. Malheureusement le cloud Somfy et donc le listing ne donnent pas les valeurs des paramètres, il faut les « deviner », souvent en s’aidant des valeurs d’état.
+**Caution** : certaines commandes ont des paramètres associés à l’action. Malheureusement le cloud Somfy et donc le listing ne donnent pas les valeurs des paramètres, il faut les « deviner », souvent en s’aidant des valeurs d’état.
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/liste_non_reconnu.jpg)
 
@@ -140,7 +140,7 @@ Renseignez les commandes en tenant compte du nombre de paramètres comme illustré
 
 ![image lien](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/commandes-non-reconnu.jpg)
 
-**Attention** : observez bien l'illustration ci-dessus !
+**Caution** : observez bien l'illustration ci-dessus !
 
 - pour les commandes avec 0 paramètre, il ne faut surtout pas ajouter &value en fin de ligne
 - pensez à faire correspondre les valeurs brutes avec les états que vous souhaitez avoir en retour
@@ -164,7 +164,7 @@ Le paramétrage est très simple :
 
 **Fréquence de la requête** : 1
 
-**Attention**
+**Caution**
 
 - ne pilotez en mode multi que des équipements Somfy strictement identiques (même fonction, même commande, mêmes paramètres).
 - la liste d'adresses séparée par des virgules ne doit contenir aucun espace, y compris en fin de liste.
@@ -317,7 +317,7 @@ Lorsque le problème est identifié et corrigé, cliquez sur Reset verrouillage sur
 
 # 7. Historique des versions
 
-### V3.1.0 du 20/01/2022
+### V3.1.0 du 06/01/2022
 
 **Améliorations et nouvelles fonctionnalités :**
 

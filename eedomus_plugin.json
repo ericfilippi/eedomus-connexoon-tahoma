@@ -4,7 +4,7 @@
 	"icon": "logo_liste_somfy.png",
 	"version": "3.1.0",
 	"creation_date": "2017-12-04",
-	"modification_date": "2021-09-13",
+	"modification_date": "2022-01-20",
 	"author": "TeamListeSomfy",
 	"description_fr": "Gestion des gateways et équipements Somfy avec MasterData",
 	"description_en": "Management of Somfy equipments and gateways with MasterData",
@@ -506,8 +506,9 @@
 				{ "value": "2", "description": "Vérifier devices en erreur", "icon": "TahomaLinkDevice.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "3", "description": "SOMFY Cloud ON / box ON", "icon": "TahomaLinkOK.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "4", "description": "SOMFY login vérouillé", "icon": "TahomaLinkLocked.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "5", "description": "Reset vérouillage", "icon": "TahomaLinkUnock.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&action=resetCount" },
-				{ "value": "6", "description": "Reset global", "icon": "TahomaLinkReset.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&action=reset" }
+				{ "value": "5", "description": "Pause", "icon": "TahomaLinkPause.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&action=pause" },
+				{ "value": "6", "description": "Reset verrouillage/pause", "icon": "TahomaLinkUnock.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&action=resetCount" },
+				{ "value": "7", "description": "Reset global", "icon": "TahomaLinkReset.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&action=reset" }
 			]
 		},
 		{
@@ -614,11 +615,10 @@
 			{
 				"value_type": "list",
 				"VAR1": "plugin.parameters.vol_rtsOID",
-				"VAR2": "core:ClosureState",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
-				"RAW_XPATH": "/somfy/state",
-				"POLLING": "600"
+				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
+				"RAW_XPATH": "/somfy/resultat",
+				"POLLING": "1"
 			},
 			"values":
 			[
@@ -626,9 +626,7 @@
 				{ "value": "open", "description": "Ouvrir", "icon": "Volet100.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=open" },
 				{ "value": "my", "description": "My", "icon": "VoletStop.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=my" },
 				{ "value": "stop", "description": "Stop", "icon": "VoletStop.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=stop" },
-				{ "value": "unknow", "description": "Entrouvert", "icon": "Voletxx.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"hidden":1 },
-				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "VoletErreur.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 }
+				{ "value": "unknow", "description": "Entrouvert", "icon": "Voletxx.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"hidden":1 }
 			]
 		},
 		{
@@ -795,7 +793,6 @@
 			{
 				"value_type": "list",
 				"VAR1": "plugin.parameters.msv_ioOID",
-				"VAR2": "core:ClosureState",
 				"ignore_errors": 1,
 				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
 				"RAW_XPATH": "/somfy/resultat",
@@ -824,18 +821,15 @@
 			{
 				"value_type": "list",
 				"VAR1": "plugin.parameters.lam_rtsOID",
-				"VAR2": "core:OnOffState",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
-				"RAW_XPATH": "/somfy/state",
-				"POLLING": "600"
+				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
+				"RAW_XPATH": "/somfy/resultat",
+				"POLLING": "1"
 			},
 			"values":
 			[
 				{ "value": "on", "description": "ON", "icon": "light_on.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=on" },
 				{ "value": "off", "description": "OFF", "icon": "light_off.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=off" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "badge-Erreur.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "unknow", "description": "Statut inconnu", "icon": "badge.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"hidden":1 }
 			]
 		},
@@ -922,18 +916,15 @@
 			{
 				"value_type": "list",
 				"VAR1": "plugin.parameters.pri_rtsOID",
-				"VAR2": "core:OnOffState",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
-				"RAW_XPATH": "/somfy/state",
-				"POLLING": "600"
+				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
+				"RAW_XPATH": "/somfy/resultat",
+				"POLLING": "1"
 			},
 			"values":
 			[
 				{ "value": "on", "description": "ON", "icon": "plug_on.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=on" },
 				{ "value": "off", "description": "OFF", "icon": "plug_off.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=off" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
-				{ "value": "Erreur", "description": "Erreur", "icon": "badge-Erreur.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "unknow", "description": "Statut inconnu", "icon": "badge.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"hidden":1 }
 			],
 			"macros": [{
@@ -1088,15 +1079,14 @@
 				"value_type": "list",
 				"VAR1": "plugin.parameters.boi_comOID",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
-				"RAW_XPATH": "",
-				"POLLING": "600"
+				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
+				"RAW_XPATH": "/somfy/resultat",
+				"POLLING": "1"
 			},
 			"values":
 			[
 				{ "value": "1", "description": "Commande off", "icon": "on_off_button.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=cycle&value=0"},
 				{ "value": "2", "description": "commande on", "icon": "off_on_button.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=cycle&value=1"},
-				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_liste_somfy.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"hidden":1 }
 			]
 		},
@@ -1141,15 +1131,14 @@
 				"value_type": "list",
 				"VAR1": "plugin.parameters.per_rtsOID",
 				"ignore_errors": 1,
-				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&devices=[VAR1]&etat=[VAR2]&action=init",
-				"RAW_XPATH": "/somfy/state",
-				"POLLING": "600"
+				"RAW_URL": "http://localhost/script/?exec=liste_somfy.php&action=auto",
+				"RAW_XPATH": "/somfy/resultat",
+				"POLLING": "1"
 			},
 			"values":
 			[
 				{ "value": "etat1", "description": "commande 1", "icon": "logo_liste_somfy.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
 				{ "value": "etat2", "description": "commande 2", "icon": "logo_liste_somfy.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "&devices=[VAR1]&etat=[VAR2]&action=votre-commande" },
-				{ "value": "Connexion", "description": "Connexion", "icon": "Somfy-connexion.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"http_params": "", "hidden":1 },
 				{ "value": "unknow", "description": "Statut inconnu", "icon": "logo_liste_somfy.png", "http_url": "http://localhost/script/?exec=liste_somfy.php", "http_type": "GET",	"hidden":1 }
 			]
 		},
