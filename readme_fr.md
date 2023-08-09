@@ -1,6 +1,4 @@
-![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/img/logo_connexoon.png "Paramétrage capteur")
-
-# Plugin Somfy V3.1.0
+# V3.2.0
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
 # Sommaire
@@ -62,7 +60,7 @@ La liste des équipements Somfy connectés à votre box SOMFY est affichée, veillez
 
 Avant de créer vos périphériques, installez le Master Data (à n'installer qu'une seule fois) :
 
-**Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la liste des gateways :
+**Renseignez les PIN et adresse MAC de la box Somfy** : situés sur l'étiquette sous la box Somfy :
 
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/Master-Data.jpg)
 
@@ -122,7 +120,7 @@ Cela vous permettra (avec un peu d'entraînement) de créer et paramétrer votre pé
 
 **Type** : Sélectionnez "Périphérique [IO/RTS] non reconnu" en fonction du type affiché dans la liste.
 
-**Liste des états disponibles** : indique les variables d’état que peut prendre votre équipement Somfy, chaque variable ayant une liste de valeurs, ou une valeur booléenne, numérique.
+**Liste des états disponibles** : indique les variables d’état que peut prendre votre équipement Somfy, chaque variable ayant une liste de valeurs, ou une valeur booléenne, ou une valeur numérique.
 
 **Liste des commandes disponibles** : comme son nom l'indique, ce sont toutes les commandes acceptées par votre équipement Somfy, avec le nombre de paramètres à fournir. L'API Somfy ne fournit pas le détail des valeurs des paramètres. Il va falloir faire preuve d'imagination, de bon sens, et procéder par essai/erreur pour trouver les bonnes valeurs des paramètres.
 
@@ -195,7 +193,7 @@ Simplement supprimer puis recréez le Master Data.
 
 ## 4.2. Depuis les versions précédentes 1.x.x et 2.x.x
 
-La migration en version 3 ne change rien au fonctionnement de base de vos équipements Somfy, mais elle améliore la communication avec le cloud Somfy gère les gateway, ouvre à une liste plus importante d’équipements, gère les piles couplées aux capteurs, résout des dysfonctionnements, permet un meilleur suivi du fonctionnement de l’application (compteur de devices et autres fonctions internes) et réduit la consommation du CPU.
+La migration en version 3 ne change rien au fonctionnement de base de vos équipements Somfy, mais elle améliore la communication avec le cloud Somfy, gère les gateway, ouvre à une liste plus importante d’équipements, gère les piles couplées aux capteurs, résout des dysfonctionnements, permet un meilleur suivi du fonctionnement de l’application (compteur de devices et autres fonctions internes) et réduit la consommation du CPU.
 
 Le nom du script (connexoon.php) a été changé (liste_somfy.php) afin de ne pas perturber les installations existantes.
 
@@ -215,7 +213,7 @@ Ajouter les valeurs suivantes :
 
 ### 4.2.3. Pour chacun de vos périphériques, modifiez la configuration
 
-#### Variables utilisatur
+#### Variables utilisateur
 
 ##### - depuis la v1 :
 
