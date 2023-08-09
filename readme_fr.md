@@ -1,6 +1,4 @@
-![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/img/logo_connexoon.png "Paramétrage capteur")
-
-# Plugin Somfy V3.2.0
+# V3.2.0
 Bridge entre la box eedomus et le cloud SOMFY via les boxes Tahoma et Connexoon
 
 # Sommaire
@@ -62,7 +60,7 @@ La liste des équipements Somfy connectés à votre box SOMFY est affichée, veillez
 
 Avant de créer vos périphériques, installez le Master Data (à n'installer qu'une seule fois) :
 
-**Adresse du Master data** : C'est le PIN de votre box Somfy (situé sur l'étiquette sous la box) que vous retrouvez également dans la liste des gateways :
+**Renseignez les PIN et adresse MAC de la box Somfy** : situés sur l'étiquette sous la box Somfy :
 
 ![image capteur](https://raw.githubusercontent.com/ericfilippi/eedomus-connexoon-tahoma/main/capture/Master-Data.jpg)
 
