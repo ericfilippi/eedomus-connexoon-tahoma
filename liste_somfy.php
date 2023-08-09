@@ -1,8 +1,6 @@
 <?php
-// Version 3.1.0 développée par TeamListeSomfy / 20/01/2022 
-// Code version 20220120 23:13
-
-$api_url = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
+// Version 3.2.0 développée par TeamListeSomfy -- 02/05/2023 
+// Code version 20230502 22:40
 
 $devicesControllableNames = array(
 	// 'homekit:StackComponent' => 'interface home kit', pas d'intérêt pour l'instant
@@ -10,7 +8,7 @@ $devicesControllableNames = array(
 	// 'ogp:Bridge' => 'interface ogp', pas d'intérêt pour l'instant
 	// 'rts:Generic4TRTSComponent' => 'boitier commande RTS', à conserver en catégorie non reconue
 	// 'upnpcontrol:SonosPlayOneComponent' => 'sonos', Plugin existant SONOS
-	// 'zwave:NodeComponent' => 'noeud zave', pas d'intérêt pour l'instant
+	// 'zwave:NodeComponent' => 'noeud zwave', pas d'intérêt pour l'instant
 	// 'zwave:TransceiverZWaveComponent' => 'transmetteur zwave', pas d'intérêt pour l'instant
 	'eliot:OnOffLightEliotComponent' => 'interrupteur Legrand',
 	'eliot:OnOffSwitchEliotComponent' => 'prise Legrand',
@@ -75,11 +73,27 @@ $devicesControllableNames = array(
 	'somfythermostat:SomfyThermostatHumiditySensor' => 'capteur humidite',
 );
 
-$action = getArg('action', false);				// commande à envoyer à la box
-$eeDevices = loadVariable('eeDevices');			// Liste des couples deviceUrl (somfy) / periphId (eedomus)
-$registerId = loadVariable('registerId');		// id d'abonnement aux événements somfy
-$MasterDataSomfy = loadVariable('MasterDataSomfy');	// sauvegarde du statut du MasterData somfy
+$action = getArg('action', false);						// commande à envoyer à la box
+$eeDevices = loadVariable('eeDevices');					// Liste des couples deviceUrl (somfy) / periphId (eedomus)
+$registerId = loadVariable('registerId');				// id d'abonnement aux événements somfy cloud
+$MasterDataSomfy = loadVariable('MasterDataSomfy');		// sauvegarde du statut du MasterData somfy
+$execIds = loadVariable('execIds');						// historique des ids d'execution
 
+//----------------------------------------
+// Chargement des variables mode local API
+//----------------------------------------
+global $modeLocal;										// mode local (1) ou mode cloud (vide ou 0)
+global $modeLocalToken;									// token local (1) ou non (vide ou 0)
+global $adresseMAC;										// adresse MAC de la box Somfy
+global $forceModeCloud;									// Mode cloud seulement
+global $modeLocalErreur;
+$modeLocal = loadVariable('modeLocal');
+$modeLocalToken = loadVariable('modeLocalToken');
+$adresseMAC = loadVariable('adresseMAC');
+$forceModeCloud = 0;
+$localToken = loadVariable('localToken');				// le Token pour les requêtes locales
+$localRegisterId = loadVariable('localRegisterId');		// id pour les fetch locaux
+$modeLocalErreur = array();
 
 //------------------------------
 // Fonctions
@@ -109,6 +123,7 @@ function sdk_countProtect($control='OK', $countProtect=array())
 										),
 							);
 			return $countReset;
+			break;
 		case 'OK' :
 			if ($countProtect['count'] >= 3)
 			{
@@ -135,34 +150,120 @@ function sdk_countProtect($control='OK', $countProtect=array())
 	}
 }
 
-// Envoi une requête à l'API
-function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
+// Vérifie si on est temporairement en mode cloud et force le login en mode local après 10 pollings
+function sdk_checkModeLocal()
 {
-	global $api_url;
+	global $modeLocal;
+	global $modeLocalToken;
+	global $adresseMAC;
+	
+	if ($modeLocal)
+	{	// on est en mode local, on laisse passer
+		return true;
+	}
+	else
+	{
+		if ($adresseMAC == '')
+		{	// pas d'adresse MAC on laisse passer
+			return true;
+		}
+		else
+		{	// une adresse MAC est renseignée, on retente le mode local quand le timer est  écoulé
+			$timerLocal = loadVariable('timerLocal');
+			$timerLocal = ($timerLocal == '') ? 0 : $timerLocal;
+			if ($timerLocal > 10)
+			{	// timer écoulé
+				$timerLocal = 0;
+				saveVariable('timerLocal', $timerLocal);
+				$modeLocal = 1;
+				return false;
+			}
+			else
+			{	// timer + 1
+				saveVariable('timerLocal', $timerLocal + 1);
+				return true;
+			}
+		}
+	}
+}
+
+
+// Envoi une requête à l'API
+function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL, $token=NULL)
+{
+	global $modeLocal;
+	global $modeLocalToken;
+	global $adresseMAC;
+	global $modeLocalErreur;
+	
+	$api_url_cloud = 'https://www.tahomalink.com/enduser-mobile-web/enduserAPI/';
+	$api_url_locale_auth = 'https://ha101-1.overkiz.com/enduser-mobile-web/enduserAPI/';
+	//$api_url_locale = 'https://gateway-'.$eeDevices['MasterDataSomfy']['MasterDataSomfyURL'].'.local:8443/enduser-mobile-web/1/enduserAPI/';
+	if ($adresseMAC != '')
+	{
+		$api_url_locale = 'https://' . sdk_get_ip_from_ip_or_mac($adresseMAC) . ':8443/enduser-mobile-web/1/enduserAPI/';
+	}
+	
+	if ($modeLocalToken) {$api_url_request = $api_url_locale;}
+	else if ($modeLocal) {$api_url_request = $api_url_locale_auth;}
+	else {$api_url_request = $api_url_cloud;}
 	
 	$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
-
-	$header = NULL;
+	
+	//$header = array('Authorization: Bearer ' . $answerToken['token']);
+	
+	if ($content_type == NULL)
+	{
+		$header = NULL;
+	}
+	else
+	{
+		$header == array();
+	}
+	
 	if ($content_type == 'json')
 	{
-		$header = array('Content-Type: application/json');
+		$header[] = 'accept: application/json';
+		$header[] = 'Content-Type: application/json';
+	}
+	else if ($content_type == 'x-www-form-urlencoded')
+	{
+		$header[] = 'Content-Type: application/x-www-form-urlencoded';
+		if (!empty($data))
+		{
+			$data = http_build_query($data);
+		}
 	}
 	else if (!empty($data))
 	{
 		$data = http_build_query($data);
 	}
-    
+
+	
+	if ($modeLocalToken)
+	{
+		$header[] = 'Authorization: Bearer ' . $token;
+	}
+
     if ($countProtect['count'] < 3)
 	{
-	    $result = httpQuery($api_url.$path, $method, $data, NULL, $header, true);
+		$modeLocalErreur[] = 'Request : url : ' . $api_url_request.$path;
+		saveVariable('modeLocalErreur', $modeLocalErreur);
+	    $result = httpQuery($api_url_request.$path, $method, $data, NULL, $header, true, true, &$info, null);
+		if (strpos($result, 'Connection timed out') !== false)
+		{	
+			$result =  '{"error":"Connection timed out"}';
+		}
+		else if (strpos($result, 'Failed to connect') !== false)
+		{
+			$result =  '{"error":"Failed to connect"}';
+		}
 	}
 	else
 	{
-	   $result =  array(
-	            'error' => 'countProtect',
-	       );
+	   $result =  '{"error":"countProtect"}';
 	}
-	
+	//if ($modeLocalToken) {echo  $result . '<br/><br/>';}
 	$debug = loadVariable('debug');
 	if ($debug == 'on')
 	{
@@ -173,85 +274,181 @@ function sdk_make_request($path, $method='POST', $data=NULL, $content_type=NULL)
 		saveVariable('debugDisplay', $debugDisplay);
 		saveVariable('debugCount', $debugCount);
 	}
-	
+	$modeLocalErreur[] = 'httpQuery : ' . $result;
+	saveVariable('modeLocalErreur', $modeLocalErreur);
+	if ($path == 'setup') {saveVariable('modeLocalErreur2', $result);}
 	return sdk_json_decode($result);
 }
 
 // Login et abonnement aux événements somfy
-function sdk_login()
+function sdk_login($eeDevices)
 {
+	global $modeLocal;
+	global $modeLocalToken;
+	global $modeLocalTest;
+	global $adresseMAC;
+	global $forceModeCloud;
+	global $modeLocalErreur;
+	
 	$data = array(
 		'userId' => loadVariable('username'),
 		'userPassword' => loadVariable('password'),
 	);
 	
 	$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
-	
-	if ($countProtect['count'] < 3)
+		
+	// On essaye de se connecter en local, à chaque étape, si KO, on repasse en cloud
+	if (!$forceModeCloud && ($adresseMAC <> ''))
 	{
-		$answerLogin = sdk_make_request('login', 'POST', $data);
-		$answerLoginTemp = $answerLogin;
-	}
-	else
-	{
-		$answerLogin = array(
-	            'error' => 'countProtect',
-	       );
-	}
-
-	if (($answerLogin['success'] == 'true') && ($answerLogin['roles'][0]['name'] == 'ENDUSER'))
-	{
-		$countProtect = sdk_countProtect('reset');
-	    $answerRegister = sdk_make_request('events/register', 'POST');
-
-	    if (array_key_exists('id',$answerRegister))
-	    {
-	        $registerId = $answerRegister['id'];
-	        saveVariable('registerId', $registerId);
-	    }
-	    else
-	    {
-	        $resultLogin = 'ERROR_LOGIN';
-	    }
-	}
-	else
-	{
-	    $resultLogin = 'ERROR_LOGIN';
-	    if ($countProtect['count'] < 3)
-	    {	// si on n'a pas encore 3 tentatives en echec
-		    $countProtect['count'] = $countProtect['count'] + 1;
-			$countProtect['display'][$countProtect['count']] = $answerLoginTemp;
-			if ($countProtect['count'] == 3)
-			{	// on bloque
-				if ($countProtect['startTime'] == 0)
-				{	// premier blocage
-					$countProtect['startTime'] = time();
-					$countProtect['offset'] = 300;
+		$modeLocal = 1;
+		$modeLocalToken = 0;
+		if ($countProtect['count'] < 3)
+		{
+			// login
+			$answerLogin = sdk_make_request('login', 'POST', $data, 'x-www-form-urlencoded');
+			$answerLoginTemp = $answerLogin;
+		}
+		else
+		{
+			$answerLogin = array(
+					'error' => 'countProtect',
+			   );
+		}
+		
+		if (($answerLogin['success'] == 'true') && ($answerLogin['roles'][0]['name'] == 'ENDUSER'))
+		{
+			$countProtect = sdk_countProtect('reset');
+			
+			// Demande de token
+			$answerToken = sdk_make_request('config/'.$eeDevices['MasterDataSomfy']['MasterDataSomfyURL'].'/local/tokens/generate', 'GET', NULL, 'json');
+			if (array_key_exists('token',$answerToken))
+			{
+				// Activation du token
+				$json = '{"label": "tokenEedomus","token": "' . $answerToken['token'] . '","scope": "devmode"}';
+				$answerActivate = sdk_make_request('config/'.$eeDevices['MasterDataSomfy']['MasterDataSomfyURL'].'/local/tokens', 'POST', $json, 'json');
+				if (array_key_exists('requestId',$answerActivate))
+				{
+					$modeLocalToken = 1;
+					$localToken = $answerToken['token'];
+					saveVariable('localToken', $localToken);
+					// Abonnement aux événements en local
+					$answerRegister = sdk_make_request('events/register', 'POST', NULL, NULL, $localToken);
+					if (array_key_exists('id',$answerRegister))
+					{
+						$localRegisterId = $answerRegister['id'];
+						saveVariable('localRegisterId', $localRegisterId);
+						$modeLocalErreur[] = 'Login : OK abonnement';
+						saveVariable('modeLocalErreur', $modeLocalErreur);
+					}
+					else
+					{
+						$modeLocal = 0;
+						$modeLocalToken = 0;
+						$modeLocalErreur[] = 'Login : PB abonnement';
+						saveVariable('modeLocalErreur', $modeLocalErreur);
+					}
 				}
 				else
-				{	// on double le timer
-					$calcOffset = $countProtect['offset'];
-					if (calcOffset < 14400)
-					{	// on ne bloque pas plus de 4 heures
-						$countProtect['offset'] = $calcOffset * 2;
+				{
+					$modeLocal = 0;
+					$modeLocalErreur[] = 'Login : PB activation';
+					saveVariable('modeLocalErreur', $modeLocalErreur);
+				}
+			}
+			else
+			{
+				$modeLocal = 0;
+				$modeLocalErreur[] = 'Login : PB token';
+				saveVariable('modeLocalErreur', $modeLocalErreur);
+			}
+		}
+		else
+		{
+			$modeLocal = 0;
+			$modeLocalErreur[] = 'Login : PB login ' . $answerLogin['error'];
+			saveVariable('modeLocalErreur', $modeLocalErreur);
+		}
+	}
+	else
+	{
+		$modeLocal = 0;
+		$modeLocalToken = 0;
+		$modeLocalErreur[] = 'Login : Adresse MAC non renseignée ou mode forceCloud';
+		saveVariable('modeLocalErreur', $modeLocalErreur);
+	}
+	saveVariable('modeLocal', $modeLocal);
+	saveVariable('modeLocalToken', $modeLocalToken);
+	
+	if (!$modeLocal)
+	{	// On est repassé en mode cloud
+
+		if ($countProtect['count'] < 3)
+		{
+			$answerLogin = sdk_make_request('login', 'POST', $data);
+			$answerLoginTemp = $answerLogin;
+		}
+		else
+		{
+			$answerLogin = array(
+					'error' => 'countProtect',
+			   );
+		}
+
+		if (($answerLogin['success'] == 'true') && ($answerLogin['roles'][0]['name'] == 'ENDUSER'))
+		{
+			$countProtect = sdk_countProtect('reset');
+			$answerRegister = sdk_make_request('events/register', 'POST');
+
+			if (array_key_exists('id',$answerRegister))
+			{
+				$registerId = $answerRegister['id'];
+				saveVariable('registerId', $registerId);
+			}
+			else
+			{
+				$resultLogin = 'ERROR_LOGIN';
+			}
+		}
+		else
+		{
+			$resultLogin = 'ERROR_LOGIN';
+			if ($countProtect['count'] < 3)
+			{	// si on n'a pas encore 3 tentatives en echec
+				$countProtect['count'] = $countProtect['count'] + 1;
+				$countProtect['display'][$countProtect['count']] = $answerLoginTemp;
+				if ($countProtect['count'] == 3)
+				{	// on bloque
+					if ($countProtect['startTime'] == 0)
+					{	// premier blocage
+						$countProtect['startTime'] = time();
+						$countProtect['offset'] = 300;
+					}
+					else
+					{	// on double le timer
+						$calcOffset = $countProtect['offset'];
+						if ($calcOffset < 14400)
+						{	// on ne bloque pas plus de 4 heures
+							$countProtect['offset'] = $calcOffset * 2;
+						}
 					}
 				}
 			}
-	    }
+		}
 	}
-	
+
 	saveVariable('countProtect', $countProtect);
 
 	return $resultLogin;
 }
 
 // Récupère les gateways, les pièces, les scenarios et les périphériques
-function sdk_get_setup($eeDevices)
+function sdk_get_setup($eeDevices, $token=NULL)
 {
-	sdk_make_request('setup/devices/states/refresh', 'POST');
+	global $modeLocalToken;
+	global $modeLocalErreur;
 
 	// On récupère toutes les informations gateways, devices, zones, disconnectionConfiguration, rootPlace et features
-	$setup = sdk_make_request('setup', 'GET');
+	$setup = sdk_make_request('setup', 'GET', NULL, NULL, $token);
 
 	// Les gateways
 	$gateways = array();
@@ -265,20 +462,29 @@ function sdk_get_setup($eeDevices)
 			$gateway_id = $gateway['gatewayId'];
 			$gateways[$gateway_id]['id'] = $gateway_id;
 			$gateways[$gateway_id]['type'] = $gateway['type'];
-			$gateways[$gateway_id]['mode'] = $gateway['mode'];
+			if ($modeLocalToken)
+			{
+				$gateways[$gateway_id]['mode'] = ($gateway['connectivity']['status'] == 'OK') ? 'ACTIVE' : 'OFF';
+			}
+			else
+			{
+				$gateways[$gateway_id]['mode'] = $gateway['mode'];
+			}
 			
 			if (($eeDevices != '') && ($gateway_id == $eeDevices['MasterDataSomfy']['MasterDataSomfyURL']))
 			{	// c'est la gateway principale
-				$statutGatewayPrincpale = $gateway['alive'];
+				$statutGatewayPrincpale = ($modeLocalToken) ? true : $gateway['alive'];
+				$gateways[$gateway_id]['type'] = ($modeLocalToken) ? 29 : $gateway['type'];
+				$gateways[$gateway_id]['mode'] = ($modeLocalToken) ? "ACTIVE" : $gateway['mode'];
 			}
 		}
 	}
-
+ 
 	// Les devices
 	$devices = array();
 	foreach ($setup['devices'] as $device)
 	{
-		$device_url = $device['deviceURL'];
+		$device_url = str_replace('\\', '', $device['deviceURL']);
 		$devices[$device_url]['url'] = $device_url;
 		$devices[$device_url]['label'] = $device['label'];
 		$devices[$device_url]['controllableName'] = $device['controllableName'];
@@ -298,15 +504,26 @@ function sdk_get_setup($eeDevices)
 		$devices[$device_url]['definition']['states'] = $device['definition']['states'];
 	}
 	
-	// On récupère les scenarios
-	$actionGroups = sdk_make_request('actionGroups', 'GET');
-	$scenarios = array();
-	foreach ($actionGroups as $actionGroup)
+	
+	// En mode cloud, on récupère les scenarios
+	if (!$modeLocalToken)
 	{
-		$scn_oid = $actionGroup['oid'];
-		$scenarios[$scn_oid]['oid'] = $actionGroup['oid'];
-		$scenarios[$scn_oid]['label'] = $actionGroup['label'];
+		$actionGroups = sdk_make_request('actionGroups', 'GET', NULL, NULL, $token);
+		$scenarios = array();
+		foreach ($actionGroups as $actionGroup)
+		{
+			$scn_oid = $actionGroup['oid'];
+			$scenarios[$scn_oid]['oid'] = $actionGroup['oid'];
+			$scenarios[$scn_oid]['label'] = $actionGroup['label'];
+		}
 	}
+	else
+	{
+		$scenarios = NULL;
+	}
+	
+	$modeLocalErreur[] = 'Setup : avant return';
+	saveVariable('modeLocalErreur', $modeLocalErreur);
 	
 	return array(
 		'devices' => $devices,
@@ -317,20 +534,39 @@ function sdk_get_setup($eeDevices)
 }
 
 // Récupère l'état d'un Gateway
-function sdk_getGatewayStatus($deviceUrl)
+function sdk_getGatewayStatus($deviceUrl, $token=NULL)
 {   
-	$commande = 'setup/gateways/' . urlencode($deviceUrl);
-	$deviceStates = sdk_make_request($commande, 'GET');
-		
+	global $modeLocalToken;
+	global $modeLocalErreur;
+	
+	if ($modeLocalToken)
+	{
+		$commande = 'setup/gateways';
+		$gatewaysDesc = sdk_make_request($commande, 'GET', NULL, NULL, $token);
+		foreach ($gatewaysDesc as $gatewayDesc)
+		{
+			if ($gatewayDesc['gatewayId'] == $deviceUrl)
+			{
+				$deviceStates['mode'] = ($gatewayDesc['connectivity']['status'] == 'OK') ? 'ACTIVE' : 'OFF';
+			}
+		}
+	}
+	else
+	{
+		$commande = 'setup/gateways/' . urlencode($deviceUrl);
+		$deviceStates = sdk_make_request($commande, 'GET');
+	}
 	return $deviceStates;
 }
 
 // Récupère l'état d'un périphérique
-function sdk_getDeviceStatus($deviceUrl)
+function sdk_getDeviceStatus($deviceUrl, $token=NULL)
 {   
-	$commande = 'setup/devices/' . urlencode($deviceUrl) . '/states';
-	$deviceStates = sdk_make_request($commande, 'GET');
+	global $modeLocalErreur;
 	
+	$commande = 'setup/devices/' . urlencode($deviceUrl) . '/states';
+	$deviceStates = sdk_make_request($commande, 'GET', NULL, NULL, $token);
+	//if ($modeLocalToken) {echo 'commande : ' . $commande . '<br/>';}
 	return $deviceStates;
 }
 
@@ -374,10 +610,14 @@ function sdk_maj_periph($eeDevices,$deviceUrl,$state,$eeValue)
 // Initialisation de l'état des périphériques
 function sdk_process_setup($setup,$eeDevices)
 {
-	$eeResultat = 3;
-
-	$horsPortee = 0;
+	global $modeLocal;
+	global $modeLocalToken;
+	global $modeLocalErreur;
 	
+	$eeResultat = ($modeLocal) ? 5 : 3;
+	$horsPortee = 0;
+	$modeLocalErreur[] = 'Process : init eeResultat : ' . $eeResultat;
+	saveVariable('modeLocalErreur', $modeLocalErreur);
 	// Traitements des équipements
 	foreach ($setup['devices'] as $device)
 	{
@@ -410,7 +650,7 @@ function sdk_process_setup($setup,$eeDevices)
 		}
 	}
 	
-	// Traitement des Gatewys
+	// Traitement des Gateways
 	foreach ($setup['gateways'] as $gateway)
 	{
 		$gatewayId = $gateway['id'];
@@ -422,17 +662,20 @@ function sdk_process_setup($setup,$eeDevices)
 
 	if ($horsPortee == true)
 	{
-		$eeResultat = 2;
+		$eeResultat = ($modeLocal) ? 4 : 2;
 	}
 	saveVariable('horsPortee', $horsPortee);
-	
+	$modeLocalErreur[] = 'Process : fin eeResultat : ' . $eeResultat;
+	saveVariable('modeLocalErreur', $modeLocalErreur);
 	return $eeResultat;
 }
 
 // On applique une commande aux périphériques d'une pièce
-function sdk_apply_command($device_urls, $commands, $path='exec/apply')
+function sdk_apply_command($device_urls, $commands, $path='exec/apply', $token=NULL)
 {
+	global $modeLocalToken;
 	$actions = array();
+	
 	foreach ($device_urls as $device_url)
 	{
 		$commands_str = array();
@@ -449,11 +692,13 @@ function sdk_apply_command($device_urls, $commands, $path='exec/apply')
 		}
 
 		$actions[] = '{"deviceURL":"'.trim($device_url).'","commands":['.implode($commands_str,',').']}';
+		
 	}
+	$additionalParam = ($modeLocalToken) ? '' : '"notificationTypeMask":"0","notificationCondition":"NEVER",';
+	$json = '{"label":"eedomus command",'.$additionalParam.'"actions":['.implode($actions, ',').']}';
+	//$json = '{"label":"eedomus command","notificationTypeMask":"0","notificationCondition":"NEVER","actions":['.implode($actions, ',').']}';
 
-	$json = '{"label":"eedomus command","notificationTypeMask":"0","notificationCondition":"NEVER","actions":['.implode($actions, ',').']}';
-
-	return sdk_make_request($path, 'POST', $json, 'json');
+	return sdk_make_request($path, 'POST', $json, 'json', $token);
 }
 
 // Ecran de login
@@ -592,7 +837,7 @@ function sdk_display_equipements($devices,$gateways,$scenarios,$migration=false)
 	}
 	
 	echo '</body>';
-	die;
+	return;
 }
 
 //------------------------------------
@@ -605,10 +850,23 @@ switch ($action)
 		//------------------------------------
 		// Ecran de configuration
 		//------------------------------------
+		$modeLocalErreur[] = 'Config : début';
+		// Force le mode cloud lors de l'affichage de la liste
+		if ($modeLocal)
+		{
+			$forceModeCloud = 1;
+			$modeLocal = 0;
+			$modeLocalTmp = 1;
+		}
+		else
+		{
+			$modeLocalTmp = 0;
+		}
 		
 		// Traitement des actions POST
 		if (isset($_POST['submit']))
 		{
+			$modeLocalErreur[] = 'Config : dans les actions post';
 			$countProtect = sdk_countProtect('reset');
 			saveVariable('countProtect', $countProtect);
 			saveVariable('debug', 'off');
@@ -617,10 +875,15 @@ switch ($action)
 			$MasterDataSomfy['valeur'] = '';
 			saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		}
-		
+		$modeLocalErreur[] = 'Config : avant 1er fetch';
 		$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+		if ($forceModeCloud)
+		{	// on force le login en mode cloud
+			$resultFetch['error'] = 'forceModeCloud';
+			$modeLocalErreur[] = 'Config : dans result fetch force error';
+		}
 		if (array_key_exists('error',$resultFetch))
-		{
+		{	$modeLocalErreur[] = 'Config : result fetch error';
 			$testUser = loadVariable('username');
 			if ($testUser == '')
 			{
@@ -628,21 +891,26 @@ switch ($action)
 			}
 			else
 			{
-				if (sdk_login() == 'ERROR_LOGIN')
+				if (sdk_login($eeDevices) == 'ERROR_LOGIN')
 				{	// Erreur d'identification au cloud
 					sdk_display_login_form('', 'Identifiants de connexion incorrects');
 				}
 			}
 		}
-
+		$modeLocalErreur[] = 'Config : avant setup';
 		$setup = sdk_get_setup($eeDevices);
-
+		$modeLocalErreur[] = 'Config : après setup';
 		if (!count($setup['devices']))
 		{
+			$modeLocalErreur[] = 'Config : setup failed, affiche login';
 			sdk_display_login_form('', 'Aucun périphérique détecté.');
 		}
-
+		$modeLocalErreur[] = 'Config : avant display';
 		sdk_display_equipements($setup['devices'],$setup['gateways'],$setup['scenarios']);
+		$modeLocalErreur[] = 'Config : après display';
+		saveVariable('modeLocalErreur', $modeLocalErreur);
+		saveVariable('modeLocal', $modeLocalTmp);		// retour au mode initial
+		saveVariable('modeLocalToken', $modeLocalTmp);		// retour au mode initial
 		break;
 	case 'reset' :
 		//------------------------------------
@@ -666,7 +934,7 @@ switch ($action)
 	case 'pause' :
 		$countProtect = sdk_countProtect('pause');
 	    saveVariable('countProtect', $countProtect);
-		$MasterDataSomfy['valeur'] = 5;
+		$MasterDataSomfy['valeur'] = 10;
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
 		break;
 	case 'debugON' : 
@@ -705,8 +973,20 @@ switch ($action)
 			$tempsRestant =  $countProtect['startTime'] + $countProtect['offset'] - time();
 			echo 'nouvel essai dans = ' . $tempsRestant . ' secondes<br/>';
 		}
-		echo '<br/>Affichage erreurs login : <pre>';  var_dump($countProtect['display']) ; echo '</pre>';
-		echo '<br/>Affichage des périphériques initialisés : <pre>';  var_dump($eeDevices) ; echo '</pre>';
+		echo 'modeLocal = ' . $modeLocal . '<br/>';
+		echo 'modeLocalToken = ' . $modeLocalToken . '<br/>';
+		echo 'adresseMAC = ' . $adresseMAC . '<br/>';
+		echo 'modeLocalTest = ' . $modeLocalTest . '<br/>';
+		echo 'forceModeCloud = ' . $forceModeCloud . '<br/>';
+		$timerLocal = loadVariable('timerLocal');
+		echo 'timerLocal = ' . $timerLocal . '<br/>';
+		$modeLocalErreur = loadVariable('modeLocalErreur');
+		echo '<br/>ModeLocalErreur : <pre>';  var_dump($modeLocalErreur) ; echo '</pre>';
+		echo 'localToken = ' . $localToken . '<br/>';
+		$modeLocalErreur2 = loadVariable('modeLocalErreur2');
+		echo '<br/>Setup : <pre>';  var_dump($modeLocalErreur2) ; echo '</pre>';
+		//echo '<br/>Affichage erreurs login : <pre>';  var_dump($countProtect['display']) ; echo '</pre>';
+		//echo '<br/>Affichage des périphériques initialisés : <pre>';  var_dump($eeDevices) ; echo '</pre>';
 		//$setup = sdk_get_setup($eeDevices);
 		//sdk_display_equipements($setup['devices'],$setup['gateways'],$setup['scenarios']);
 		
@@ -715,6 +995,18 @@ switch ($action)
 		//------------------------------------
 		// Utilisé pour la migration en V3
 		//------------------------------------
+		
+		// Force le mode cloud lors de l'affichage de la liste
+		if ($modeLocal)
+		{
+			$forceModeCloud = 1;
+			$modeLocal = 0;
+			$modeLocalTmp = 1;
+		}
+		else
+		{
+			$modeLocalTmp = 0;
+		}
 		
 		// Traitement des actions POST
 		if (isset($_POST['submit']))
@@ -727,6 +1019,10 @@ switch ($action)
 		}
 		
 		$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+		if ($forceModeCloud)
+		{	// on force le login en mode cloud
+			$resultFetch['error'] = 'forceModeCloud';
+		}
 		if (array_key_exists('error',$resultFetch))
 		{
 			$testUser = loadVariable('username');
@@ -736,7 +1032,7 @@ switch ($action)
 			}
 			else
 			{
-				if (sdk_login() == 'ERROR_LOGIN')
+				if (sdk_login($eeDevices) == 'ERROR_LOGIN')
 				{	// Erreur d'identification au cloud
 					sdk_display_login_form('', 'Identifiants de connexion incorrects');
 				}
@@ -745,8 +1041,9 @@ switch ($action)
 		echo '<h1>Affichage détaillé de tous les équipements : </h1>';
 		$setup = sdk_get_setup($eeDevices);
 		sdk_display_equipements($setup['devices'],$setup['gateways'],$setup['scenarios'],true);
+		saveVariable('modeLocal', $modeLocalTmp);		// retour au mode initial
+		saveVariable('modeLocalToken', $modeLocalTmp);		// retour au mode initial
 		break;
-		
 	case 'track' :
 		//------------------------------------
 		// Utilisé pour les tracker le nombre de devices
@@ -756,13 +1053,27 @@ switch ($action)
 		echo $xml;
 		break;
 	case 'getState' :
-		//--------------------------------------
-		// Compatibilité retour d'état version 1
-		//--------------------------------------
+		//---------------------------------------------------------------
+		// Compatibilité retour d'état version 1 =>>>> fonction déclassée
+		//---------------------------------------------------------------
+		if ($modeLocal)
+		{
+			$forceModeCloud = true;
+			$modeLocal = 0;
+			$modeLocalTmp = 1;
+		}
+		else
+		{
+			$modeLocalTmp = 0;
+		}
 		$resultRefresh =  sdk_make_request('setup/devices/states/refresh', 'POST');
+		if ($forceModeCloud)
+		{	// on force le login en mode cloud
+			$resultFetch['error'] = 'forceModeCloud';
+		}
 		if (array_key_exists('error',$resultRefresh))
 		{
-			if (sdk_login() != 'ERROR_LOGIN')
+			if (sdk_login($eeDevices) != 'ERROR_LOGIN')
 			{
 				$logge = true;
 			}
@@ -818,11 +1129,12 @@ switch ($action)
 			$xml .= '</connexoon>';
 			echo $xml;
 		}
+		saveVariable('modeLocal', $modeLocalTmp);		// retour au mode initial
 		break;
 	case 'getAllStates' :
-		//------------------------------------------
+		//--------------------------------------------------
 		// MasterData SOMFY et retour d'états version 2 et +
-		//------------------------------------------
+		//--------------------------------------------------
 		
 		// enregistre le couple device_urls/periph_id courant
 		if (!array_key_exists('MasterDataSomfy',$eeDevices))
@@ -836,6 +1148,17 @@ switch ($action)
 												);
 			saveVariable('eeDevices', $eeDevices);
 		}
+		
+		// enregistre l'adresse MAC du MasterData
+		$adresseMAC = getArg('adresseMAC', false);
+		saveVariable('adresseMAC', $adresseMAC);
+		if ($adresseMAC == '')
+		{	
+			$modeLocal = 0;
+			saveVariable('modeLocal', 0);
+			$modeLocalToken = 0;
+			saveVariable('modeLocalToken', 0);
+		}
         
 		$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
 		if (!array_key_exists('count',$countProtect))
@@ -844,20 +1167,32 @@ switch ($action)
 			saveVariable('countProtect', $countProtect);
 		}
 			
-        if (($MasterDataSomfy['valeur'] <> 5) && (sdk_countProtect('OK', $countProtect)))
-		{	// On n'est pas en mode pause (5) ni en mode vérouillé (4)
+        if (($MasterDataSomfy['valeur'] <> 10) && (sdk_countProtect('OK', $countProtect)))
+		{	// On n'est pas en mode pause (10) ni en mode vérouillé (9)
 			// Lecture des événements
-			$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+			$modeLocalErreur[] = 'Init : avant 1er fetch';
+			saveVariable('modeLocalErreur', $modeLocalErreur);
+			$regId = ($modeLocalToken) ? $localRegisterId : $registerId;
+			if (sdk_checkModeLocal())
+			{	// on continue avec le fetch
+				$resultFetch =  sdk_make_request('events/' . $regId . '/fetch', 'POST', NULL, NULL, $localToken);
+			}
+			else
+			{	// on force l'erreur pour retester en mode local
+				$resultFetch =  array('error' => 'teste mode local');
+				$modeLocalErreur[] = 'Erreur 1er fetch => retente mode local';
+			}
 			if (array_key_exists('error',$resultFetch))
-			{
-				if (sdk_login() == 'ERROR_LOGIN')
+			{	$modeLocalErreur[] = 'Erreur 1er fetch => login';
+				saveVariable('modeLocalErreur', $modeLocalErreur);
+				if (sdk_login($eeDevices) == 'ERROR_LOGIN')
 				{	// Erreur d'identification au cloud
 					$countProtect = loadVariable('countProtect');	// Protection contre les trop nombreux logins
-					$eeResultat = ($countProtect['count'] >= 3) ? 4 : 0;
+					$eeResultat = ($countProtect['count'] >= 3) ? 9 : 0;
 				}
 				else
 				{
-					$setup = sdk_get_setup($eeDevices);
+					$setup = sdk_get_setup($eeDevices, $localToken);
 					if ($setup['alive'] <> 'true')
 					{	// La box n'est pas connectée à son cloud
 						$eeResultat = 1;
@@ -866,19 +1201,58 @@ switch ($action)
 					{
 						$eeResultat = sdk_process_setup($setup,$eeDevices);
 					}
-					$resultFetch =  sdk_make_request('events/' . $registerId . '/fetch', 'POST');
+					$regId = ($modeLocalToken) ? $localRegisterId : $registerId;
+					$resultFetch =  sdk_make_request('events/' . $regId . '/fetch', 'POST', NULL, NULL, $localToken);
 				}
 			}
 			else
 			{	// le fetch s'est bien passé, on reprend la valeur sauvegardée du MasterData somfy ou on la recalcule
+				$modeLocalErreur[] = 'Init : 1er fetch bien passé';
+				saveVariable('modeLocalErreur', $modeLocalErreur);
 				if (($MasterDataSomfy['valeur'] <> '') && ($MasterDataSomfy['valeur'] <> 0))
 				{
-					$eeResultat = ($MasterDataSomfy['valeur'] == 4 ) ? 3 : $MasterDataSomfy['valeur'];
-					
+					if ($MasterDataSomfy['valeur'] == 9)
+					{
+						$eeResultat = ($modeLocal) ? 5 : 3;
+					}
+					else
+					{
+						if  (($MasterDataSomfy['valeur'] == 2) or ($MasterDataSomfy['valeur'] == 4))
+						{
+							$eeResultat = ($modeLocal) ? 4 : 2;
+						}
+						else if (($MasterDataSomfy['valeur'] == 3) or ($MasterDataSomfy['valeur'] == 5))
+						{
+							$eeResultat = ($modeLocal) ? 5 : 3;
+						}
+						else if ($MasterDataSomfy['valeur'] == 1)
+						{
+							if ($modeLocal)
+							{
+								$setup = sdk_get_setup($eeDevices, $localToken);
+								if ($setup['alive'] <> 'true')
+								{	// La box n'est pas connectée à son cloud
+									$eeResultat = 1;
+								}
+								else
+								{
+									$eeResultat = sdk_process_setup($setup,$eeDevices);
+								}
+							}
+							else
+							{
+								$eeResultat = $MasterDataSomfy['valeur'];
+							}
+						}
+						else
+						{
+							$eeResultat = $MasterDataSomfy['valeur'];
+						}
+					}
 				}
 				else
 				{
-					$setup = sdk_get_setup($eeDevices);
+					$setup = sdk_get_setup($eeDevices, $localToken);
 					if ($setup['alive'] <> 'true')
 					{	// La box n'est pas connectée à son cloud
 						$eeResultat = 1;
@@ -895,17 +1269,19 @@ switch ($action)
 			$eeResultat = $MasterDataSomfy['valeur'];
 		}
 
-		if (($eeResultat > 0) && ($eeResultat < 4))
+		if (($eeResultat > 0) && ($eeResultat < 9))
 		{
-			// On est connecté au cloud et on peut traiter les événements
+			// On est connecté au cloud ou en local et on peut traiter les événements
 			foreach ($resultFetch as $evenement)
 			{
+				$modeLocalErreur[] = $evenement ;
+				saveVariable('modeLocalErreur', $modeLocalErreur);
 				switch ($evenement['name'])
 				{
 					case 'GatewayAliveEvent' :
 						if ($evenement['gatewayId'] == $eeDevices['MasterDataSomfy']['MasterDataSomfyURL'])
 						{
-							$setup = sdk_get_setup($eeDevices);
+							$setup = sdk_get_setup($eeDevices, $localToken);
 							$eeResultat = sdk_process_setup($setup,$eeDevices);
 						}
 						break;
@@ -929,7 +1305,7 @@ switch ($action)
 						}
 						break;
 					case 'DeviceStateChangedEvent' :	// mise à jour des état des périphériques
-						$deviceUrl = $evenement['deviceURL'];
+						$deviceUrl = str_replace('\\', '', $evenement['deviceURL']);
 						if (array_key_exists($deviceUrl,$eeDevices))
 						{
 							foreach ($evenement['deviceStates'] as $deviceState)
@@ -937,6 +1313,51 @@ switch ($action)
 								if (array_key_exists($deviceState['name'],$eeDevices[$deviceUrl]))
 								{
 									sdk_maj_periph($eeDevices,$deviceUrl,$deviceState['name'],$deviceState['value']);
+								}
+								
+								// Prise en compte de l'état en mode local
+								if ($deviceState['name'] == 'core:StatusState')
+								{
+									if ($deviceState['value'] == 'available')
+									{
+										$horsPortee = loadVariable('horsPortee');
+										$horsPortee = ($horsPortee == 0) ? 0 : --$horsPortee;
+										saveVariable('horsPortee', $horsPortee);
+										if ($horsPortee)
+										{
+											$eeResultat = ($modeLocal) ? 4 : 2;
+										}
+										else
+										{
+											$eeResultat = ($modeLocal) ? 3 : 5;
+										}
+										$deviceUrl = str_replace('\\', '', $evenement['deviceURL']);
+										$deviceStates = sdk_getDeviceStatus($deviceUrl, $token);
+										if (array_key_exists($deviceUrl,$eeDevices))
+										{	
+											// traitement des tous les states de l'équipment
+											foreach ($deviceStates as $key => $state)
+											{
+												if (array_key_exists($state['name'],$eeDevices[$deviceUrl]))
+												{
+													// on met à jour les états
+													sdk_maj_periph($eeDevices,$deviceUrl,$state['name'],$state['value']);
+												}
+											}
+										}
+									}
+									if ($deviceState['value'] == 'unavailable')
+									{
+										$horsPortee = loadVariable('horsPortee');
+										$horsPortee++;
+										saveVariable('horsPortee', $horsPortee);
+										$eeResultat = ($modeLocal) ? 4 : 2;
+										$deviceUrl = str_replace('\\', '', $evenement['deviceURL']);
+										if (array_key_exists($deviceUrl,$eeDevices))
+										{
+											sdk_maj_periph($eeDevices,$deviceUrl,'all','Connexion');
+										}
+									}
 								}
 							}
 						}
@@ -946,15 +1367,16 @@ switch ($action)
 						{
 							// recherche de la cause
 							$path = 'history/executions/' . $evenement['execId'];
-							$resultHistory = sdk_make_request($path, $method='GET');
+							$resultHistory = sdk_make_request($path, $method='GET', NULL, NULL, $token);
 							foreach ($resultHistory['execution']['commands'] as $execCommand)
 							{
 								if ($execCommand['state'] == 'FAILED')
 								{
+									$deviceUrl = str_replace('\\', '', $execCommand['deviceURL']);
 									if (in_array($execCommand['failureType'], array('NONEXEC_OTHER')))
 									{
-										$deviceStates = sdk_getDeviceStatus($execCommand['deviceURL']);
-										if (array_key_exists($execCommand['deviceURL'],$eeDevices))
+										$deviceStates = sdk_getDeviceStatus($deviceUrl, $token);
+										if (array_key_exists($deviceUrl,$eeDevices))
 										{	
 											// traitement des tous les states de l'équipment
 											foreach ($deviceStates as $key => $state)
@@ -970,7 +1392,6 @@ switch ($action)
 									}
 									else
 									{
-										$deviceUrl = $execCommand['deviceURL'];
 										foreach ($eeDevices[$deviceUrl] as $stateKey => $stateItems)
 										{
 											if ($execCommand['command'] == $stateItems['eeDeviceCommandName'])
@@ -982,13 +1403,18 @@ switch ($action)
 								}
 							}
 						}
+						else if ($evenement['newState'] == 'COMPLETED')
+						{
+							unset($execIds[$evenement['execId']]);
+							saveVariable('execIds', $execIds);
+						}
 						break;
 					case 'DeviceUnavailableEvent' :
 						$horsPortee = loadVariable('horsPortee');
 						$horsPortee++;
 						saveVariable('horsPortee', $horsPortee);
 						$eeResultat = 2;
-						$deviceUrl = $evenement['deviceURL'];
+						$deviceUrl = str_replace('\\', '', $evenement['deviceURL']);
 						if (array_key_exists($deviceUrl,$eeDevices))
 						{
 							sdk_maj_periph($eeDevices,$deviceUrl,'all','Connexion');
@@ -999,8 +1425,8 @@ switch ($action)
 						$horsPortee = ($horsPortee == 0) ? 0 : --$horsPortee;
 						saveVariable('horsPortee', $horsPortee);
 						$eeResultat = ($horsPortee) ? 2 : 3;
-						$deviceUrl = $evenement['deviceURL'];
-						$deviceStates = sdk_getDeviceStatus($deviceUrl);
+						$deviceUrl = str_replace('\\', '', $evenement['deviceURL']);
+						$deviceStates = sdk_getDeviceStatus($deviceUrl, $token);
 						if (array_key_exists($deviceUrl,$eeDevices))
 						{	
 							// traitement des tous les states de l'équipment
@@ -1036,12 +1462,7 @@ switch ($action)
 		}
 		$MasterDataSomfy['valeur'] = $eeResultat;
 		saveVariable('MasterDataSomfy', $MasterDataSomfy);
-
-		// construction du résultat
-		// 0 : cloud injoignable
-		// 1 : cloud OK, box injoignable
-		// 2 : un des devices est injoignable
-		// 3 : tout est OK
+		
 		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><resultat>'.$eeResultat.'</resultat></somfy>';
 		echo $xml;
 		break;
@@ -1086,12 +1507,12 @@ switch ($action)
 			saveVariable('eeDevices', $eeDevices);
 			if ($deviceEtat<> 'mode:GatewayState')
 			{
-				$deviceStates = sdk_getDeviceStatus($device_urls[0]);
+				$deviceStates = sdk_getDeviceStatus($device_urls[0], $token);
 				if (array_key_exists('error',$deviceStates))
 				{
-					if (sdk_login() != 'ERROR_LOGIN')
+					if (sdk_login($eeDevices) != 'ERROR_LOGIN')
 					{
-						$deviceStates = sdk_getDeviceStatus($device_urls[0]);
+						$deviceStates = sdk_getDeviceStatus($device_urls[0], $token);
 					}
 				}
 				$trouve = 0;
@@ -1113,12 +1534,12 @@ switch ($action)
 			}
 			else
 			{
-				$deviceStates = sdk_getGatewayStatus($device_urls[0]);
+				$deviceStates = sdk_getGatewayStatus($device_urls[0], $localToken);
 				if (array_key_exists('error',$deviceStates))
 				{
-					if (sdk_login() != 'ERROR_LOGIN')
+					if (sdk_login($eeDevices) != 'ERROR_LOGIN')
 					{
-						$deviceStates = sdk_getGatewayStatus($device_urls[0]);
+						$deviceStates = sdk_getGatewayStatus($device_urls[0], $localToken);
 					}
 				}
 				$xml = '<?xml version="1.0" encoding="ISO-8859-1"?><somfy><gateway>' . $deviceStates['mode'] . '</gateway></somfy>';
@@ -1127,21 +1548,44 @@ switch ($action)
 		}
 		break;
 	case 'scenario' :
-		$device_urls = explode(',', getArg('devices', false));		// le scenario a traiter
-		if (count($device_urls) == 1)
+		// scenarios non supportés en mode local, on force le login en mode cloud
+		$resultLoginScenario = false;
+		if ($modeLocal)
 		{
-			$commands[$action] = null;
-			$path='exec/' . $device_urls[0];
-			// Exécution de la commande
-			$resultCommand = sdk_apply_command($device_urls, $commands, $path);
-			if (array_key_exists('error',$resultCommand))
+			$forceModeCloud = true;
+			$modeLocal = 0;
+			$modeLocalTmp = 1;
+			if (sdk_login($eeDevices) != 'ERROR_LOGIN')
 			{
-				if (sdk_login() != 'ERROR_LOGIN')
+				$resultLoginScenario = true;
+			}
+		}
+		else
+		{
+			$resultLoginScenario = true;
+			$modeLocalTmp = 0;
+		}
+		
+		if ($resultLoginScenario)
+		{
+			$device_urls = explode(',', getArg('devices', false));		// le scenario a traiter
+			if (count($device_urls) == 1)
+			{
+				$commands[$action] = null;
+				$path='exec/' . $device_urls[0];
+				// Exécution de la commande
+				$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+				if (array_key_exists('error',$resultCommand))
 				{
-					$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+					if (sdk_login($eeDevices) != 'ERROR_LOGIN')
+					{
+						$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+					}
 				}
 			}
 		}
+		saveVariable('modeLocal', $modeLocalTmp);		// retour au mode initial
+		saveVariable('modeLocalToken', $modeLocalTmp);		// retour au mode initial
 		break;
 	default :
 		//------------------------------------------
@@ -1190,10 +1634,10 @@ switch ($action)
 		}
 
 		// Exécution de la commande
-		$resultCommand = sdk_apply_command($device_urls, $commands, $path);
+		$resultCommand = sdk_apply_command($device_urls, $commands, $path, $localToken);
 		if (array_key_exists('error',$resultCommand))
 		{
-			if (sdk_login() != 'ERROR_LOGIN')
+			if (sdk_login($eeDevices) != 'ERROR_LOGIN')
 			{
 				$resultCommand = sdk_apply_command($device_urls, $commands, $path);
 			}
@@ -1201,6 +1645,7 @@ switch ($action)
 		if (array_key_exists('execId',$resultCommand))
 		{
 			$execIds[$resultCommand['execId']] = $device_urls;
+			saveVariable('execIds', $execIds);
 		}
 }
 
